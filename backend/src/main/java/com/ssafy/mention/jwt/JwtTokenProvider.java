@@ -45,8 +45,9 @@ public class JwtTokenProvider {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
-        Claims claims = Jwts.claims()
-                .setSubject(email);
+        Claims claims = Jwts.claims();
+        claims.put("email", member.getEmail());
+        claims.put("nickname", member.getNickname());
 
         Date now = new Date();
         Date expiresIn = new Date(now.getTime() + refreshTokenValidityTime);
@@ -79,8 +80,8 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        String username = Jwts.parser().setSigningKey(secret_key).parseClaimsJws(token).getBody().getSubject();
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        Claims claims = Jwts.parser().setSigningKey(secret_key).parseClaimsJws(token).getBody();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(claims.get("email").toString());
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

@@ -10,5 +10,5 @@ public interface MemberService {
 
     KakaoUserInfoResponse getKakaoUser(String accessToken);
 
-    ResponseEntity<TokenResponse> joinOrLogin(KakaoUserInfoResponse kakaoUserInfoResponse);
+    ResponseEntity<TokenResponse> joinOrLogin(String code);
 }

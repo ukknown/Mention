@@ -13,16 +13,14 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/kakao")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-    @PostMapping("/callback")
+    @PostMapping("/login")
     public ResponseEntity<TokenResponse> getKakao(@RequestBody Map<String, String> code) {
-        KakaoTokenResponse kakaoTokenResponse = memberService.getKakaoToken(code.get("code"));
-        KakaoUserInfoResponse kakaoUserInfoResponse = memberService.getKakaoUser(kakaoTokenResponse.getAccessToken());
-        return memberService.joinOrLogin(kakaoUserInfoResponse);
+        return memberService.joinOrLogin(code.get("code"));
     }
 
     @GetMapping("/test")

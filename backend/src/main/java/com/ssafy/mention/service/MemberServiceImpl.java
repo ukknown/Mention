@@ -149,7 +149,10 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     @Transactional
-    public ResponseEntity<TokenResponse> joinOrLogin(KakaoUserInfoResponse kakaoUserInfoResponse) {
+    public ResponseEntity<TokenResponse> joinOrLogin(String code) {
+        KakaoTokenResponse kakaoTokenResponse = getKakaoToken(code);
+        KakaoUserInfoResponse kakaoUserInfoResponse = getKakaoUser(kakaoTokenResponse.getAccessToken());
+
         String email = "";
         Member joinMember = memberRepository.findByEmail(kakaoUserInfoResponse.getEmail()).orElse(null);
 
