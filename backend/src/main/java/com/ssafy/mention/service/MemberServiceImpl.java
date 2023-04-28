@@ -13,9 +13,12 @@ import com.ssafy.mention.exception.member.MemberExceptionEnum;
 import com.ssafy.mention.exception.member.MemberRuntimeException;
 import com.ssafy.mention.jwt.JwtTokenProvider;
 import com.ssafy.mention.repository.MemberRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -33,9 +36,14 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final StringRedisTemplate stringRedisTemplate;
+
 
     @Value("${kakao.client-id}")
     private String API_KEY;
+
+    @Value("${jwt.secret}")
+    private String secret_key;
 
     @Value("${kakao.redirect-uri}")
     private String REDIRECT_URI;
@@ -173,6 +181,26 @@ public class MemberServiceImpl implements MemberService{
 
         return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity<TokenResponse> refresh(String refreshToken, String email) {
+        String solvedToken;
+        if (refreshToken != null && refreshToken.startsWith("Bearer ")) {
+            solvedToken = refreshToken.substring(7);
+        } else {
+            solvedToken = null;
+        }
+        String redisToken = stringRedisTemplate.opsForValue().get(email);
+        System.out.println(redisToken);
+        if (jwtTokenProvider.validateToken(solvedToken) && solvedToken.equals(stringRedisTemplate.opsForValue().get(email))) {
+            return new ResponseEntity<>(jwtTokenProvider.createToken(email), HttpStatus.OK);
+        } else {
+            throw new AuthRuntimeException(AuthExceptionEnum.AUTH_REFRESH_EXCEPTION);
+        }
+
+    }
+
 
 
 

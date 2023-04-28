@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,8 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final MemberRepository memberRepository;
+
+    private final StringRedisTemplate stringRedisTemplate;
 
     @Value("${jwt.secret}")
     private String secret_key;
@@ -61,8 +64,17 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, secret_key)
                 .compact();
 
+        // Redis key 이름과 값 설정
+        String redisKey = member.getEmail();
+        String redisValue = refreshToken;
+
+        // Redis에 refreshToken 저장
+        stringRedisTemplate.opsForValue().set(redisKey, redisValue);
+
         return new TokenResponse(accessToken, refreshToken);
     }
+
+
 
     public String createAccessToken(Claims claims) {
 
@@ -82,7 +94,6 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().setSigningKey(secret_key).parseClaimsJws(token).getBody();
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.get("email").toString());
-
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
