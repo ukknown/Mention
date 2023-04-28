@@ -10,5 +10,7 @@ public interface MemberService {
 
     KakaoUserInfoResponse getKakaoUser(String accessToken);
 
+    ResponseEntity<TokenResponse> refresh(String refreshToken, String email);
+
     ResponseEntity<TokenResponse> joinOrLogin(String code);
 }
