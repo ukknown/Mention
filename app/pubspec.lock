@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  card_swiper:
+    dependency: "direct main"
+    description:
+      name: card_swiper
+      sha256: "0c94c538f47be1dab52d018d4900a7046b4cb0700dc7f95b8628da89d1212b35"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.4"
   characters:
     dependency: transitive
     description:
@@ -25,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  circle_nav_bar:
+    dependency: "direct main"
+    description:
+      name: circle_nav_bar
+      sha256: "9aa1702ba2ea9e93f8bbaf8ab280b86a9a041454de1c1c8d72005e71303049ab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1+1"
   clock:
     dependency: transitive
     description:
@@ -186,3 +202,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=2.19.6 <3.0.0"
+  flutter: ">=1.17.0"
