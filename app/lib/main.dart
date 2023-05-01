@@ -1,4 +1,4 @@
-import 'package:app/screens/received_mentions.dart';
+import 'package:app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +11,7 @@ class Mention extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: ReceivedMentions(),
+      home: ProfilePage(),
     );
   }
 }
