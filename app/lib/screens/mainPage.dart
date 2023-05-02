@@ -32,7 +32,7 @@ class MainPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Hint(),
+                          builder: (context) => Hint(),
                         ),
                       );
                     },
@@ -90,7 +90,7 @@ class MainPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const Hint(),
+                      builder: (context) => Hint(),
                     ),
                   );
                   // print("프로필이동");
@@ -121,7 +121,7 @@ class MainPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const Hint(),
+                      builder: (context) => Hint(),
                     ),
                   );
                   // print("프로필이동");
@@ -144,7 +144,7 @@ class MainPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const Hint(),
+                      builder: (context) => Hint(),
                     ),
                   );
                 },

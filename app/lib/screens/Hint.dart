@@ -1,9 +1,25 @@
+// ignore: file_names
+import 'dart:ui';
+
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:app/screens/home_screen.dart';
 
-class Hint extends StatelessWidget {
+// ignore: must_be_immutable
+class Hint extends StatefulWidget {
   const Hint({super.key});
+
+  @override
+  State<Hint> createState() => _HintState();
+}
+
+class _HintState extends State<Hint> {
+  var firstsigmaX = 6.0;
+  var firstsigmaY = 6.0;
+  var secondsigmaX = 6.0;
+  var secondsigmaY = 6.0;
+  var thirdsigmaX = 6.0;
+  var thirdsigmaY = 6.0;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +68,7 @@ class Hint extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.5,
+                                      MediaQuery.of(context).size.width * 0.54,
                                 ),
                                 Image.asset(
                                   "assets/images/openlock.png",
@@ -68,6 +84,7 @@ class Hint extends StatelessWidget {
                                   MediaQuery.of(context).size.height * 0.013,
                             ),
                             Container(
+                              width: MediaQuery.of(context).size.height * 0.35,
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(137, 169, 168, 168),
                                 borderRadius: BorderRadius.circular(20),
@@ -122,7 +139,7 @@ class Hint extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.5,
+                                      MediaQuery.of(context).size.width * 0.54,
                                 ),
                                 Image.asset(
                                   "assets/images/closelock.png",
@@ -137,19 +154,28 @@ class Hint extends StatelessWidget {
                               height:
                                   MediaQuery.of(context).size.height * 0.013,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(137, 169, 168, 168),
-                                borderRadius: BorderRadius.circular(20),
+                            ImageFiltered(
+                              imageFilter: ImageFilter.blur(
+                                sigmaX: secondsigmaX,
+                                sigmaY: secondsigmaY,
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.fromLTRB(28, 7, 28, 7),
-                                child: Text(
-                                  "상대방이 제공하는 힌트",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      color: Color.fromARGB(221, 92, 91, 91)),
-                                  textAlign: TextAlign.center,
+                              child: Container(
+                                width:
+                                    MediaQuery.of(context).size.height * 0.35,
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(137, 169, 168, 168),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.fromLTRB(28, 7, 28, 7),
+                                  child: Text(
+                                    "상대방의 초성 힌트",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        color: Color.fromARGB(221, 92, 91, 91)),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
                             ),
@@ -158,6 +184,14 @@ class Hint extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Center(
+                    child: secondsigmaX == 6
+                        ? ElevatedButton(
+                            onPressed: () {},
+                            child: const Text("Elevated BUTTON"),
+                          )
+                        : const Text("2"),
+                  )
                 ],
               ),
             ),
