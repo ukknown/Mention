@@ -34,20 +34,27 @@ class MyGroup extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Expanded(
-              flex: 1,
-              child: Text("groupImage"),
+            Expanded(
+              flex: 2,
+              child: SizedBox(
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/ssafy.png',
+                    height: screenWidth * 0.25,
+                  ),
+                ),
+              ),
             ),
             SizedBox(
               width: screenWidth * 0.03,
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("groupName"),
+                  const Text("GroupName"),
                   SizedBox(
                     height: screenHeight * 0.02,
                   ),

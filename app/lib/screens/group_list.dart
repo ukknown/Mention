@@ -11,12 +11,34 @@ class GroupList extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: screenHeight * 0.08,
             ),
-            const Text("내 그룹"),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.05,
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/images/group.png',
+                    width: screenWidth * 0.15, // 원하는 너비 설정
+                    // height: , // 원하는 높이 설정
+                  ),
+                  SizedBox(
+                    width: screenWidth * 0.05,
+                  ),
+                  Text(
+                    "내 그룹",
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.1,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(
               height: screenHeight * 0.02,
             ),

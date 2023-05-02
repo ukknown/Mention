@@ -23,15 +23,25 @@ class NoticePage extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Text("icon"),
-                  SizedBox(
-                    width: screenWidth * 0.01,
+                  Image.asset(
+                    'assets/images/bell.png',
+                    width: screenWidth * 0.2, // 원하는 너비 설정
+                    // height: , // 원하는 높이 설정
                   ),
-                  const Text("내 그룹"),
+                  SizedBox(
+                    width: screenWidth * 0.03,
+                  ),
+                  Text(
+                    "알림",
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.1,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ],
               ),
               SizedBox(
-                height: screenHeight * 0.01,
+                height: screenHeight * 0.02,
               ),
               for (var i in [1, 2, 3])
                 NoticeBox(screenWidth: screenWidth, screenHeight: screenHeight)
