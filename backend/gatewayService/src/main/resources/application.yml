@@ -25,16 +25,10 @@ spring:
             preLogger: true
             postLogger: true
       routes:
-        - id: user-service
-          uri: lb://USER-SERVICE
+        - id: member-service
+          uri: lb://MEMBER-SERVICE
           predicates:
-            - Path=/user-service/**
-          filters:
-            - CustomFilter
-        - id: catalog-service
-          uri: lb://CATALOG-SERVICE
-          predicates:
-            - Path=/catalog-service/**
+            - Path=/member-service/**
           filters:
             - CustomFilter
 management:
