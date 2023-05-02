@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     @GetMapping("/health-check")
     public String checkConnection(){
-        return "MemberService Check Completed!");
+        return "MemberService Check Completed!";
     }
 
 }
