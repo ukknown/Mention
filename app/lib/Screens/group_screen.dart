@@ -1,4 +1,7 @@
+import 'package:app/Screens/group_member.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:app/Screens/vote_before.dart';
 
 class ExampleScreen extends StatelessWidget {
   const ExampleScreen({Key? key}) : super(key: key);
@@ -12,30 +15,38 @@ class ExampleScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 10.0), // 상단 여백
-            const Flexible(
+            Flexible(
               flex: 2,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 50,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            '싸피 8기 광주',
-                            style: TextStyle(fontSize: 25),
-                          ),
-                          Icon(Icons.add)
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const GroupMember()));
+                        },
+                        child: const Row(
+                          children: [
+                            Text(
+                              '싸피 8기 광주',
+                              style: TextStyle(fontSize: 25),
+                            ),
+                            Icon(Icons.add)
+                          ],
+                        ),
                       ),
-                      Row(
+                      const Row(
                         children: [
                           Icon(Icons.person),
                           Text('24'),
@@ -55,27 +66,28 @@ class ExampleScreen extends StatelessWidget {
               ),
             ),
             Flexible(
-              flex: 4,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 3,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.add_circle_outline_rounded,
-                    size: 80,
-                  ),
-                ),
-              ),
+                flex: 4,
+                child: GestureDetector(
+                  onTap: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => (const VoteMember())))
+                  },
+                  child: CarouselSlider(
+                      items: const [group_box(), GroupDetail()],
+                      options: CarouselOptions(
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        height: 420,
+                        enlargeCenterPage: true,
+                      )),
+                )),
+            const SizedBox(
+              height: 10,
+            ),
+            const Text(
+              '1 fo 12',
+              style: TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 20.0), // 네모 박스와 로우 사이 여백
             Flexible(
@@ -103,6 +115,106 @@ class ExampleScreen extends StatelessWidget {
             const SizedBox(height: 20.0), // 하단 여백
           ],
         ),
+      ),
+    );
+  }
+}
+
+// 박스 형태
+class group_box extends StatelessWidget {
+  const group_box({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: const Center(
+        child: Icon(
+          Icons.add_circle_outline_rounded,
+          size: 80,
+        ),
+      ),
+    );
+  }
+}
+
+class GroupDetail extends StatelessWidget {
+  const GroupDetail({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: const Column(
+        children: [
+          Expanded(
+            flex: 4,
+            child: CircleAvatar(
+              radius: 60,
+            ),
+          ),
+          Expanded(
+              flex: 1,
+              child: Text(
+                '밥 먹어보고 싶은 사람',
+                style: TextStyle(fontSize: 20),
+              )),
+          Expanded(
+            flex: 1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.person_rounded),
+                Text(
+                  '15/24',
+                  style: TextStyle(fontSize: 20),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.alarm_sharp,
+                  size: 50,
+                ),
+                Text(
+                  '08:36',
+                  style: TextStyle(fontSize: 30),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
