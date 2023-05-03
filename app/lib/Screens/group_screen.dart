@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:app/Screens/vote_before.dart';
 
-class ExampleScreen extends StatelessWidget {
-  const ExampleScreen({Key? key}) : super(key: key);
+class GroupScreen extends StatelessWidget {
+  const GroupScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +21,7 @@ class ExampleScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const CircleAvatar(
+                    foregroundImage: AssetImage('lib/assets/images/ssafy.png'),
                     radius: 50,
                   ),
                   const SizedBox(
@@ -75,7 +76,7 @@ class ExampleScreen extends StatelessWidget {
                             builder: (context) => (const VoteMember())))
                   },
                   child: CarouselSlider(
-                      items: const [group_box(), GroupDetail()],
+                      items: const [GroupDetail(), GroupDetail(), group_box()],
                       options: CarouselOptions(
                         autoPlayCurve: Curves.fastOutSlowIn,
                         height: 420,
@@ -141,10 +142,36 @@ class group_box extends StatelessWidget {
           ),
         ],
       ),
-      child: const Center(
-        child: Icon(
-          Icons.add_circle_outline_rounded,
-          size: 80,
+      child: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('새로운 토픽을 골라주세요'),
+                    content: const SizedBox(
+                      height: 250,
+                      child: Column(
+                        children: [Text('검색창'), Text('인풋 공간')],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Close'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  );
+                  // return const GroupDetail();
+                });
+          },
+          child: const Icon(
+            Icons.add_circle_outline_rounded,
+            size: 80,
+          ),
         ),
       ),
     );
@@ -171,21 +198,27 @@ class GroupDetail extends StatelessWidget {
           ),
         ],
       ),
-      child: const Column(
+      child: Column(
         children: [
           Expanded(
             flex: 4,
-            child: CircleAvatar(
-              radius: 60,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Image.asset(
+                'lib/assets/images/meet.png',
+                width: 130,
+                height: 130,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
-          Expanded(
+          const Expanded(
               flex: 1,
               child: Text(
                 '밥 먹어보고 싶은 사람',
                 style: TextStyle(fontSize: 20),
               )),
-          Expanded(
+          const Expanded(
             flex: 1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -203,13 +236,15 @@ class GroupDetail extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.alarm_sharp,
-                  size: 50,
+                Image.asset(
+                  'lib/assets/images/clock.png',
                 ),
-                Text(
+                const Text(
                   '08:36',
-                  style: TextStyle(fontSize: 30),
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.orange,
+                  ),
                 )
               ],
             ),

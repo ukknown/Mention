@@ -37,32 +37,29 @@ class VotePick extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Column(
+                child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Center(
                       child: Column(
                         children: [
-                          Text(
+                          const Text(
                             "My Mention",
                             style: TextStyle(fontSize: 50),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 40,
                           ),
-                          Icon(
-                            Icons.cruelty_free_sharp,
-                            size: 50,
-                          ),
-                          CircleAvatar(
+                          Image.asset('lib/assets/images/crown.png'),
+                          const CircleAvatar(
                             radius: 80,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             '김창영',
                             style: TextStyle(fontSize: 40),
                           ),
