@@ -3,6 +3,7 @@ import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:app/screens/Hint.dart';
+import 'package:app/screens/group_screen.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -32,7 +33,7 @@ class MainPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Hint(),
+                          builder: (context) => const Hint(),
                         ),
                       );
                     },
@@ -60,9 +61,17 @@ class MainPage extends StatelessWidget {
               flex: 4,
               child: Swiper(
                 itemBuilder: (BuildContext context, int index) {
-                  return Image.asset(
-                    "assets/images/mainCard.png",
-                    // fit: BoxFit.fill,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const GroupScreen()));
+                    },
+                    child: Image.asset(
+                      "assets/images/mainCard.png",
+                      // fit: BoxFit.fill,
+                    ),
                   );
                 },
                 // itemHeight: 500,
@@ -90,7 +99,7 @@ class MainPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Hint(),
+                      builder: (context) => const Hint(),
                     ),
                   );
                   // print("프로필이동");
@@ -121,7 +130,7 @@ class MainPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Hint(),
+                      builder: (context) => const Hint(),
                     ),
                   );
                   // print("프로필이동");
@@ -144,7 +153,7 @@ class MainPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Hint(),
+                      builder: (context) => const Hint(),
                     ),
                   );
                 },

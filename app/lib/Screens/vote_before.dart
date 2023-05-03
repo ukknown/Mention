@@ -1,3 +1,4 @@
+import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 
 class VoteMember extends StatelessWidget {
@@ -51,24 +52,33 @@ class VoteMember extends StatelessWidget {
                         ),
                       ),
                     ),
-                    member(),
-                    member(),
-                    member(),
-                    member(),
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Member(),
+                          Member(),
+                          Member(),
+                          Member(),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            const Expanded(flex: 1, child: Text('이동 바'))
+            const SizedBox(
+              height: 40,
+            )
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNav(),
     );
   }
 }
 
-class member extends StatelessWidget {
-  const member({
+class Member extends StatelessWidget {
+  const Member({
     super.key,
   });
 

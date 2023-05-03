@@ -1,8 +1,6 @@
-import 'package:app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:app/Screens/group_screen.dart';
 
-import 'screens/home_screen.dart';
+import 'screens/mainPage.dart';
 
 void main() {
   runApp(const Mention());
@@ -25,6 +23,6 @@ class Mention extends StatelessWidget {
           ),
           cardColor: const Color(0xFFF4EDDB),
         ),
-        home: const GroupScreen());
+        home: const MainPage());
   }
 }

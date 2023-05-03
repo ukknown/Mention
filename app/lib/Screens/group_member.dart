@@ -1,3 +1,4 @@
+import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 
 class GroupMember extends StatelessWidget {
@@ -80,27 +81,30 @@ class GroupMember extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      member(),
-                      member(),
-                      member(),
-                      member(),
-                      member(),
-                      member(),
+                      Member(),
+                      Member(),
+                      Member(),
+                      Member(),
+                      Member(),
+                      Member(),
                     ],
                   ),
                 ),
               ),
             ),
-            const Expanded(flex: 1, child: Text('이동 바'))
+            const SizedBox(
+              height: 40,
+            )
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNav(),
     );
   }
 }
 
-class member extends StatelessWidget {
-  const member({
+class Member extends StatelessWidget {
+  const Member({
     super.key,
   });
 

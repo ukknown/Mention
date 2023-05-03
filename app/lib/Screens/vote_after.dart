@@ -52,7 +52,7 @@ class VotePick extends StatelessWidget {
                           const SizedBox(
                             height: 40,
                           ),
-                          Image.asset('lib/assets/images/crown.png'),
+                          Image.asset('assets/images/crown.png'),
                           const CircleAvatar(
                             radius: 80,
                           ),
