@@ -2,19 +2,16 @@ import 'package:app/widgets/mentiion_box.dart';
 import 'package:flutter/material.dart';
 
 class ReceivedMentions extends StatelessWidget {
-  // final double screenHeight, screenWidth;
+  final double screenHeight, screenWidth;
 
   const ReceivedMentions({
     super.key,
-    // required this.screenHeight,
-    // required this.screenWidth,
+    required this.screenHeight,
+    required this.screenWidth,
   });
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: const Color(0xffAAC6EF),
       body: Column(

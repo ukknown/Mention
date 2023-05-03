@@ -2,12 +2,16 @@ import 'package:app/widgets/my_group.dart';
 import 'package:flutter/material.dart';
 
 class GroupList extends StatelessWidget {
-  const GroupList({super.key});
+  final double screenWidth, screenHeight;
+
+  const GroupList({
+    super.key,
+    required this.screenWidth,
+    required this.screenHeight,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Center(
         child: Column(

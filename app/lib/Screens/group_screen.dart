@@ -21,7 +21,7 @@ class GroupScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const CircleAvatar(
-                    foregroundImage: AssetImage('lib/assets/images/ssafy.png'),
+                    foregroundImage: AssetImage('assets/images/ssafy.png'),
                     radius: 50,
                   ),
                   const SizedBox(
@@ -205,7 +205,7 @@ class GroupDetail extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: Image.asset(
-                'lib/assets/images/meet.png',
+                'assets/images/meet.png',
                 width: 130,
                 height: 130,
                 fit: BoxFit.contain,
@@ -237,7 +237,7 @@ class GroupDetail extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'lib/assets/images/clock.png',
+                  'assets/images/clock.png',
                 ),
                 const Text(
                   '08:36',

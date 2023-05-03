@@ -1,3 +1,5 @@
+import 'package:app/widgets/group_button.dart';
+import 'package:app/widgets/mention_button.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
@@ -91,38 +93,16 @@ class ProfileCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/group.png',
-                      height: screenWidth * 0.125,
-                      width: screenWidth * 0.125,
-                    ),
-                    const Text(
-                      "00",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                GroupButton(
+                  screenWidth: screenWidth,
+                  screenHeight: screenHeight,
                 ),
                 SizedBox(
                   width: screenWidth * 0.125,
                 ),
-                Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/mention.png',
-                      height: screenWidth * 0.125,
-                      width: screenWidth * 0.125,
-                    ),
-                    const Text(
-                      "00",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                MentionButton(
+                  screenWidth: screenWidth,
+                  screenHeight: screenHeight,
                 ),
                 SizedBox(
                   width: screenWidth * 0.125,
@@ -150,3 +130,4 @@ class ProfileCard extends StatelessWidget {
     );
   }
 }
+
