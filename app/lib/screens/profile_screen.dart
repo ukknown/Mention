@@ -16,11 +16,11 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: screenHeight * 0.1,
+              height: screenHeight * 0.075,
             ),
             ProfileCard(screenHeight: screenHeight, screenWidth: screenWidth),
             SizedBox(
-              height: screenHeight * 0.05,
+              height: screenHeight * 0.025,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
@@ -28,11 +28,17 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Text("icon"),
-                      SizedBox(
-                        width: screenWidth * 0.01,
+                      Image.asset(
+                        'assets/images/running.png',
+                        height: screenWidth * 0.1,
                       ),
-                      const Text("다음 Bang까지 00걸음"),
+                      SizedBox(
+                        width: screenWidth * 0.02,
+                      ),
+                      Text(
+                        "다음 Bang까지 00걸음!",
+                        style: TextStyle(fontSize: screenWidth * 0.055),
+                      ),
                     ],
                   ),
                   const Text("만보기")
@@ -40,21 +46,39 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: screenHeight * 0.075,
+              height: screenHeight * 0.05,
             ),
-            Column(
-              children: [
-                const Text("나의 멘션 랭킹"),
-                SizedBox(
-                  height: screenHeight * 0.01,
-                ),
-                for (var rank in [1, 2, 3])
-                  RankSlot(
-                    screenWidth: screenWidth,
-                    screenHeight: screenHeight,
-                    rank: rank,
+            Padding(
+              padding: EdgeInsets.only(left: screenWidth * 0.05),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/podium.png',
+                        height: screenWidth * 0.1,
+                      ),
+                      SizedBox(
+                        width: screenWidth * 0.02,
+                      ),
+                      Text(
+                        "나의 멘션 랭킹",
+                        style: TextStyle(fontSize: screenWidth * 0.055),
+                      ),
+                    ],
                   ),
-              ],
+                  SizedBox(
+                    height: screenHeight * 0.02,
+                  ),
+                  for (var rank in [1, 2, 3])
+                    RankSlot(
+                      screenWidth: screenWidth,
+                      screenHeight: screenHeight,
+                      rank: rank,
+                    ),
+                ],
+              ),
             ),
           ],
         ),

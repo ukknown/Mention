@@ -14,7 +14,7 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: screenHeight * 0.3,
+      height: screenHeight * 0.32,
       width: screenWidth * 0.9,
       decoration: BoxDecoration(
         color: const Color(0xffA3B3F9),
@@ -23,7 +23,7 @@ class ProfileCard extends StatelessWidget {
           BoxShadow(
             offset: const Offset(-5, -5),
             blurRadius: 5,
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withOpacity(0.5),
             inset: true,
           ),
         ],
@@ -71,7 +71,7 @@ class ProfileCard extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: screenHeight * 0.01,
+                        height: screenHeight * 0.02,
                       ),
                       Text(
                         "김싸피",
@@ -81,32 +81,65 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: screenHeight * 0.05,
+                        height: screenHeight * 0.04,
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
                   children: [
-                    Text("groups"),
-                    Text("number"),
+                    Image.asset(
+                      'assets/images/group.png',
+                      height: screenWidth * 0.125,
+                      width: screenWidth * 0.125,
+                    ),
+                    const Text(
+                      "00",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
+                ),
+                SizedBox(
+                  width: screenWidth * 0.125,
                 ),
                 Column(
                   children: [
-                    Text("metions"),
-                    Text("number"),
+                    Image.asset(
+                      'assets/images/mention.png',
+                      height: screenWidth * 0.125,
+                      width: screenWidth * 0.125,
+                    ),
+                    const Text(
+                      "00",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
+                ),
+                SizedBox(
+                  width: screenWidth * 0.125,
                 ),
                 Column(
                   children: [
-                    Text("bangs"),
-                    Text("number"),
+                    Image.asset(
+                      'assets/images/coin.png',
+                      height: screenWidth * 0.125,
+                      width: screenWidth * 0.125,
+                    ),
+                    const Text(
+                      "00",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ],
