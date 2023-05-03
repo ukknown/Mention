@@ -16,8 +16,8 @@ class Hint extends StatefulWidget {
 class _HintState extends State<Hint> {
   var firstsigmaX = 6.0;
   var firstsigmaY = 6.0;
-  var secondsigmaX = 6.0;
-  var secondsigmaY = 6.0;
+  var secondsigmaX = 0.0;
+  var secondsigmaY = 0.0;
   var thirdsigmaX = 6.0;
   var thirdsigmaY = 6.0;
 
@@ -124,7 +124,7 @@ class _HintState extends State<Hint> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                          vertical: 11,
+                          vertical: 7.5,
                           horizontal: 20,
                         ),
                         child: Column(
@@ -139,20 +139,36 @@ class _HintState extends State<Hint> {
                                 ),
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.54,
+                                      MediaQuery.of(context).size.width * 0.508,
                                 ),
-                                Image.asset(
-                                  "assets/images/closelock.png",
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.1,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.04,
+                                IconButton(
+                                  padding: const EdgeInsets.all(0),
+                                  onPressed: () {},
+                                  icon: secondsigmaX == 6.0
+                                      ? Image.asset(
+                                          "assets/images/closelock.png",
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.1,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.04,
+                                        )
+                                      : Image.asset(
+                                          "assets/images/openlock.png",
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.1,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.04,
+                                        ),
                                 ),
                               ],
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.013,
                             ),
                             ImageFiltered(
                               imageFilter: ImageFilter.blur(
@@ -184,14 +200,6 @@ class _HintState extends State<Hint> {
                       ),
                     ),
                   ),
-                  Center(
-                    child: secondsigmaX == 6
-                        ? ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("Elevated BUTTON"),
-                          )
-                        : const Text("2"),
-                  )
                 ],
               ),
             ),
