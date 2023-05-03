@@ -2,6 +2,8 @@ import 'package:app/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app/Screens/group_screen.dart';
 
+import 'screens/home_screen.dart';
+
 void main() {
   runApp(const Mention());
 }
