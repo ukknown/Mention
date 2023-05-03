@@ -18,7 +18,7 @@ class MyGroup extends StatelessWidget {
         vertical: screenHeight * 0.01,
       ),
       child: Container(
-        height: screenHeight * 0.18,
+        height: screenHeight * 0.15,
         width: screenWidth * 0.9,
         decoration: BoxDecoration(
           color: const Color(0xffA3B3F9),
@@ -27,7 +27,7 @@ class MyGroup extends StatelessWidget {
             BoxShadow(
               offset: const Offset(-5, -5),
               blurRadius: 5,
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withOpacity(0.5),
               inset: true,
             ),
           ],
@@ -54,14 +54,33 @@ class MyGroup extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("GroupName"),
-                  SizedBox(
-                    height: screenHeight * 0.02,
+                  Text(
+                    "GroupName",
+                    style: TextStyle(
+                      color: const Color(0xff2E2E2E),
+                      fontSize: screenWidth * 0.075,
+                    ),
                   ),
-                  const Row(
+                  SizedBox(
+                    height: screenHeight * 0.01,
+                  ),
+                  Row(
                     children: [
-                      Text("icon"),
-                      Text("number"),
+                      Icon(
+                        Icons.person,
+                        color: const Color(0xff2E2E2E),
+                        size: screenWidth * 0.08,
+                      ),
+                      SizedBox(
+                        width: screenWidth * 0.02,
+                      ),
+                      Text(
+                        "24",
+                        style: TextStyle(
+                          color: const Color(0xff2E2E2E),
+                          fontSize: screenWidth * 0.05,
+                        ),
+                      ),
                     ],
                   ),
                 ],

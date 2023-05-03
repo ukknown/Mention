@@ -64,6 +64,12 @@ flutter:
     - assets/images/bell.png
     - assets/images/group.png
     - assets/images/ssafy.png
+    - assets/images/group-chat.png
+    - assets/images/profile-example.png
+    - assets/images/setting.png
+    - assets/images/share.png
+    - assets/images/mention.png
+    - assets/images/coin.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

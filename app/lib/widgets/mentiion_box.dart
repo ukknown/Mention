@@ -16,7 +16,6 @@ class MentionBox extends StatelessWidget {
       padding: EdgeInsets.only(bottom: screenHeight * 0.01),
       child: Container(
         width: screenWidth * 0.8,
-        height: screenHeight * 0.08,
         decoration: BoxDecoration(
           color: const Color(0xffa3b3f9),
           borderRadius: BorderRadius.circular(15),
@@ -28,13 +27,51 @@ class MentionBox extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 SizedBox(
-                    width: screenWidth * 0.58, height: screenHeight * 0.03),
-                const Text("힌트사용내역"),
+                  width: screenWidth * 0.65,
+                  height: screenHeight * 0.025,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: screenWidth * 0.025,
+                      height: screenWidth * 0.025,
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenWidth * 0.02,
+                    ),
+                    Container(
+                      width: screenWidth * 0.025,
+                      height: screenWidth * 0.025,
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenWidth * 0.02,
+                    ),
+                    Container(
+                      width: screenWidth * 0.025,
+                      height: screenWidth * 0.025,
+                      decoration: const BoxDecoration(
+                        color: Colors.grey,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-            const Text("토픽제목"),
+            Text(
+              "토픽제목",
+              style: TextStyle(fontSize: screenWidth * 0.05),
+            ),
             SizedBox(
-              height: screenHeight * 0.002,
+              height: screenHeight * 0.025,
             )
           ],
         ),

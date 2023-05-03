@@ -17,23 +17,42 @@ class ReceivedMentions extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xffAAC6EF),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: screenHeight * 0.1,
+      body: Column(
+        children: [
+          SizedBox(
+            height: screenHeight * 0.1,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.1,
             ),
-            const Text("받은 멘션"),
-            SizedBox(
-              height: screenHeight * 0.02,
+            child: Row(
+              children: [
+                Image.asset(
+                  'assets/images/group-chat.png',
+                  width: screenWidth * 0.2, // 원하는 너비 설정
+                  // height: , // 원하는 높이 설정
+                ),
+                SizedBox(
+                  width: screenWidth * 0.03,
+                ),
+                Text(
+                  "받은 멘션",
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.1,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
-            MentionBox(screenWidth: screenWidth, screenHeight: screenHeight),
-            MentionBox(screenWidth: screenWidth, screenHeight: screenHeight),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: screenHeight * 0.02,
+          ),
+          MentionBox(screenWidth: screenWidth, screenHeight: screenHeight),
+          MentionBox(screenWidth: screenWidth, screenHeight: screenHeight),
+        ],
       ),
     );
   }
 }
-
