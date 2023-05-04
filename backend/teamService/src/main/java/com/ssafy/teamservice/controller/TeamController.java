@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamController {
     @GetMapping("/health-check")
     public String checkConnection(){
-        return "MemberService Check Completed!";
+        return "Team MicroService Check Completed!";
     }
 }
