@@ -9,13 +9,15 @@ import com.ssafy.memberservice.jpa.MemberEntity;
 import com.ssafy.memberservice.jpa.MemberRepository;
 
 
+import com.ssafy.memberservice.vo.dto.MemberDto;
+
 import com.ssafy.memberservice.vo.dto.response.TokenResponse;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +34,8 @@ public class JwtTokenProvider {
 
     private final MemberRepository memberRepository;
 
-    private final StringRedisTemplate stringRedisTemplate;
+//    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate redisTemplate;
 
     @Value("${jwt.secret}")
     private String secret_key;
@@ -68,11 +71,14 @@ public class JwtTokenProvider {
                 .compact();
 
         // Redis key 이름과 값 설정
-        String redisKey = memberEntity.getEmail();
-        String redisValue = refreshToken;
+//        String redisKey = memberEntity.getEmail();
+//        String redisValue = refreshToken;
+        String redisKey = accessToken;
+        MemberDto redisValue = new MemberDto(memberEntity.getEmail(), memberEntity.getNickname());
 
         // Redis에 refreshToken 저장
-        stringRedisTemplate.opsForValue().set(redisKey, redisValue);
+        redisTemplate.opsForValue().set(redisKey, redisValue);
+//        stringRedisTemplate.opsForValue().set(redisKey, redisValue);
 
         return new TokenResponse(accessToken, refreshToken);
     }

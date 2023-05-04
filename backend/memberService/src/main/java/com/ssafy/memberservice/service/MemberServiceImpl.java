@@ -54,13 +54,18 @@ public class MemberServiceImpl implements MemberService{
     @Override
     @Transactional
     public ResponseEntity<TokenResponse> joinOrLogin(String code) {
+        //카카오 인증 api에서 인증 토큰을 받아옴
         KakaoTokenResponse kakaoTokenResponse = getKakaoToken(code);
+        //인증 토큰으로부터 카카오 사용자 정보를 받아옴
         KakaoUserInfoResponse kakaoUserInfoResponse = getKakaoUser(kakaoTokenResponse.getAccessToken());
 
         String email = "";
+        //받아옴 email 정보를 이용해 해당 이메일로 가입된 회원 있는지 조회
         MemberEntity joinMember = memberRepository.findByEmail(kakaoUserInfoResponse.getEmail()).orElse(null);
 
-        if (joinMember == null) {
+
+        if (joinMember == null) {//회원이 없다면
+            //회원정보 DB 저장
             MemberEntity member = MemberEntity
                     .builder()
                     .email(kakaoUserInfoResponse.getEmail())
@@ -73,6 +78,8 @@ public class MemberServiceImpl implements MemberService{
             email = joinMember.getEmail();
         }
 
+        //jwt 토큰 생성
+//        TokenResponse tokenResponse = jwtTokenProvider.createToken(email);
         TokenResponse tokenResponse = jwtTokenProvider.createToken(email);
 
         return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
