@@ -38,6 +38,11 @@ public class TopicServiceImpl implements TopicService{
                     .build();
             topicSearchRepository.save(topicDocument);
         }
+    }
 
+    @Override
+    @Transactional
+    public void deleteElastic() {
+        topicSearchRepository.deleteAll();
     }
 }

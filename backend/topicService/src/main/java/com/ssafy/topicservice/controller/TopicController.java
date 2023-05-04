@@ -22,4 +22,9 @@ public class TopicController {
     public void saveElastic() {
         topicService.saveElastic();
     }
+
+    @PostMapping("/delete/elastic")
+    public void delete() {
+        topicService.deleteElastic();
+    }
 }
