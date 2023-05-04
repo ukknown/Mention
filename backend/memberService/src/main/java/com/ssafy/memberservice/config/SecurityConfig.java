@@ -42,8 +42,8 @@ public class SecurityConfig {
         http
                 .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/api/member/test").hasRole("USER")
-                .antMatchers("/api/**").permitAll()
+                //.antMatchers("/member-service/login").hasRole("USER")
+                .antMatchers("/member-service/login").permitAll()
 //                .antMatchers("/api/member/test").permitAll()
                 .anyRequest().authenticated();
 

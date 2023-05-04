@@ -30,19 +30,20 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        String token = jwtTokenProvider.resolveToken(request);
+        String token = jwtTokenProvider.resolveToken(request); //HTTP 요청 헤더에서 JWT 토큰을 읽음
         try {
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                Authentication auth = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(auth);
+            if (token != null && jwtTokenProvider.validateToken(token)) { //토큰 존재/ 유효성 검사
+                Authentication auth = jwtTokenProvider.getAuthentication(token); //인증 객체 생성
+                SecurityContextHolder.getContext().setAuthentication(auth); //인증 객체 저장
             }
-            filterChain.doFilter(request, response);
-        } catch (AuthRuntimeException e) {
-            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);//다음 필터 컨트롤러에게 전달
+        } catch (AuthRuntimeException e) { //예외처리
+            SecurityContextHolder.clearContext(); //현재 스레드의 보안 컨텍스트 제거
+            //상태코드와 내용유형 설정
             response.setStatus(e.getErrorEnum().getHttpStatus().value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             try (OutputStream os = response.getOutputStream()) {
-                ObjectMapper objectMapper = new ObjectMapper();
+                ObjectMapper objectMapper = new ObjectMapper(); //ObjectMapper를 사용 json형식의 응답 본문 작성
 
                 Map<String, Object> errorResponse = new HashMap<>();
                 errorResponse.put("status", e.getErrorEnum().getHttpStatus().value());
