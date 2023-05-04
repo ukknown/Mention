@@ -43,10 +43,10 @@ class VoteMember extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Align(
                           alignment: Alignment.bottomLeft,
@@ -57,21 +57,13 @@ class VoteMember extends StatelessWidget {
                         ),
                       ),
                       SingleChildScrollView(
-                        child: GestureDetector(
-                          onTap: () => {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => (const VotePick())))
-                          },
-                          child: const Column(
-                            children: [
-                              Member(),
-                              Member(),
-                              Member(),
-                              Member(),
-                            ],
-                          ),
+                        child: Column(
+                          children: [
+                            Member(),
+                            Member(),
+                            Member(),
+                            Member(),
+                          ],
                         ),
                       ),
                     ],
@@ -97,27 +89,70 @@ class Member extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 5),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 4,
-              child: CircleAvatar(
-                radius: 40,
-              ),
-            ),
-            Expanded(
+    return GestureDetector(
+      onTap: () => _showMentionModal(context),
+      child: const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          child: Row(
+            children: [
+              Expanded(
                 flex: 4,
-                child: Text(
-                  '김창영',
-                  style: TextStyle(fontSize: 25),
-                )),
-            // Expanded(flex: 1, child: Icon(Icons.person))
-          ],
+                child: CircleAvatar(
+                  radius: 40,
+                ),
+              ),
+              Expanded(
+                  flex: 4,
+                  child: Text(
+                    '김창영',
+                    style: TextStyle(fontSize: 25),
+                  )),
+              // Expanded(flex: 1, child: Icon(Icons.person))
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+void _showMentionModal(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('김창영님을 멘션할까요?'),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const VotePick()),
+                );
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.lightGreen,
+              ),
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+              ),
+              child: const Text('No'),
+            ),
+          ],
+        ),
+      );
+    },
+    barrierDismissible: true,
+  );
 }

@@ -1,3 +1,4 @@
+import 'package:app/Screens/vote_after.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
@@ -21,16 +22,21 @@ class GroupMember extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             '멤버',
                             style: TextStyle(fontSize: 30),
                           ),
-                          Icon(
-                            Icons.add_circle_outline_sharp,
-                            size: 40,
+                          GestureDetector(
+                            onTap: () {
+                              _showJoinCodeModal(context);
+                            },
+                            child: const Icon(
+                              Icons.add_circle_outline_sharp,
+                              size: 40,
+                            ),
                           )
                         ],
                       ),
@@ -138,3 +144,39 @@ class Member extends StatelessWidget {
     );
   }
 }
+
+void _showJoinCodeModal(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text(
+          '참여코드',
+          textAlign: TextAlign.center,
+        ),
+        content: const Text(
+          '61809',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              print('Send join code via KakaoTalk');
+              Navigator.of(context).pop();
+            },
+            // 카카오 아이콘으로 바꾸기
+            child: const Center(
+                child: Icon(
+              Icons.send,
+              size: 35,
+            )),
+          ),
+        ],
+      );
+    },
+    barrierDismissible: true,
+  );
+}
+
+

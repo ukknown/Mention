@@ -8,9 +8,12 @@ import 'package:app/widgets/bottom_nav.dart';
 class GroupScreen extends StatelessWidget {
   const GroupScreen({Key? key}) : super(key: key);
 
+  // 질문생성 모달
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       // backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
         decoration: bgimg(),
@@ -73,25 +76,13 @@ class GroupScreen extends StatelessWidget {
               ),
               Flexible(
                   flex: 4,
-                  child: GestureDetector(
-                    onTap: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => (const VoteMember())))
-                    },
-                    child: CarouselSlider(
-                        items: const [
-                          GroupDetail(),
-                          GroupDetail(),
-                          group_box()
-                        ],
-                        options: CarouselOptions(
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          height: 420,
-                          enlargeCenterPage: true,
-                        )),
-                  )),
+                  child: CarouselSlider(
+                      items: const [GroupDetail(), GroupDetail(), Groupbox()],
+                      options: CarouselOptions(
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        height: 420,
+                        enlargeCenterPage: true,
+                      ))),
               const SizedBox(
                 height: 10,
               ),
@@ -112,8 +103,8 @@ class GroupScreen extends StatelessWidget {
 }
 
 // 박스 형태
-class group_box extends StatelessWidget {
-  const group_box({
+class Groupbox extends StatelessWidget {
+  const Groupbox({
     super.key,
   });
 
@@ -133,31 +124,8 @@ class group_box extends StatelessWidget {
         ],
       ),
       child: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('새로운 토픽을 골라주세요'),
-                    content: const SizedBox(
-                      height: 250,
-                      child: Column(
-                        children: [Text('검색창'), Text('인풋 공간')],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('Close'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  );
-                  // return const GroupDetail();
-                });
-          },
+        child: GestureDetector(
+          onTap: () => _showNewTopicModal(context),
           child: const Icon(
             Icons.add_circle_outline_rounded,
             size: 80,
@@ -188,59 +156,136 @@ class GroupDetail extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 4,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: Image.asset(
-                'assets/images/meet.png',
-                width: 130,
-                height: 130,
-                fit: BoxFit.contain,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => (const VoteMember())));
+        },
+        child: Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.asset(
+                  'assets/images/meet.png',
+                  width: 130,
+                  height: 130,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-          ),
-          const Expanded(
-              flex: 1,
-              child: Text(
-                '밥 먹어보고 싶은 사람',
-                style: TextStyle(fontSize: 20),
-              )),
-          const Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.person_rounded),
-                Text(
-                  '15/24',
+            const Expanded(
+                flex: 1,
+                child: Text(
+                  '밥 먹어보고 싶은 사람',
                   style: TextStyle(fontSize: 20),
-                )
-              ],
+                )),
+            const Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.person_rounded),
+                  Text(
+                    '15/24',
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/clock.png',
-                ),
-                const Text(
-                  '08:36',
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.orange,
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/clock.png',
                   ),
-                )
-              ],
-            ),
-          )
-        ],
+                  const Text(
+                    '08:36',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.orange,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
+}
+
+void _showNewTopicModal(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: const Text('새로운 토픽을 골라주세요'),
+            // 여기서 부터 수정
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // 변경된 부분
+                children: [
+                  const TextField(
+                    decoration: InputDecoration(
+                      hintText: '\'춤\'이라고 검색해보세요',
+                      prefixIcon: Icon(Icons.search),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    // 추가된 부분
+                    child: Container(
+                      height: 200, // 주석 처리된 부분
+                      width: double.infinity, // 박스 너비 설정
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListView.builder(
+                        itemCount: 1, // 항목 개수를 1로 설정
+                        itemBuilder: (BuildContext context, int index) {
+                          return const ListTile(
+                            title: Text('검색결과창'), // 검색 결과가 없음을 나타내는 텍스트
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  print('Random button clicked');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightBlue, // 버튼 배경색 설정
+                ),
+                child: const Text('랜덤'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  print('Next button clicked');
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightGreen, // 버튼 배경색 설정
+                ),
+                child: const Text('다음'),
+              ),
+            ],
+          );
+        },
+      );
+    },
+    barrierDismissible: true,
+  );
 }
