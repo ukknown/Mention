@@ -45,7 +45,11 @@ dependencies {
 
 	// cloud bootstrap
 	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
 }
+
 
 dependencyManagement {
 	imports {
