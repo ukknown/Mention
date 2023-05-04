@@ -1,0 +1,16 @@
+{
+  "properties": {
+    "id": {
+      "type": "keyword"
+    },
+    "title": {
+      "type": "text",
+      "fields": {
+        "kor": {
+          "type": "text",
+          "analyzer": "korean"
+        }
+      }
+    }
+  }
+}
