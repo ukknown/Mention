@@ -12,7 +12,7 @@ spring:
   application:
     name: apigateway-service
   rabbitmq:
-    host: localhost
+    host: k8c1051.p.ssafy.io
     port: 5672
     username: guest
     password: guest
