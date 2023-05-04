@@ -31,6 +31,12 @@ spring:
             - Path=/member-service/**
           filters:
             - CustomFilter
+        - id: topic-service
+          uri: lb://TOPIC-SERVICE
+          predicates:
+            - Path=/topic-service/**
+          filters:
+            - CustomFilter
 management:
   endpoints:
     web:
