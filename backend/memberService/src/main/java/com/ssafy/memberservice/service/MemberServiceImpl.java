@@ -44,8 +44,6 @@ public class MemberServiceImpl implements MemberService{
     @Value("${kakao.redirect-uri}")
     private String REDIRECT_URI;
 
-    @Value("{kakao.jobtalk-key}")
-    private String JOBTALK_KEY;
 
     private String tokenReqURL = "https://kauth.kakao.com/oauth/token";
 
