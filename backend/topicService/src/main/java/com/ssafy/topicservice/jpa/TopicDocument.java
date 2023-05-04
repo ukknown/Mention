@@ -13,6 +13,8 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Mapping(mappingPath = "elastic/topic-mapping.json")
+@Setting(settingPath = "elastic/topic-setting.json")
 public class TopicDocument {
     @Id
     @Field(type = FieldType.Keyword)
