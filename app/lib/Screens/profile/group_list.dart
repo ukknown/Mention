@@ -1,4 +1,4 @@
-import 'package:app/widgets/my_group.dart';
+import 'package:app/widgets/profile/profile_box/my_group.dart';
 import 'package:flutter/material.dart';
 
 class GroupList extends StatelessWidget {

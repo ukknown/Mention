@@ -1,5 +1,7 @@
-import 'package:app/widgets/group_button.dart';
-import 'package:app/widgets/mention_button.dart';
+import 'package:app/widgets/profile/profile_buttons/coin_button.dart';
+import 'package:app/widgets/profile/profile_buttons/group_button.dart';
+import 'package:app/widgets/profile/profile_buttons/mention_button.dart';
+import 'package:app/widgets/profile/profile_buttons/setting_button.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
@@ -59,10 +61,7 @@ class ProfileCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Image.asset(
-                            'assets/images/setting.png',
-                            height: screenWidth * 0.075,
-                          ),
+                          SettingButton(screenWidth: screenWidth, screenHeight: screenHeight),
                           const SizedBox(
                             width: 20,
                           ),
@@ -107,20 +106,9 @@ class ProfileCard extends StatelessWidget {
                 SizedBox(
                   width: screenWidth * 0.125,
                 ),
-                Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/coin.png',
-                      height: screenWidth * 0.125,
-                      width: screenWidth * 0.125,
-                    ),
-                    const Text(
-                      "00",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                CoinButton(
+                  screenWidth: screenWidth,
+                  screenHeight: screenHeight,
                 ),
               ],
             ),
@@ -130,4 +118,5 @@ class ProfileCard extends StatelessWidget {
     );
   }
 }
+
 

@@ -1,4 +1,4 @@
-import 'package:app/widgets/mentiion_box.dart';
+import 'package:app/widgets/profile/profile_box/mentiion_box.dart';
 import 'package:flutter/material.dart';
 
 class ReceivedMentions extends StatelessWidget {
@@ -46,8 +46,8 @@ class ReceivedMentions extends StatelessWidget {
           SizedBox(
             height: screenHeight * 0.02,
           ),
-          MentionBox(screenWidth: screenWidth, screenHeight: screenHeight),
-          MentionBox(screenWidth: screenWidth, screenHeight: screenHeight),
+          for (var i in [1, 2, 3])
+            MentionBox(screenWidth: screenWidth, screenHeight: screenHeight),
         ],
       ),
     );

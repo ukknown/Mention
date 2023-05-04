@@ -1,5 +1,5 @@
-import 'package:app/widgets/profile_card.dart';
-import 'package:app/widgets/rank_slot.dart';
+import 'package:app/widgets/profile/profile_box/profile_card.dart';
+import 'package:app/widgets/profile/profile_box/rank_slot.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {

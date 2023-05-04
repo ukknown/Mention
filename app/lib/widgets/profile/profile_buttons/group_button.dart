@@ -1,8 +1,8 @@
-import 'package:app/screens/received_mentions.dart';
+import 'package:app/screens/profile/group_list.dart';
 import 'package:flutter/material.dart';
 
-class MentionButton extends StatelessWidget {
-  const MentionButton({
+class GroupButton extends StatelessWidget {
+  const GroupButton({
     super.key,
     required this.screenWidth,
     required this.screenHeight,
@@ -17,7 +17,7 @@ class MentionButton extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ReceivedMentions(
+            builder: (context) => GroupList(
               screenWidth: screenWidth,
               screenHeight: screenHeight,
             ),
@@ -28,7 +28,7 @@ class MentionButton extends StatelessWidget {
       child: Column(
         children: [
           Image.asset(
-            'assets/images/mention.png',
+            'assets/images/group.png',
             height: screenWidth * 0.125,
             width: screenWidth * 0.125,
           ),
