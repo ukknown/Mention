@@ -1,4 +1,5 @@
 import 'package:app/Screens/group_member.dart';
+import 'package:app/widgets/bg_img.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:app/Screens/vote_before.dart';
@@ -10,91 +11,99 @@ class GroupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 10.0), // 상단 여백
-            Flexible(
-              flex: 2,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const CircleAvatar(
-                    foregroundImage: AssetImage('assets/images/ssafy.png'),
-                    radius: 50,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const GroupMember()));
-                        },
-                        child: const Row(
+      // backgroundColor: Theme.of(context).colorScheme.background,
+      body: Container(
+        decoration: bgimg(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 10.0), // 상단 여백
+              Flexible(
+                flex: 2,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const CircleAvatar(
+                      foregroundImage: AssetImage('assets/images/ssafy.png'),
+                      radius: 50,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Row(
                           children: [
                             Text(
                               '싸피 8기 광주',
                               style: TextStyle(fontSize: 25),
                             ),
-                            Icon(Icons.add)
+                            // 이름 수정
+                            Icon(Icons.border_color_outlined)
                           ],
                         ),
-                      ),
-                      const Row(
-                        children: [
-                          Icon(Icons.person),
-                          Text('24'),
-                          SizedBox(
-                            width: 40,
-                          ),
-                          Icon(Icons.notifications_off_rounded),
-                          SizedBox(
-                            width: 40,
-                          ),
-                          Icon(Icons.output_outlined)
-                        ],
-                      )
-                    ],
-                  )
-                ],
+                        Row(
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const GroupMember()));
+                                },
+                                child: const Icon(Icons.person)),
+                            const Text('24'),
+                            const SizedBox(
+                              width: 40,
+                            ),
+                            const Icon(Icons.notifications_off_rounded),
+                            const SizedBox(
+                              width: 40,
+                            ),
+                            const Icon(Icons.output_outlined)
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            Flexible(
-                flex: 4,
-                child: GestureDetector(
-                  onTap: () => {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => (const VoteMember())))
-                  },
-                  child: CarouselSlider(
-                      items: const [GroupDetail(), GroupDetail(), group_box()],
-                      options: CarouselOptions(
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        height: 420,
-                        enlargeCenterPage: true,
-                      )),
-                )),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text(
-              '1 fo 12',
-              style: TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 20.0), // 네모 박스와 로우 사이 여백
+              Flexible(
+                  flex: 4,
+                  child: GestureDetector(
+                    onTap: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => (const VoteMember())))
+                    },
+                    child: CarouselSlider(
+                        items: const [
+                          GroupDetail(),
+                          GroupDetail(),
+                          group_box()
+                        ],
+                        options: CarouselOptions(
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          height: 420,
+                          enlargeCenterPage: true,
+                        )),
+                  )),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                '1 fo 12',
+                style: TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 20.0), // 네모 박스와 로우 사이 여백
 
-            const SizedBox(height: 20.0), // 하단 여백
-          ],
+              const SizedBox(height: 20.0), // 하단 여백
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: const BottomNav(),

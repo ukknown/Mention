@@ -1,3 +1,5 @@
+import 'package:app/Screens/vote_after.dart';
+import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 
@@ -8,68 +10,79 @@ class VoteMember extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            const Expanded(
-                flex: 1,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    '오늘 행복해 보이는 사람',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                )),
-            const SizedBox(
-              height: 40,
-            ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 3,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3),
+      body: Container(
+        decoration: bgimg(),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              const Expanded(
+                  flex: 1,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      '오늘 행복해 보이는 사람',
+                      style: TextStyle(fontSize: 30),
                     ),
-                  ],
-                ),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Icon(
-                          Icons.search,
-                          size: 30,
+                  )),
+              const SizedBox(
+                height: 40,
+              ),
+              Expanded(
+                flex: 4,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 3,
+                        blurRadius: 7,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Icon(
+                            Icons.search,
+                            size: 30,
+                          ),
                         ),
                       ),
-                    ),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Member(),
-                          Member(),
-                          Member(),
-                          Member(),
-                        ],
+                      SingleChildScrollView(
+                        child: GestureDetector(
+                          onTap: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => (const VotePick())))
+                          },
+                          child: const Column(
+                            children: [
+                              Member(),
+                              Member(),
+                              Member(),
+                              Member(),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 40,
-            )
-          ],
+              const SizedBox(
+                height: 40,
+              )
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: const BottomNav(),
