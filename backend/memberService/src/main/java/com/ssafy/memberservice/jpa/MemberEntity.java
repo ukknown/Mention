@@ -22,7 +22,7 @@ public class MemberEntity {
     @NotNull
     private String email;
 
-    private String name;
+    private String nickname;
 
 //    private String gender;
     @Enumerated(EnumType.STRING)
