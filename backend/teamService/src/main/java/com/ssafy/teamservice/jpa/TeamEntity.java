@@ -18,6 +18,6 @@ public class TeamEntity {
     private String image;
     @Column(nullable = false)
     private int capacity;
-    @Column(length = 100, nullable = false)
-    private String code;
+//    @Column(length = 100, nullable = false)
+//    private String code;
 }
