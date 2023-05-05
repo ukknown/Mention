@@ -3,6 +3,9 @@ package com.ssafy.teamservice.jpa;
 import javax.persistence.*;
 import lombok.*;
 
+/**
+ * team_owner_id 추가
+ */
 @Entity
 @Getter
 @NoArgsConstructor
@@ -18,6 +21,9 @@ public class TeamEntity {
     private String image;
     @Column(nullable = false)
     private int capacity;
+    @Column(nullable = false)
+    private boolean isDeleted;
 //    @Column(length = 100, nullable = false)
 //    private String code;
+
 }
