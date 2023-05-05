@@ -1,12 +1,24 @@
 package com.ssafy.memberservice.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ssafy.memberservice.service.MemberService;
+
+import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/member-service")
 public class MemberController {
+    private final MemberService memberService;
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenResponseDto> getKakao(@RequestBody Map<String, String> code) {
+        return memberService.joinOrLogin(code.get("code"));
+    }
     @GetMapping("/health-check")
     public String checkConnection(){
         return "MemberService Check Completed!";
