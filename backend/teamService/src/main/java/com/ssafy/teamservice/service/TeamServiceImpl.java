@@ -1,22 +1,32 @@
 package com.ssafy.teamservice.service;
 
-import com.ssafy.teamservice.utils.S3Uploader;
+import com.ssafy.teamservice.config.MapperConfig;
+import com.ssafy.teamservice.jpa.TeamEntity;
+import com.ssafy.teamservice.jpa.TeamRepository;
+import com.ssafy.teamservice.vo.TeamVO;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class TeamServiceImpl implements TeamService{
-    private final S3Uploader s3Uploader;
+    private final MapperConfig mapperConfig;
+    private final TeamRepository teamRepository;
 
-    public TeamServiceImpl(S3Uploader s3Uploader) {
-        this.s3Uploader = s3Uploader;
+    public TeamServiceImpl(MapperConfig mapperConfig, TeamRepository teamRepository) {
+        this.mapperConfig = mapperConfig;
+        this.teamRepository = teamRepository;
     }
 
+    /**
+     * 그룹(팀) 생성
+     * @param teamVO
+     */
     @Override
     @Transactional
-    public void createTeam(String name, MultipartFile file) {
-        String url = "";
-        if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
+    public void createTeam(TeamVO teamVO) {
+        ModelMapper mapper = mapperConfig.modelMapper();
+        TeamEntity teamEntity = mapper.map(teamVO, TeamEntity.class);
+        teamRepository.save(teamEntity);
     }
 }
