@@ -4,6 +4,7 @@ import javax.persistence.*;
 import lombok.*;
 
 @Entity
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "team")
@@ -15,8 +16,8 @@ public class TeamEntity {
     private String name;
     @Column(length = 1000, nullable = false)
     private String image;
-    @Column(columnDefinition = "integer default 0")
-    private Integer capacity;
+    @Column(nullable = false)
+    private int capacity;
     @Column(length = 100, nullable = false)
     private String code;
 }
