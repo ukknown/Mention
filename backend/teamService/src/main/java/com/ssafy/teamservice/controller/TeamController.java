@@ -31,7 +31,7 @@ public class TeamController {
     }
 
     /**
-     * 그룹(팀) 생성
+     * 그룹(팀) 생성 : code는 후순위
      * @param name
      * @param file
      * @return
@@ -44,9 +44,9 @@ public class TeamController {
         String url = "";
          if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
 
-        String code = randomCodeGenerator.generate();
+        // String code = randomCodeGenerator.generate();
 
-        teamServiceImpl.createTeam(new TeamVO(name, url, 1, code));
+        teamServiceImpl.createTeam(new TeamVO(name, url, 1));
 
         return ResponseEntity.status(HttpStatus.OK).body("팀 생성 완료");
     }
