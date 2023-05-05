@@ -3,6 +3,8 @@ package com.ssafy.teamservice.service;
 import com.ssafy.teamservice.config.MapperConfig;
 import com.ssafy.teamservice.jpa.TeamEntity;
 import com.ssafy.teamservice.jpa.TeamRepository;
+import com.ssafy.teamservice.utils.error.ErrorCode;
+import com.ssafy.teamservice.utils.exception.CustomException;
 import com.ssafy.teamservice.vo.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.TeamVO;
 import org.modelmapper.ModelMapper;
@@ -49,5 +51,21 @@ public class TeamServiceImpl implements TeamService{
     @Override
     public boolean existsById(Long teamId) {
         return teamRepository.existsById(teamId);
+    }
+
+    /**
+     * 팀 상세정보 조회
+     * @param teamId
+     * @return
+     */
+    @Override
+    public TeamDetailsResponseDto findById(Long teamId) {
+        TeamEntity teamEntity = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.DATA_NOT_FOUND));
+
+        ModelMapper mapper = mapperConfig.modelMapper();
+        TeamDetailsResponseDto teamDetailsResponseDto = mapper.map(teamEntity, TeamDetailsResponseDto.class);
+
+        return teamDetailsResponseDto;
     }
 }

@@ -7,4 +7,5 @@ public interface TeamService {
     void createTeam(TeamVO teamVO);
     TeamDetailsResponseDto getTeamDetails(Long teamId);
     boolean existsById(Long teamId);
+    TeamDetailsResponseDto findById(Long teamId);
 }
