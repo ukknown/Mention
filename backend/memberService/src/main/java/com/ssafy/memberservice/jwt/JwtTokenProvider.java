@@ -71,7 +71,7 @@ public class JwtTokenProvider {
 //        String redisKey = memberEntity.getEmail();
 //        String redisValue = refreshToken;
         String redisKey = accessToken;
-        MemberDto redisValue = new MemberDto(memberEntity.getEmail(), memberEntity.getNickname());
+        MemberDto redisValue = new MemberDto(memberEntity.getEmail(), memberEntity.getNickname(), refreshToken);
 
         // Redis에 refreshToken 저장
         redisTemplate.opsForValue().set(redisKey, redisValue);

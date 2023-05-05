@@ -12,4 +12,5 @@ import java.io.Serializable;
 public class MemberDto implements Serializable {
     private String email;
     private String nickname;
+    private String refresh;
 }
