@@ -28,12 +28,22 @@ spring:
         - id: member-service
           uri: lb://MEMBER-SERVICE
           predicates:
+            - Path=/member-service/login
+          filters:
+            - CustomFilter
+        - id: member-service
+          uri: lb://MEMBER-SERVICE
+          predicates:
             - Path=/member-service/**
           filters:
             - CustomFilter
+            - AuthorizationHeaderFilter
 management:
   endpoints:
     web:
       exposure:
         include: health, refresh, beans, busrefresh, httptrace
+
+jwt:
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXNzYWZ5LXByb2plY3QtZmFpcnl0YWxlYm94LXNwcmluZy1ib290LXNlY3VyaXR5LWp3dA==
 
