@@ -3,6 +3,7 @@ package com.ssafy.teamservice.service;
 import com.ssafy.teamservice.config.MapperConfig;
 import com.ssafy.teamservice.jpa.TeamEntity;
 import com.ssafy.teamservice.jpa.TeamRepository;
+import com.ssafy.teamservice.vo.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.TeamVO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,25 @@ public class TeamServiceImpl implements TeamService{
         ModelMapper mapper = mapperConfig.modelMapper();
         TeamEntity teamEntity = mapper.map(teamVO, TeamEntity.class);
         teamRepository.save(teamEntity);
+    }
+
+    /**
+     * 팀 상세정보 조회
+     * @param teamId
+     * @return
+     */
+    @Override
+    public TeamDetailsResponseDto getTeamDetails(Long teamId) {
+        return null;
+    }
+
+    /**
+     * 팀 아이디 존재 여부 확인
+     * @param teamId
+     * @return
+     */
+    @Override
+    public boolean existsById(Long teamId) {
+        return teamRepository.existsById(teamId);
     }
 }
