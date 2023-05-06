@@ -3,10 +3,17 @@ package com.ssafy.topicservice.service;
 import com.ssafy.topicservice.jpa.TopicDocument;
 import com.ssafy.topicservice.jpa.TopicSearchRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -50,5 +57,32 @@ public class TopicServiceImpl implements TopicService{
     @Override
     public List<TopicDocument> searchByTitle(String title) {
         return topicSearchRepository.findByTitleContaining(title);
+    }
+
+    @Override
+    public String goToNaver(String topic) {
+        WebClient webClient = WebClient.builder()
+                .baseUrl("https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze")
+                .defaultHeader("X-NCP-APIGW-API-KEY-ID", "deqlh0q577")
+                .defaultHeader("X-NCP-APIGW-API-KEY", "F5cS6PM5v5AUjimYYLnl6Ioy5xfRKDk4oqC8jxOr")
+                .build();
+
+        Map<String, String> content = Map.of("content", topic);
+        Mono<Map<String, Object>> responseMono = webClient.post()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(content))
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                });
+
+        Map<String, Object> response = responseMono.block();
+        String sentiment = (String) ((Map<String, Object>) response.get("document")).get("sentiment");
+
+        if (sentiment.equals("negative")) {
+            // TODO member time out 추가
+            return "부적절한 토픽입니다.";
+        } else {
+            return "응모가 완료되었습니다.";
+        }
     }
 }

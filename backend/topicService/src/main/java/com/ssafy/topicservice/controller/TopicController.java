@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/topic-service")
@@ -34,4 +35,10 @@ public class TopicController {
         List<TopicDocument> documents = topicService.searchByTitle(title);
         return ResponseEntity.ok().body(documents);
     }
+
+    @PostMapping("/call/naver")
+    public ResponseEntity<?> goToNaver(@RequestBody Map<String, String> topic) {
+        return ResponseEntity.ok().body(topicService.goToNaver(topic.get("topic")));
+    }
+
 }

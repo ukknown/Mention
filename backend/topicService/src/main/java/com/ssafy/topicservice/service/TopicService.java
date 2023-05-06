@@ -10,5 +10,7 @@ public interface TopicService {
 
     void deleteElastic();
 
+    String goToNaver(String topic);
+
     List<TopicDocument> searchByTitle(String title);
 }
