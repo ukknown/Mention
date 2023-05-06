@@ -37,8 +37,8 @@ public class TopicController {
     }
 
     @PostMapping("/call/naver")
-    public ResponseEntity<?> goToNaver(@RequestBody Map<String, String> topic) {
-        return ResponseEntity.ok().body(topicService.goToNaver(topic.get("topic")));
+    public ResponseEntity<?> goToNaver(@RequestBody Map<String, String> topicCandidate) {
+        return ResponseEntity.ok().body(topicService.goToNaver(topicCandidate.get("topic")));
     }
 
     @PostMapping("/save/topic")

@@ -66,14 +66,14 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public String goToNaver(String topic) {
+    public String goToNaver(String topicCandidate) {
         WebClient webClient = WebClient.builder()
                 .baseUrl("https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze")
                 .defaultHeader("X-NCP-APIGW-API-KEY-ID", "deqlh0q577")
                 .defaultHeader("X-NCP-APIGW-API-KEY", "F5cS6PM5v5AUjimYYLnl6Ioy5xfRKDk4oqC8jxOr")
                 .build();
 
-        Map<String, String> content = Map.of("content", topic);
+        Map<String, String> content = Map.of("content", topicCandidate);
         Mono<Map<String, Object>> responseMono = webClient.post()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(content))
@@ -88,6 +88,11 @@ public class TopicServiceImpl implements TopicService{
             // TODO member time out 추가
             return "부적절한 토픽입니다.";
         } else {
+            Topic topic = Topic.builder()
+                    .title(topicCandidate)
+                    .approveStatus(ApproveStatus.PENDING)
+                    .build();
+            topicRepository.save(topic);
             return "응모가 완료되었습니다.";
         }
     }
