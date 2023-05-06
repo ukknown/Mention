@@ -17,7 +17,7 @@ public class SwaggerConfig {
         Info info = new Info()
                 .title("멘션 API Documentation")
                 .version("v1.0.0")
-                .description("모이다 API에 대한 설명 문서입니다!");
+                .description("멘션 API에 대한 설명 문서입니다!");
 
         SecurityScheme securityScheme = new SecurityScheme()
                 .type(Type.HTTP)
