@@ -41,4 +41,9 @@ public class TopicController {
         return ResponseEntity.ok().body(topicService.goToNaver(topic.get("topic")));
     }
 
+    @PostMapping("/save/topic")
+    public void saveTopic() {
+        topicService.saveTopic();
+    }
+
 }

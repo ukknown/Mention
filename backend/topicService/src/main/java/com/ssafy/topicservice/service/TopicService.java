@@ -13,4 +13,6 @@ public interface TopicService {
     String goToNaver(String topic);
 
     List<TopicDocument> searchByTitle(String title);
+
+    void saveTopic();
 }
