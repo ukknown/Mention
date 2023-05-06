@@ -9,4 +9,6 @@ public interface TeamService {
     TeamDetailsResponseDto getTeamDetails(Long teamId);
     boolean existsById(Long teamId);
     TeamEntity findById(Long teamId);
+    TeamEntity updateCapacity(Long teamId, boolean isIn);
+    void updateIsDeleteTrue(Long teamId);
 }

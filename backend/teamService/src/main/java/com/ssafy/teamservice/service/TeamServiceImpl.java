@@ -9,7 +9,6 @@ import com.ssafy.teamservice.vo.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.TeamVO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TeamServiceImpl implements TeamService{
@@ -44,6 +43,20 @@ public class TeamServiceImpl implements TeamService{
     public TeamEntity findById(Long teamId) {
         return teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    @Override
+    public TeamEntity updateCapacity(Long teamId, boolean isIn) {
+        TeamEntity teamEntity = findById(teamId);
+        if(isIn) teamEntity.updateCapacity(teamEntity.getCapacity() + 1);
+        else teamEntity.updateCapacity(teamEntity.getCapacity() - 1);
+        return teamEntity;
+    }
+
+    @Override
+    public void updateIsDeleteTrue(Long teamId) {
+        TeamEntity teamEntity = findById(teamId);
+        teamEntity.updateIsDelete();
     }
 
     /**
