@@ -85,7 +85,7 @@ public class TeamController {
     }
 
     /**
-     * 그룹 상세정보 조회 + 투표 조회 추가 + 시스템 투표 조회 추가
+     * 그룹 상세정보 조회 + 투표 조회 추가 + 시스템 투표 조회 추가 + 그룹에 포함된 회원 리스트 추가
      * @param teamId
      * @return
      */
