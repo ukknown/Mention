@@ -1,11 +1,12 @@
 package com.ssafy.topicservice.controller;
 
+import com.ssafy.topicservice.jpa.TopicDocument;
 import com.ssafy.topicservice.service.TopicService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/topic-service")
@@ -26,5 +27,12 @@ public class TopicController {
     @PostMapping("/delete/elastic")
     public void delete() {
         topicService.deleteElastic();
+    }
+
+    @GetMapping("/elastic-search")
+    public ResponseEntity<List<TopicDocument>> searchByTitle(@RequestParam String title) {
+        System.out.println(title);
+        List<TopicDocument> documents = topicService.searchByTitle(title);
+        return ResponseEntity.ok().body(documents);
     }
 }

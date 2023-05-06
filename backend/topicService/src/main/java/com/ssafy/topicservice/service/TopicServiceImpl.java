@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -44,5 +45,11 @@ public class TopicServiceImpl implements TopicService{
     @Transactional
     public void deleteElastic() {
         topicSearchRepository.deleteAll();
+    }
+
+    @Override
+    public List<TopicDocument> searchByTitle(String title) {
+        System.out.println(topicSearchRepository.findByTitle(title));
+        return topicSearchRepository.findByTitle(title);
     }
 }
