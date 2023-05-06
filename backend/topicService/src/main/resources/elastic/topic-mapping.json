@@ -9,6 +9,10 @@
         "kor": {
           "type": "text",
           "analyzer": "korean"
+        },
+        "ngram": {
+          "type": "text",
+          "analyzer": "my_ngram_analyzer"
         }
       }
     }
