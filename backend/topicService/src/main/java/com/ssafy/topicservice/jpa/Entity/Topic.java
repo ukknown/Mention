@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -19,4 +16,7 @@ public class Topic {
     private Long id;
 
     private String title;
+
+    @Enumerated(EnumType.STRING)
+    private ApproveStatus approveStatus; // APPROVE, PENDING, REJECT
 }

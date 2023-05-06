@@ -1,5 +1,6 @@
 package com.ssafy.topicservice.service;
 
+import com.ssafy.topicservice.jpa.Entity.ApproveStatus;
 import com.ssafy.topicservice.jpa.TopicDocument;
 import com.ssafy.topicservice.jpa.Entity.Topic;
 import com.ssafy.topicservice.jpa.repository.TopicRepository;
@@ -97,6 +98,7 @@ public class TopicServiceImpl implements TopicService{
         for (String title : titles) {
             Topic topic = Topic.builder()
                     .title(title)
+                    .approveStatus(ApproveStatus.APPROVE)
                     .build();
             topicRepository.save(topic);
         }
