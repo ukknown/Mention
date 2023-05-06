@@ -23,24 +23,39 @@ public class TeamServiceImpl implements TeamService{
 
     /**
      * 그룹(팀) 생성
+     *
      * @param teamVO
+     * @return
      */
     @Override
-    @Transactional
-    public void createTeam(TeamVO teamVO) {
+    public TeamEntity createTeam(TeamVO teamVO) {
         ModelMapper mapper = mapperConfig.modelMapper();
         TeamEntity teamEntity = mapper.map(teamVO, TeamEntity.class);
         teamRepository.save(teamEntity);
+        return teamEntity;
     }
 
     /**
-     * 팀 상세정보 조회
+     * 팀 상세정보 엔티티 조회
+     * @param teamId
+     * @return
+     */
+    @Override
+    public TeamEntity findById(Long teamId) {
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.DATA_NOT_FOUND));
+    }
+
+    /**
+     * 팀 상세정보 DTO 조회
      * @param teamId
      * @return
      */
     @Override
     public TeamDetailsResponseDto getTeamDetails(Long teamId) {
-        return null;
+        ModelMapper mapper = mapperConfig.modelMapper();
+        TeamDetailsResponseDto teamDetailsResponseDto = mapper.map(findById(teamId), TeamDetailsResponseDto.class);
+        return teamDetailsResponseDto;
     }
 
     /**
@@ -51,21 +66,5 @@ public class TeamServiceImpl implements TeamService{
     @Override
     public boolean existsById(Long teamId) {
         return teamRepository.existsById(teamId);
-    }
-
-    /**
-     * 팀 상세정보 조회
-     * @param teamId
-     * @return
-     */
-    @Override
-    public TeamDetailsResponseDto findById(Long teamId) {
-        TeamEntity teamEntity = teamRepository.findById(teamId)
-                .orElseThrow(() -> new CustomException(ErrorCode.DATA_NOT_FOUND));
-
-        ModelMapper mapper = mapperConfig.modelMapper();
-        TeamDetailsResponseDto teamDetailsResponseDto = mapper.map(teamEntity, TeamDetailsResponseDto.class);
-
-        return teamDetailsResponseDto;
     }
 }
