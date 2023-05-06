@@ -9,7 +9,9 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    DATA_NOT_FOUND(NOT_FOUND, "해당 아이디와 일치하는 데이터가 존재하지 않습니다.");
+    DATA_NOT_FOUND(NOT_FOUND, "해당 아이디와 일치하는 데이터가 존재하지 않습니다."),
+    CONFLICT_TEAM_MEMBER(CONFLICT, "이미 그룹에 가입한 멤버입니다.");
+
     private final HttpStatus httpStatus;
     private final String message;
 }
