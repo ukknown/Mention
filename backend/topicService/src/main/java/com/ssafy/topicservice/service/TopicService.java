@@ -14,5 +14,7 @@ public interface TopicService {
 
     List<TopicDocument> searchByTitle(String title);
 
+    String checkSimilarity(String inputTopic);
+
     void saveTopic();
 }

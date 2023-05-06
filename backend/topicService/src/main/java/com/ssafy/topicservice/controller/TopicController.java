@@ -41,6 +41,11 @@ public class TopicController {
         return ResponseEntity.ok().body(topicService.goToNaver(topicCandidate.get("topic")));
     }
 
+    @PostMapping("/check/similarity")
+    public ResponseEntity<?> checkSimilarity(@RequestBody Map<String, String> inputTopic) {
+        return ResponseEntity.ok().body(topicService.checkSimilarity(inputTopic.get("topic")));
+    }
+
     @PostMapping("/save/topic")
     public void saveTopic() {
         topicService.saveTopic();

@@ -6,6 +6,7 @@ import com.ssafy.topicservice.jpa.Entity.Topic;
 import com.ssafy.topicservice.jpa.repository.TopicRepository;
 import com.ssafy.topicservice.jpa.TopicSearchRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.text.similarity.CosineSimilarity;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -107,5 +108,33 @@ public class TopicServiceImpl implements TopicService{
                     .build();
             topicRepository.save(topic);
         }
+    }
+
+    @Override
+    public String checkSimilarity(String inputTopic) {
+        List<Topic> topicList = topicRepository.findAll();
+        double threshold = 0.8;
+        CosineSimilarity cosineSimilarity = new CosineSimilarity(); // 객체 생성
+
+        for (Topic topic : topicList) {
+            Map<CharSequence, Integer> inputVector = getCharacterFrequencyVector(inputTopic);
+            Map<CharSequence, Integer> topicVector = getCharacterFrequencyVector(topic.getTitle());
+            double similarity = cosineSimilarity.cosineSimilarity(inputVector, topicVector);
+
+            if (similarity >= threshold) {
+                return "이미 있는 문장입니다.";
+            }
+        }
+        return "새로운 토픽입니다.";
+
+    }
+
+    private Map<CharSequence, Integer> getCharacterFrequencyVector(String text) {
+        Map<CharSequence, Integer> vector = new HashMap<>();
+        for (char c : text.toCharArray()) {
+            CharSequence charSequence = String.valueOf(c);
+            vector.put(charSequence, vector.getOrDefault(charSequence, 0) + 1);
+        }
+        return vector;
     }
 }
