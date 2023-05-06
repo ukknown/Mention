@@ -7,7 +7,6 @@ import com.ssafy.teamservice.vo.TeamMemberVO;
 import com.ssafy.teamservice.vo.TeamResponseDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +33,20 @@ public class TeamMemberServiceImpl implements TeamMemberService{
     }
 
     /**
+     * 아이디로 TeamMemberEntity 조회
+     * @param teamMemberVO
+     * @return
+     */
+    @Override
+    public TeamMemberEntity findByMemberIdAndTeamEntity(TeamMemberVO teamMemberVO) {
+        return teamMemberRepository.findByMemberIdAndTeamEntity(teamMemberVO.getMemberId(), teamMemberVO.getTeamEntity());
+    }
+
+    /**
      * 그룹 참여(저장)
      * @param teamMemberVO
      */
     @Override
-    @Transactional
     public void joinTeamMember(TeamMemberVO teamMemberVO) {
         ModelMapper mapper = mapperConfig.modelMapper();
         TeamMemberEntity teamMemberEntity = mapper.map(teamMemberVO, TeamMemberEntity.class);
@@ -62,4 +70,13 @@ public class TeamMemberServiceImpl implements TeamMemberService{
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 그룹에서 회원 삭제
+     * @param teamMemberVO
+     */
+    @Override
+    public void deleteMemberFromTeam(TeamMemberVO teamMemberVO) {
+        TeamMemberEntity teamMemberEntity = findByMemberIdAndTeamEntity(teamMemberVO);
+        teamMemberRepository.deleteById(teamMemberEntity.getId());
+    }
 }
