@@ -26,4 +26,12 @@ public class TeamEntity {
     private int isDeleted;
 //    @Column(length = 100, nullable = false)
 //    private String code;
+
+    public void updateCapacity(int capacity){
+        this.capacity = capacity;
+    }
+
+    public void updateIsDelete(){
+        this.isDeleted = 1;
+    }
 }
