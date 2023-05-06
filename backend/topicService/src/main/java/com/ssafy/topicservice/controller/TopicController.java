@@ -31,7 +31,6 @@ public class TopicController {
 
     @GetMapping("/elastic-search")
     public ResponseEntity<List<TopicDocument>> searchByTitle(@RequestParam String title) {
-        System.out.println(title);
         List<TopicDocument> documents = topicService.searchByTitle(title);
         return ResponseEntity.ok().body(documents);
     }

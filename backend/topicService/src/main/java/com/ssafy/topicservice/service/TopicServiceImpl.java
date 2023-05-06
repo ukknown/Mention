@@ -49,7 +49,6 @@ public class TopicServiceImpl implements TopicService{
 
     @Override
     public List<TopicDocument> searchByTitle(String title) {
-        System.out.println(topicSearchRepository.findByTitle(title));
-        return topicSearchRepository.findByTitle(title);
+        return topicSearchRepository.findByTitleContaining(title);
     }
 }
