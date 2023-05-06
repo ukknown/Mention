@@ -10,5 +10,5 @@ public class TeamDetailsResponseDto {
     private String name;
     private String image;
     private int capacity;
-    private boolean isDeleted;
+    private int isDeleted;
 }

@@ -4,11 +4,17 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class TeamVO {
     private String name;
     private String image;
     private int capacity;
-    private boolean isDeleted;
+    private int isDeleted;
     // private String code;
+
+    public TeamVO(String name, String image) {
+        this.name = name;
+        this.image = image;
+        this.capacity = 1;
+        this.isDeleted = 0;
+    }
 }

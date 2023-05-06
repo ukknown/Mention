@@ -8,6 +8,7 @@ import lombok.*;
  */
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "team")
@@ -21,9 +22,8 @@ public class TeamEntity {
     private String image;
     @Column(nullable = false)
     private int capacity;
-    @Column(nullable = false)
-    private boolean isDeleted;
+    @Column(name = "is_deleted", nullable = false)
+    private int isDeleted;
 //    @Column(length = 100, nullable = false)
 //    private String code;
-
 }
