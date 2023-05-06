@@ -51,7 +51,7 @@ public class JwtTokenProvider {
         MemberEntity memberEntity =  memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
-        Claims claims = Jwts.claims();
+        Claims claims = Jwts.claims().setSubject(email);
         claims.put("email", memberEntity.getEmail());
         claims.put("nickname", memberEntity.getNickname());
 
