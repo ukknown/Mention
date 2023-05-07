@@ -75,6 +75,7 @@ public class JwtTokenProvider {
 
         // Redis에 refreshToken 저장
         redisTemplate.opsForValue().set(redisKey, redisValue);
+        redisTemplate.expireAt(redisKey, expiresIn); // refresh만료날에 맞춰 redis key-value삭제
 //        stringRedisTemplate.opsForValue().set(redisKey, redisValue);
 
         return new TokenResponseDto(accessToken, refreshToken);
