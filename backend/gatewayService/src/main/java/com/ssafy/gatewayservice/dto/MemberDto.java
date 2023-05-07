@@ -13,6 +13,6 @@ public class MemberDto implements Serializable {
     private long id;
     private String email;
     private String nickname;
-    private Role role;
+    private String role;
     private String refresh;
 }
