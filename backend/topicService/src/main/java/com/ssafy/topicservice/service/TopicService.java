@@ -20,4 +20,6 @@ public interface TopicService {
     void saveTopic();
 
     List<PendingTopicResoponseDto> getPendingTopic();
+
+    void approveTopic(Long topicId);
 }

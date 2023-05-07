@@ -21,4 +21,10 @@ public class Topic {
 
     @Enumerated(EnumType.STRING)
     private ApproveStatus approveStatus; // APPROVE, PENDING, REJECT
+
+    public void approveTopic() {
+        this.approveStatus = ApproveStatus.APPROVE;
+    }
+
+
 }

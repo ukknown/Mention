@@ -156,6 +156,15 @@ public class TopicServiceImpl implements TopicService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional
+    public void approveTopic(Long topicId) {
+        // TODO 예외 처리
+        Topic topic = topicRepository.findById(topicId)
+                .orElse(null);
+        topic.approveTopic();
+
+    }
     private Map<CharSequence, Integer> getCharacterFrequencyVector(String text) {
         Map<CharSequence, Integer> vector = new HashMap<>();
         for (char c : text.toCharArray()) {
