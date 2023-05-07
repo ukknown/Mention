@@ -4,13 +4,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.ssafy.memberservice.vo.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,12 +19,13 @@ public class MemberEntity {
 
     @NotNull
     private String email;
-
+    private String gender;
     private String nickname;
-
-    //    private String gender;
+    private String profileImage;
+    private  String bangAmount;
     private int timeout;
     @Enumerated(EnumType.STRING)
     private Role role;
+
 
 }
