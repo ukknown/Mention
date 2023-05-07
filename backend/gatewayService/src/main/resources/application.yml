@@ -12,7 +12,7 @@ spring:
   application:
     name: apigateway-service
   rabbitmq:
-    host: localhost
+    host: k8c1051.p.ssafy.io
     port: 5672
     username: guest
     password: guest
@@ -29,6 +29,12 @@ spring:
           uri: lb://MEMBER-SERVICE
           predicates:
             - Path=/member-service/**
+          filters:
+            - CustomFilter
+        - id: team-service
+          uri: lb://TEAM-SERVICE
+          predicates:
+            - Path=/team-service/**
           filters:
             - CustomFilter
         - id: topic-service
