@@ -7,6 +7,7 @@ import com.ssafy.memberservice.exception.auth.AuthExceptionEnum;
 import com.ssafy.memberservice.exception.auth.AuthRuntimeException;
 import com.ssafy.memberservice.exception.member.MemberExceptionEnum;
 import com.ssafy.memberservice.exception.member.MemberRuntimeException;
+import com.ssafy.memberservice.exception.member.TimeoutException;
 import com.ssafy.memberservice.jpa.MemberEntity;
 import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.jwt.JwtTokenProvider;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -70,7 +72,13 @@ public class MemberServiceImpl implements MemberService{
             email = kakaoUserInfoResponse.getEmail();
             memberRepository.saveAndFlush(member);
         } else {
-            email = joinMember.getEmail();
+            if(joinMember.getTimeout() < 3){
+                email = joinMember.getEmail();
+            }else{ //timeout이 3을 넘었으면 영구정지된 사용자
+
+                throw new TimeoutException("영구 정지된 사용자");
+            }
+
         }
 
         //jwt 토큰 생성
@@ -78,6 +86,22 @@ public class MemberServiceImpl implements MemberService{
         TokenResponseDto tokenResponse = jwtTokenProvider.createToken(email);
 
         return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+    }
+
+    //timeout +1
+    @Override
+    public void addCount(String useremail) {
+        Optional<MemberEntity> optionalMember = memberRepository.findByEmail(useremail);
+
+        if(optionalMember.isPresent()){
+            MemberEntity member = optionalMember.get();
+            int timeout = member.getTimeout()+1;
+            member.setTimeout(timeout);
+            memberRepository.save(member);
+        }
+
+
+
     }
 
     @Override

@@ -21,7 +21,14 @@ public class MemberController {
     }
     @GetMapping("/health-check")
     public String checkConnection(){
+
         return "MemberService Check Completed!";
+    }
+
+    //타임아웃 횟수 추가
+    @PostMapping("/time-out")
+    public void addCount(@RequestBody String useremail){
+        memberService.addCount(useremail);
     }
 
 }

@@ -13,4 +13,6 @@ public interface MemberService {
 
 
     ResponseEntity<TokenResponseDto> joinOrLogin(String code);
+
+    void addCount(String useremail);
 }
