@@ -1,6 +1,7 @@
 package com.ssafy.topicservice.service;
 
-import com.ssafy.topicservice.jpa.TopicDocument;
+import com.ssafy.topicservice.elastic.TopicDocument;
+import com.ssafy.topicservice.vo.PendingTopicResoponseDto;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface TopicService {
     String checkSimilarity(String inputTopic);
 
     void saveTopic();
+
+    List<PendingTopicResoponseDto> getPendingTopic();
 }

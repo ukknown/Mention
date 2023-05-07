@@ -1,6 +1,6 @@
 package com.ssafy.topicservice.controller;
 
-import com.ssafy.topicservice.jpa.TopicDocument;
+import com.ssafy.topicservice.elastic.TopicDocument;
 import com.ssafy.topicservice.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,18 +37,23 @@ public class TopicController {
     }
 
     @PostMapping("/call/naver")
-    public ResponseEntity<?> goToNaver(@RequestBody Map<String, String> topicCandidate) {
+    public ResponseEntity<String> goToNaver(@RequestBody Map<String, String> topicCandidate) {
         return ResponseEntity.ok().body(topicService.goToNaver(topicCandidate.get("topic")));
     }
 
     @PostMapping("/check/similarity")
-    public ResponseEntity<?> checkSimilarity(@RequestBody Map<String, String> inputTopic) {
+    public ResponseEntity<String> checkSimilarity(@RequestBody Map<String, String> inputTopic) {
         return ResponseEntity.ok().body(topicService.checkSimilarity(inputTopic.get("topic")));
     }
 
     @PostMapping("/save/topic")
     public void saveTopic() {
         topicService.saveTopic();
+    }
+
+    @GetMapping("/admin/pendingList")
+    public ResponseEntity<?> getPendingTopic() {
+        return ResponseEntity.ok().body(topicService.getPendingTopic());
     }
 
 }

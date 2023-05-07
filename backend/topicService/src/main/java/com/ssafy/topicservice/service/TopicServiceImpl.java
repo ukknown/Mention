@@ -1,10 +1,11 @@
 package com.ssafy.topicservice.service;
 
-import com.ssafy.topicservice.jpa.Entity.ApproveStatus;
-import com.ssafy.topicservice.jpa.TopicDocument;
-import com.ssafy.topicservice.jpa.Entity.Topic;
-import com.ssafy.topicservice.jpa.repository.TopicRepository;
-import com.ssafy.topicservice.jpa.TopicSearchRepository;
+import com.ssafy.topicservice.jpa.ApproveStatus;
+import com.ssafy.topicservice.elastic.TopicDocument;
+import com.ssafy.topicservice.jpa.Topic;
+import com.ssafy.topicservice.jpa.TopicRepository;
+import com.ssafy.topicservice.elastic.TopicSearchRepository;
+import com.ssafy.topicservice.vo.PendingTopicResoponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.similarity.CosineSimilarity;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +17,12 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -137,6 +140,20 @@ public class TopicServiceImpl implements TopicService{
         }
         return "새로운 토픽입니다.";
 
+    }
+
+    @Override
+    public List<PendingTopicResoponseDto> getPendingTopic() {
+        List<Topic> topicList = topicRepository.findAllByApproveStatus(ApproveStatus.PENDING);
+        List<PendingTopicResoponseDto> pendingList = new ArrayList<>();
+
+        return topicList.stream()
+                .map(topic -> PendingTopicResoponseDto.builder()
+                        .id(topic.getId())
+                        .title(topic.getTitle())
+                        .approveStatus(topic.getApproveStatus())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     private Map<CharSequence, Integer> getCharacterFrequencyVector(String text) {
