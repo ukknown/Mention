@@ -7,6 +7,7 @@ import com.ssafy.topicservice.jpa.repository.TopicRepository;
 import com.ssafy.topicservice.jpa.TopicSearchRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.similarity.CosineSimilarity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,12 @@ public class TopicServiceImpl implements TopicService{
 
     private final TopicSearchRepository topicSearchRepository;
     private final TopicRepository topicRepository;
+
+    @Value("${naver.app.key}")
+    private String NAVER_KEY;
+
+    @Value("${naver.app.secret}")
+    private String NAVER_SECRET;
 
     String[] titles = {
             "내 이름 뜻", "생일", "키", "최근 관심사", "집에서 심심할 때 하는 일", "아침에 일어나서 제일 먼저 하는 일",
@@ -70,8 +77,8 @@ public class TopicServiceImpl implements TopicService{
     public String goToNaver(String topicCandidate) {
         WebClient webClient = WebClient.builder()
                 .baseUrl("https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze")
-                .defaultHeader("X-NCP-APIGW-API-KEY-ID", "deqlh0q577")
-                .defaultHeader("X-NCP-APIGW-API-KEY", "F5cS6PM5v5AUjimYYLnl6Ioy5xfRKDk4oqC8jxOr")
+                .defaultHeader("X-NCP-APIGW-API-KEY-ID", NAVER_KEY)
+                .defaultHeader("X-NCP-APIGW-API-KEY", NAVER_SECRET)
                 .build();
 
         Map<String, String> content = Map.of("content", topicCandidate);
