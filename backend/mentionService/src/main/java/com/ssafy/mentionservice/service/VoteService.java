@@ -4,4 +4,6 @@ import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
 
 public interface VoteService {
 
+    void createVote(CreateVoteRequestDto createVoteRequestDto);
+
 }
