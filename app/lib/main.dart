@@ -1,7 +1,10 @@
 import 'package:app/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AndroidAlarmManager.initialize();
   runApp(const Mention());
 }
 
