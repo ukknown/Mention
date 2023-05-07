@@ -101,6 +101,7 @@ public class TopicServiceImpl implements TopicService{
                     .approveStatus(ApproveStatus.PENDING)
                     .build();
             topicRepository.save(topic);
+            // TODO member 하루 1회 코인 --
             return "응모가 완료되었습니다.";
         }
     }
@@ -128,7 +129,9 @@ public class TopicServiceImpl implements TopicService{
             Map<CharSequence, Integer> topicVector = getCharacterFrequencyVector(topic.getTitle());
             double similarity = cosineSimilarity.cosineSimilarity(inputVector, topicVector);
 
+            System.out.println(similarity);
             if (similarity >= threshold) {
+                // TODO 가중치 토론... 가중치 부여의 기회가 너무 흔하고 애매하다.. 인기 토픽만 돌고 돌 우려도..? 논의 필요
                 return "이미 있는 문장입니다.";
             }
         }
