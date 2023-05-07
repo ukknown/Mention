@@ -73,6 +73,7 @@ public class TopicServiceImpl implements TopicService{
 
     @Override
     public List<TopicDocument> searchByTitle(String title) {
+        // 결과값이 없으면 빈배열이 반환됨. 예외처리 안 하고, 프론트에서 결과값이 없습니다.. 하면 될 듯
         return topicSearchRepository.findByTitleContaining(title);
     }
 
@@ -145,8 +146,6 @@ public class TopicServiceImpl implements TopicService{
     @Override
     public List<PendingTopicResoponseDto> getPendingTopic() {
         List<Topic> topicList = topicRepository.findAllByApproveStatus(ApproveStatus.PENDING);
-        List<PendingTopicResoponseDto> pendingList = new ArrayList<>();
-
         return topicList.stream()
                 .map(topic -> PendingTopicResoponseDto.builder()
                         .id(topic.getId())
@@ -167,9 +166,8 @@ public class TopicServiceImpl implements TopicService{
     @Override
     @Transactional
     public void rejectTopic(Long topicId) {
-        // TODO 예외 처리
         Topic topic = topicRepository.findById(topicId)
-                .orElse(null);
+                        .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
         topic.rejectTopic();
     }
     private Map<CharSequence, Integer> getCharacterFrequencyVector(String text) {
