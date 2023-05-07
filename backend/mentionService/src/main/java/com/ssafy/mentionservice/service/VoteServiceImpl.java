@@ -27,7 +27,7 @@ public class VoteServiceImpl implements VoteService{
         VoteEntity voteEntity = VoteEntity.builder()
                 .teamId(createVoteRequestDto.getTeamId())
                 .topicTitle(createVoteRequestDto.getTopicTitle())
-                .isCompleted(false)
+                .isCompleted(true)
                 .dueDate(dueDate)
                 .build();
         voteRepository.save(voteEntity);
@@ -35,7 +35,7 @@ public class VoteServiceImpl implements VoteService{
 
     @Override
     public List<VoteResponseDto> getVoteList(Long teamId) {
-        List<VoteEntity> voteList = voteRepository.findAllByTeamId(teamId);
+        List<VoteEntity> voteList = voteRepository.findAllByTeamIdAndIsCompletedIsFalse(teamId);
         return voteList.stream()
                 .map(vote -> VoteResponseDto.builder()
                         .id(vote.getId())

@@ -7,5 +7,7 @@ import java.util.List;
 public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 
     List<VoteEntity> findAllByTeamId(Long teamId);
+    List<VoteEntity> findAllByTeamIdAndIsCompletedIsFalse(Long teamId);
+
 
 }
