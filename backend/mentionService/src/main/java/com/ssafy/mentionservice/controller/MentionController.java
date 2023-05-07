@@ -22,15 +22,16 @@ public class MentionController {
         return "MentionService Check Completed!";
     }
 
-    @PostMapping("/create/vote")
+    @PostMapping("/vote/create")
     public ResponseEntity<?> createVote(@RequestBody CreateVoteRequestDto createVoteRequestDto) {
         voteService.createVote(createVoteRequestDto);
         return ResponseEntity.ok().body("투표 생성 완료");
     }
 
-    @GetMapping("/{teamId}/vote")
+    @GetMapping("/vote/{teamId}")
     public ResponseEntity<List<VoteResponseDto>> getVoteList(@PathVariable Long teamId) {
         return ResponseEntity.ok().body(voteService.getVoteList(teamId));
     }
+
 
 }
