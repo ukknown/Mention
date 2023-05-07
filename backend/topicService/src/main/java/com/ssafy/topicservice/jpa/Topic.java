@@ -1,4 +1,4 @@
-package com.ssafy.topicservice.jpa.Entity;
+package com.ssafy.topicservice.jpa;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

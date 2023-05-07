@@ -1,4 +1,4 @@
-package com.ssafy.topicservice.jpa;
+package com.ssafy.topicservice.elastic;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 

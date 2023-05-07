@@ -1,4 +1,4 @@
-package com.ssafy.topicservice.jpa;
+package com.ssafy.topicservice.elastic;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
