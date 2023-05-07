@@ -19,6 +19,10 @@ public class Topic {
 
     private String title;
 
+    @Column(columnDefinition = "bigint default 0")
+    @Builder.Default
+    private Long popularity = 0L;
+
     @Enumerated(EnumType.STRING)
     private ApproveStatus approveStatus; // APPROVE, PENDING, REJECT
 
@@ -30,5 +34,7 @@ public class Topic {
         this.approveStatus = ApproveStatus.REJECT;
     }
 
-
+    public void addPopularity() {
+        this.popularity += 1;
+    }
 }
