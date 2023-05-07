@@ -203,6 +203,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         redisTemplate.delete(jwt); //기존 access token 정보 제거
 
         redisTemplate.opsForValue().set(accessToken, memberDto); //새로 발급된 access token을 키 값으로 추가
+        redisTemplate.expireAt(accessToken, refreshExpriration); //이 키의 값이 정해진 날짜에 삭제
 
 
         return true;
