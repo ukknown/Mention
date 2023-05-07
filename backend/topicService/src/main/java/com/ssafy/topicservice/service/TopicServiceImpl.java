@@ -1,5 +1,7 @@
 package com.ssafy.topicservice.service;
 
+import com.ssafy.topicservice.exception.TopicExceptionEnum;
+import com.ssafy.topicservice.exception.TopicRuntimeException;
 import com.ssafy.topicservice.jpa.ApproveStatus;
 import com.ssafy.topicservice.elastic.TopicDocument;
 import com.ssafy.topicservice.jpa.Topic;
@@ -53,8 +55,6 @@ public class TopicServiceImpl implements TopicService{
     @Override
     @Transactional
     public void saveElastic() {
-
-
         AtomicLong idCounter = new AtomicLong(1); // 새로운 ID 카운터 생성
         for (String title : titles) {
             TopicDocument topicDocument = TopicDocument.builder()
@@ -159,9 +159,8 @@ public class TopicServiceImpl implements TopicService{
     @Override
     @Transactional
     public void approveTopic(Long topicId) {
-        // TODO 예외 처리
         Topic topic = topicRepository.findById(topicId)
-                .orElse(null);
+                .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
         topic.approveTopic();
     }
 
