@@ -1,4 +1,4 @@
-package com.ssafy.topicservice.config;
+package com.ssafy.topicservice.elastic;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Configuration;
