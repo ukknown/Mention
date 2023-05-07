@@ -19,6 +19,7 @@ public class VoteServiceImpl implements VoteService{
 
     private final VoteRepository voteRepository;
 
+    //TODO 알람 전송
     @Override
     @Transactional
     public void createVote(CreateVoteRequestDto createVoteRequestDto) {
