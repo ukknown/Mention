@@ -63,4 +63,10 @@ public class TopicController {
         return ResponseEntity.ok().body("승인 완료");
     }
 
+    @PostMapping("/admin/changeStatus/reject")
+    public ResponseEntity<?> rejectTopic(@RequestBody Map<String, Long> topicId) {
+        topicService.rejectTopic(topicId.get("topicId"));
+        return ResponseEntity.ok().body("거절 완료");
+    }
+
 }

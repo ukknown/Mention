@@ -22,4 +22,6 @@ public interface TopicService {
     List<PendingTopicResoponseDto> getPendingTopic();
 
     void approveTopic(Long topicId);
+
+    void rejectTopic(Long topicId);
 }

@@ -26,5 +26,9 @@ public class Topic {
         this.approveStatus = ApproveStatus.APPROVE;
     }
 
+    public void rejectTopic() {
+        this.approveStatus = ApproveStatus.REJECT;
+    }
+
 
 }
