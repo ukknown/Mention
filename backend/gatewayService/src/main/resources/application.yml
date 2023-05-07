@@ -43,6 +43,12 @@ spring:
             - Path=/topic-service/**
           filters:
             - CustomFilter
+        - id: mention-service
+          uri: lb://MENTION-SERVICE
+          predicates:
+            - Path=/mention-service/**
+          filters:
+            - CustomFilter
 management:
   endpoints:
     web:
