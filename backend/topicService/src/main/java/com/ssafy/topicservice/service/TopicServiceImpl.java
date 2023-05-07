@@ -79,35 +79,42 @@ public class TopicServiceImpl implements TopicService{
 
     @Override
     public String goToNaver(String topicCandidate) {
-        WebClient webClient = WebClient.builder()
+        try {
+            WebClient webClient = WebClient.builder()
                 .baseUrl("https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze")
                 .defaultHeader("X-NCP-APIGW-API-KEY-ID", NAVER_KEY)
                 .defaultHeader("X-NCP-APIGW-API-KEY", NAVER_SECRET)
                 .build();
 
-        Map<String, String> content = Map.of("content", topicCandidate);
-        Mono<Map<String, Object>> responseMono = webClient.post()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(content))
-                .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
-                });
+            Map<String, String> content = Map.of("content", topicCandidate);
+            Mono<Map<String, Object>> responseMono = webClient.post()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(BodyInserters.fromValue(content))
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                    });
 
-        Map<String, Object> response = responseMono.block();
-        String sentiment = (String) ((Map<String, Object>) response.get("document")).get("sentiment");
+            Map<String, Object> response = responseMono.block();
+            System.out.println(responseMono+ "여기 널인가 아닌가");
+            String sentiment = (String) ((Map<String, Object>) response.get("document")).get("sentiment");
 
-        if (sentiment.equals("negative")) {
-            // TODO member time out 추가
-            return "부적절한 토픽입니다.";
-        } else {
-            Topic topic = Topic.builder()
-                    .title(topicCandidate)
-                    .approveStatus(ApproveStatus.PENDING)
-                    .build();
-            topicRepository.save(topic);
-            // TODO member 하루 1회 코인 --
-            return "응모가 완료되었습니다.";
+            if (sentiment.equals("negative")) {
+                // TODO member time out 추가
+                return "부적절한 토픽입니다.";
+            } else {
+                Topic topic = Topic.builder()
+                        .title(topicCandidate)
+                        .approveStatus(ApproveStatus.PENDING)
+                        .build();
+                topicRepository.save(topic);
+                // TODO member 하루 1회 코인 --
+                return "응모가 완료되었습니다.";
+            }
+        } catch (TopicRuntimeException e) {
+            throw new TopicRuntimeException(TopicExceptionEnum.TOPIC_NAVER_EXCEPTION);
         }
+
+
     }
 
     @Override
