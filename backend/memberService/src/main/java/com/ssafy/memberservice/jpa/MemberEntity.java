@@ -25,6 +25,7 @@ public class MemberEntity {
     private String nickname;
 
     //    private String gender;
+    private int timeout;
     @Enumerated(EnumType.STRING)
     private Role role;
 
