@@ -69,10 +69,30 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             if(!isJwtValid(jwt)){
                 return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED);
             }
-            //accessToken값이 변경되면 request header에 바뀐 accessToken값 추가
-//            if(!accessToken.equals(jwt)){
-//                exchange.getRequest().mutate().headers(httpHeaders -> httpHeaders.add("newAccess", accessToken)).build();
-//            }
+
+            if(accessToken != jwt){
+                System.out.println("access token 수정");
+                exchange.getRequest().mutate()
+                        .headers(httpHeaders -> {
+                            // remove existing access token header if present
+                            httpHeaders.remove(HttpHeaders.AUTHORIZATION);
+
+                            // add new access token header
+                            httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+                        })
+                        .build();
+            }
+
+            exchange.getRequest().mutate()
+                    .headers(httpHeaders -> {
+                        // remove existing access token header if present
+                        httpHeaders.remove(HttpHeaders.AUTHORIZATION);
+
+                        // add new access token header
+                        httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+                    })
+                    .build();
+
             //여기서 redis접근 후 exchange에 담아서 보내줌
             Map<String, Object> result = (Map<String, Object>) redisTemplate.opsForValue().get(accessToken);
             Integer id = (Integer) result.get("id");
@@ -183,6 +203,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         redisTemplate.delete(jwt); //기존 access token 정보 제거
 
         redisTemplate.opsForValue().set(accessToken, memberDto); //새로 발급된 access token을 키 값으로 추가
+
 
         return true;
     }
