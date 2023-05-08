@@ -7,6 +7,9 @@ import lombok.Getter;
 @Builder
 public class KakaoUserInfoResponseDto {
     private Long id;
+
     private String email;
+    private String gender;
+    private String profileImage;
     private String nickname;
 }
