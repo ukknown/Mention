@@ -3,12 +3,8 @@ package com.ssafy.teamservice.jpa;
 import javax.persistence.*;
 import lombok.*;
 
-/**
- * team_owner_id 추가
- */
 @Entity
 @Getter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "team")
@@ -26,6 +22,8 @@ public class TeamEntity {
     private int isDeleted;
 //    @Column(length = 100, nullable = false)
 //    private String code;
+    @Column(nullable = false)
+    private Long teamOwnerId;
 
     public void updateCapacity(int capacity){
         this.capacity = capacity;
