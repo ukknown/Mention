@@ -1,33 +1,23 @@
 package com.ssafy.teamservice.controller;
 
+import com.ssafy.teamservice.vo.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.teamservice.service.TeamServiceImpl;
 import com.ssafy.teamservice.utils.RandomCodeGenerator;
 import com.ssafy.teamservice.utils.S3Uploader;
-import com.ssafy.teamservice.vo.TeamVO;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.teamservice.jpa.TeamEntity;
 import com.ssafy.teamservice.service.TeamMemberServiceImpl;
-import com.ssafy.teamservice.service.TeamServiceImpl;
-import com.ssafy.teamservice.utils.RandomCodeGenerator;
-import com.ssafy.teamservice.utils.S3Uploader;
 import com.ssafy.teamservice.utils.error.ErrorCode;
 import com.ssafy.teamservice.utils.exception.CustomException;
-import com.ssafy.teamservice.vo.TeamDetailsResponseDto;
-import com.ssafy.teamservice.vo.TeamMemberVO;
-import com.ssafy.teamservice.vo.TeamResponseDto;
-import com.ssafy.teamservice.vo.TeamVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.json.JSONObject;
-import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -81,7 +71,7 @@ public class TeamController {
 
         // String code = randomCodeGenerator.generate();
 
-        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamVO(name, url, loginMemberId));
+        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamDetailVO(name, url, loginMemberId));
 
         teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, loginMemberId));
 
@@ -115,10 +105,12 @@ public class TeamController {
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long loginMemberId = loginMember.getLong("id");
 
-        // 존재하지 않는 아이디일 경우 -> 404 반환
-        if(!teamServiceImpl.existsById(teamId)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        TeamVO teamVO = new TeamVO(teamId, loginMemberId);
 
-        TeamDetailsResponseDto result = teamServiceImpl.getTeamDetails(teamId);
+        // 존재하지 않는 아이디일 경우 -> 404 반환
+        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+
+        TeamDetailsResponseDto result = teamServiceImpl.getTeamDetails(teamVO);
 
         // 해당 방이 삭제된 경우 -> 404 반환
         if(result.getIsDeleted() == 1) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
@@ -142,10 +134,12 @@ public class TeamController {
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long loginMemberId = loginMember.getLong("id");
 
-        // teamId가 존재하는지 확인 -> 404
-        if(!teamServiceImpl.existsById(teamId)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        TeamVO teamVO = new TeamVO(teamId, loginMemberId);
 
-        TeamEntity teamEntity = teamServiceImpl.findById(teamId);
+        // teamId가 존재하는지 확인 -> 404
+        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+
+        TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
         TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, loginMemberId);
 
         // 이미 입장한 그룹인지 확인
@@ -154,7 +148,7 @@ public class TeamController {
         }
 
         teamMemberServiceImpl.joinTeamMember(teamMemberVO);
-        teamServiceImpl.updateCapacity(teamId, true);
+        teamServiceImpl.updateCapacity(new TeamVO(teamId), true);
 
         return ResponseEntity.status(HttpStatus.OK).body("그룹 입장 완료 ~ 🔥");
     }
@@ -179,13 +173,15 @@ public class TeamController {
         // 토큰 = 관리자 이거나 나가려는 사용자 토큰 = 나가려는 사용자 아이디인 경우만 가능 -> UNAUTHORIZED(401)
 //        if(토큰 != 관리자 || memberId != 토큰) throw new CustomException(ErrorCode.UNATHORIZED);
 
+        TeamVO teamVO = new TeamVO(teamId, loginMemberId);
+
         // teamId가 존재하는지 확인 -> 404
-        if(!teamServiceImpl.existsById(teamId)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
 
         // 해당 그룹에 있는 사용자가 맞는지 확인 -> 404
 
         // team.capacity 업데이트
-        TeamEntity teamEntity = teamServiceImpl.updateCapacity(teamId, false);
+        TeamEntity teamEntity = teamServiceImpl.updateCapacity(teamVO, false);
 
         // team_member에서 삭제
         teamMemberServiceImpl.deleteMemberFromTeam(new TeamMemberVO(teamEntity, loginMemberId));
@@ -194,7 +190,7 @@ public class TeamController {
         if(teamEntity.getCapacity() == 0
 //            || 팀 방장 아이디 == 나가려는 사용자 아이디
         ) {
-            teamServiceImpl.updateIsDeleteTrue(teamId);
+            teamServiceImpl.updateIsDeleteTrue(teamVO);
             return ResponseEntity.status(HttpStatus.OK).body("그룹 삭제 완료 ~ 🔥");
         }
 
