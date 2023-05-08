@@ -48,8 +48,7 @@ public class TeamMemberServiceImpl implements TeamMemberService{
      */
     @Override
     public void joinTeamMember(TeamMemberVO teamMemberVO) {
-        ModelMapper mapper = mapperConfig.modelMapper();
-        TeamMemberEntity teamMemberEntity = mapper.map(teamMemberVO, TeamMemberEntity.class);
+        TeamMemberEntity teamMemberEntity = TeamMemberEntity.builder().teamEntity(teamMemberVO.getTeamEntity()).memberId(teamMemberVO.getMemberId()).build();
         teamMemberRepository.save(teamMemberEntity);
     }
 
