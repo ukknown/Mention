@@ -8,8 +8,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberEntity {
