@@ -17,14 +17,14 @@ public class MemberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @Column(nullable = false)
     private String email;
-    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @NotNull
+    @Column(nullable = false)
     private String nickname;
-    @NotNull
+    @Column(nullable = false)
     private String profileImage;
     private int bangAmount;
     private int timeout;
