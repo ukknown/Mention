@@ -16,12 +16,35 @@ class PedometerText extends StatefulWidget {
 
 class _PedometerTextState extends State<PedometerText> {
   // final PedometerManager _pedometerManager = PedometerManager();
-  final int _stepCount = 1500;
+  int _stepCount = 3000;
+  bool _showFireworks = false;
+  bool _showClick = true;
 
   @override
   void initState() {
     super.initState();
     // _initPedometer();
+  }
+
+  void _resetStepCount() {
+    setState(() {
+      _stepCount = 0;
+    });
+  }
+
+  void _displayFireworks() async {
+    setState(() {
+      _showFireworks = true;
+      _showClick = false;
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      _showFireworks = false;
+    });
+
+    _resetStepCount();
   }
 
   // void _initPedometer() async {
@@ -94,12 +117,32 @@ class _PedometerTextState extends State<PedometerText> {
                   height: 50,
                 ),
               ),
-              if (isComplete)
+              if (_showClick && isComplete)
                 Lottie.asset(
                   'assets/animations/click.json',
                   width: 50,
                   height: 50,
                 ),
+              if (_showFireworks)
+                Transform.scale(
+                  scale: 3.0, // 원하는 스케일 값으로 변경하세요.
+                  child: Transform.translate(
+                    offset: Offset(-widget.screenWidth * 0.01, 0),
+                    child: Lottie.asset(
+                      'assets/animations/fireworks.json',
+                      width: 50,
+                      height: 50,
+                    ),
+                  ),
+                ),
+              InkWell(
+                onTap: isComplete ? _displayFireworks : null,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  color: Colors.transparent,
+                ),
+              ),
             ],
           ),
         ],
