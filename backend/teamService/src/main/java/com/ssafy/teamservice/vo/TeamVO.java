@@ -1,20 +1,17 @@
 package com.ssafy.teamservice.vo;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class TeamVO {
-    private String name;
-    private String image;
-    private int capacity;
-    private int isDeleted;
-    // private String code;
+    private Long teamId;
+    private Long memberId;
 
-    public TeamVO(String name, String image) {
-        this.name = name;
-        this.image = image;
-        this.capacity = 1;
-        this.isDeleted = 0;
+    public TeamVO(Long teamId) {
+        this.teamId = teamId;
     }
 }

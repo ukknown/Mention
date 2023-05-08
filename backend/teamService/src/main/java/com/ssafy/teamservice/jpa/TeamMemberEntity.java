@@ -1,8 +1,6 @@
 package com.ssafy.teamservice.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,11 +13,22 @@ public class TeamMemberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private TeamEntity teamEntity;
-
     @Column(nullable = false)
     private Long memberId;
+    @Column(nullable = false)
+    private int isKickOut;
+
+    @Builder
+    public TeamMemberEntity(TeamEntity teamEntity, Long memberId){
+        this.teamEntity = teamEntity;
+        this.memberId = memberId;
+        this.isKickOut = 0;
+    }
+
+    public void updateIsKickOut(){
+        this.isKickOut = 1;
+    }
 }

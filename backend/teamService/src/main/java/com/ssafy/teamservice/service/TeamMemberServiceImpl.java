@@ -4,21 +4,17 @@ import com.ssafy.teamservice.config.MapperConfig;
 import com.ssafy.teamservice.jpa.TeamMemberEntity;
 import com.ssafy.teamservice.jpa.TeamMemberRepository;
 import com.ssafy.teamservice.vo.TeamMemberVO;
-import com.ssafy.teamservice.vo.TeamResponseDto;
-import org.modelmapper.ModelMapper;
+import com.ssafy.teamservice.vo.dto.TeamResponseDto;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class TeamMemberServiceImpl implements TeamMemberService{
-    private final MapperConfig mapperConfig;
     private final TeamMemberRepository teamMemberRepository;
 
-    public TeamMemberServiceImpl(MapperConfig mapperConfig, TeamMemberRepository teamMemberRepository) {
-        this.mapperConfig = mapperConfig;
+    public TeamMemberServiceImpl(TeamMemberRepository teamMemberRepository) {
         this.teamMemberRepository = teamMemberRepository;
     }
 
@@ -48,8 +44,10 @@ public class TeamMemberServiceImpl implements TeamMemberService{
      */
     @Override
     public void joinTeamMember(TeamMemberVO teamMemberVO) {
-        ModelMapper mapper = mapperConfig.modelMapper();
-        TeamMemberEntity teamMemberEntity = mapper.map(teamMemberVO, TeamMemberEntity.class);
+        TeamMemberEntity teamMemberEntity = TeamMemberEntity.builder()
+                .teamEntity(teamMemberVO.getTeamEntity())
+                .memberId(teamMemberVO.getMemberId())
+                .build();
         teamMemberRepository.save(teamMemberEntity);
     }
 
@@ -61,13 +59,19 @@ public class TeamMemberServiceImpl implements TeamMemberService{
     @Override
     public List<TeamResponseDto> getTeamList(Long memberId) {
         List<TeamMemberEntity> teamMemberEntityList = teamMemberRepository.findTeamMemberEntityByMemberId(memberId);
-        List<TeamResponseDto> result = new ArrayList<>();
 
         return teamMemberEntityList.stream()
-                .map(teamEntity -> new TeamResponseDto(teamEntity.getTeamEntity())
+                .filter(teamMember -> teamMember.getTeamEntity().getIsDeleted() == 0)
+                .map(teamMember -> new TeamResponseDto(teamMember.getTeamEntity())
                 // , 투표 리스트 추가
                 )
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateIsKickOut(TeamMemberVO teamMemberVO) {
+        TeamMemberEntity teamMemberEntity = findByMemberIdAndTeamEntity(teamMemberVO);
+        teamMemberEntity.updateIsKickOut();
     }
 
     /**
@@ -79,4 +83,6 @@ public class TeamMemberServiceImpl implements TeamMemberService{
         TeamMemberEntity teamMemberEntity = findByMemberIdAndTeamEntity(teamMemberVO);
         teamMemberRepository.deleteById(teamMemberEntity.getId());
     }
+
+
 }
