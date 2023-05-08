@@ -26,9 +26,12 @@ public class MemberEntity {
     private String nickname;
     @Column(nullable = false)
     private String profileImage;
+    @Column(nullable = false)
     private int bangAmount;
+    @Column(nullable = false)
     private int timeout;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
 }

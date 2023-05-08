@@ -18,7 +18,6 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> getKakao(@RequestBody Map<String, String> code) {
-        System.out.println("/login bodycode : "+ code.get("code"));
         return memberService.joinOrLogin(code.get("code"));
     }
 

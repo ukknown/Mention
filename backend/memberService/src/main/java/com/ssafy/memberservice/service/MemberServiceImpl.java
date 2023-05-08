@@ -63,7 +63,6 @@ public class MemberServiceImpl implements MemberService{
 
 
         if (joinMember == null) {//회원이 없다면
-            System.out.println("회원정보 저장");
             //회원정보 DB 저장
             MemberEntity member = MemberEntity
                     .builder()
@@ -74,22 +73,18 @@ public class MemberServiceImpl implements MemberService{
                     .role(Role.ROLE_USER)
                     .build();
             email = kakaoUserInfoResponse.getEmail();
-            System.out.println("로그인 email : " + email);
             memberRepository.saveAndFlush(member);
 
         } else {
             if(joinMember.getTimeout() < 3){
                 email = joinMember.getEmail();
             }else{ //timeout이 3을 넘었으면 영구정지된 사용자
-
                 throw new TimeoutException("영구 정지된 사용자");
             }
 
         }
 
-        System.out.println("token 생성 함수");
         //jwt 토큰 생성
-//        TokenResponse tokenResponse = jwtTokenProvider.createToken(email);
         TokenResponseDto tokenResponse = jwtTokenProvider.createToken(email);
 
         return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
@@ -113,7 +108,6 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public KakaoUserInfoResponseDto getKakaoUser(String accessToken) {
-        System.out.println("/getKakaoUser : " + accessToken);
         String email = "";
         String gender = "";
         String profileImage = "";
@@ -157,7 +151,7 @@ public class MemberServiceImpl implements MemberService{
             boolean genderNeedsAgreement = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("gender_needs_agreement").getAsBoolean();
             if(!genderNeedsAgreement){
                 gender = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("gender").getAsString();
-
+                //string -> enum
                 EnumGender = Gender.valueOf(gender);
                 System.out.println("성별 : "+gender);
             }else{
@@ -167,7 +161,6 @@ public class MemberServiceImpl implements MemberService{
             boolean profileImageNeedsAgreement = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile_image_needs_agreement").getAsBoolean();
             if(!profileImageNeedsAgreement){
                 profileImage = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile").getAsJsonObject().get("profile_image_url").getAsString();
-                System.out.println("프로필 : " + profileImage);
             }else{
                 throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_KAKAO_PROFILEIMAGE_EXCEPTION);
             }
