@@ -11,5 +11,7 @@ public class TopicResoponseDto {
 
     private String title;
 
+    private Long popularity;
+
     private ApproveStatus approveStatus;
 }
