@@ -22,16 +22,20 @@ public class MentionController {
         return "MentionService Check Completed!";
     }
 
+    //투표 생성
     @PostMapping("/vote/create")
     public ResponseEntity<?> createVote(@RequestBody CreateVoteRequestDto createVoteRequestDto) {
         voteService.createVote(createVoteRequestDto);
         return ResponseEntity.ok().body("투표 생성 완료");
     }
 
+    // 그룹에서 진행중인 투표 조회
     @GetMapping("/vote/{teamId}")
     public ResponseEntity<List<VoteResponseDto>> getVoteList(@PathVariable Long teamId) {
         return ResponseEntity.ok().body(voteService.getVoteList(teamId));
     }
+
+
 
 
 }
