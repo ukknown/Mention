@@ -85,6 +85,10 @@ public class TeamServiceImpl implements TeamService{
     public TeamDetailsResponseDto getTeamDetails(TeamVO teamVO) {
         TeamEntity teamEntity = findById(teamVO);
 
+        if(teamEntity.getIsDeleted() == 1) {
+            throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        }
+
         List<Long> memberList = teamMemberRepository.findByTeamEntity(teamEntity);
 
         // List<Long> -> List<MemberVO> 로 만들기

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.teamservice.service.TeamServiceImpl;
-import com.ssafy.teamservice.utils.RandomCodeGenerator;
 import com.ssafy.teamservice.utils.S3Uploader;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +29,11 @@ import java.util.List;
 public class TeamController {
     private final TeamServiceImpl teamServiceImpl;
     private final S3Uploader s3Uploader;
-    private final RandomCodeGenerator randomCodeGenerator;
     private final TeamMemberServiceImpl teamMemberServiceImpl;
 
-    public TeamController(TeamServiceImpl teamServiceImpl, S3Uploader s3Uploader, RandomCodeGenerator randomCodeGenerator, TeamMemberServiceImpl teamMemberServiceImpl) {
+    public TeamController(TeamServiceImpl teamServiceImpl, S3Uploader s3Uploader, TeamMemberServiceImpl teamMemberServiceImpl) {
         this.teamServiceImpl = teamServiceImpl;
         this.s3Uploader = s3Uploader;
-        this.randomCodeGenerator = randomCodeGenerator;
         this.teamMemberServiceImpl = teamMemberServiceImpl;
     }
 
@@ -113,9 +110,6 @@ public class TeamController {
         if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
 
         TeamDetailsResponseDto result = teamServiceImpl.getTeamDetails(teamVO);
-
-        // 해당 방이 삭제된 경우 -> 404 반환
-        if(result.getIsDeleted() == 1) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
