@@ -11,6 +11,6 @@ public interface TeamService {
     TeamDetailsResponseDto getTeamDetails(TeamVO teamVO);
     boolean existsById(TeamVO teamVO);
     TeamEntity findById(TeamVO teamVO);
-    void updateCapacity(TeamVO teamVO, boolean isIn);
+    int updateCapacity(TeamVO teamVO, boolean isIn);
     void updateIsDeleteTrue(TeamVO teamVO);
 }

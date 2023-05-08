@@ -63,10 +63,15 @@ public class TeamServiceImpl implements TeamService{
     }
 
     @Override
-    public void updateCapacity(TeamVO teamVO, boolean isIn) {
+    public int updateCapacity(TeamVO teamVO, boolean isIn) {
         TeamEntity teamEntity = findById(teamVO);
-        if(isIn) teamEntity.updateCapacity(teamEntity.getCapacity() + 1);
-        else teamEntity.updateCapacity(teamEntity.getCapacity() - 1);
+        if(isIn) {
+            teamEntity.updateCapacity(teamEntity.getCapacity() + 1);
+            return teamEntity.getCapacity() + 1;
+        } else {
+            teamEntity.updateCapacity(teamEntity.getCapacity() - 1);
+            return teamEntity.getCapacity() - 1;
+        }
     }
 
     @Override
@@ -88,7 +93,7 @@ public class TeamServiceImpl implements TeamService{
             throw new CustomException(ErrorCode.DATA_NOT_FOUND);
         }
 
-        List<Long> memberList = teamMemberRepository.findByTeamEntity(teamEntity);
+        List<Long> memberList = teamMemberRepository.getMemberByTeamEntity(teamEntity);
 
         // List<Long> -> List<MemberVO> 로 만들기
         List<MemberVO> memberResultList = memberList.stream()
