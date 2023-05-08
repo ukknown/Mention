@@ -94,7 +94,6 @@ public class TopicServiceImpl implements TopicService{
                     });
 
             Map<String, Object> response = responseMono.block();
-            System.out.println(responseMono+ "여기 널인가 아닌가");
             String sentiment = (String) ((Map<String, Object>) response.get("document")).get("sentiment");
 
             if (sentiment.equals("negative")) {
@@ -112,8 +111,6 @@ public class TopicServiceImpl implements TopicService{
         } catch (TopicRuntimeException e) {
             throw new TopicRuntimeException(TopicExceptionEnum.TOPIC_NAVER_EXCEPTION);
         }
-
-
     }
 
     @Override
