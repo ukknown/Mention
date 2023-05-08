@@ -2,6 +2,7 @@ package com.ssafy.teamservice.service;
 
 import com.ssafy.teamservice.config.MapperConfig;
 import com.ssafy.teamservice.jpa.TeamEntity;
+import com.ssafy.teamservice.jpa.TeamMemberRepository;
 import com.ssafy.teamservice.jpa.TeamRepository;
 import com.ssafy.teamservice.utils.error.ErrorCode;
 import com.ssafy.teamservice.utils.exception.CustomException;
@@ -14,10 +15,14 @@ import org.springframework.stereotype.Service;
 public class TeamServiceImpl implements TeamService{
     private final MapperConfig mapperConfig;
     private final TeamRepository teamRepository;
+    private final TeamMemberRepository teamMemberRepository;
+    private final TeamMemberServiceImpl teamMemberServiceImpl;
 
-    public TeamServiceImpl(MapperConfig mapperConfig, TeamRepository teamRepository) {
+    public TeamServiceImpl(MapperConfig mapperConfig, TeamRepository teamRepository, TeamMemberServiceImpl teamMemberService, TeamMemberRepository teamMemberRepository, TeamMemberServiceImpl teamMemberServiceImpl) {
         this.mapperConfig = mapperConfig;
         this.teamRepository = teamRepository;
+        this.teamMemberRepository = teamMemberRepository;
+        this.teamMemberServiceImpl = teamMemberServiceImpl;
     }
 
     /**
@@ -28,8 +33,15 @@ public class TeamServiceImpl implements TeamService{
      */
     @Override
     public TeamEntity createTeam(TeamVO teamVO) {
-        ModelMapper mapper = mapperConfig.modelMapper();
-        TeamEntity teamEntity = mapper.map(teamVO, TeamEntity.class);
+
+        TeamEntity teamEntity = TeamEntity.builder()
+                .name(teamVO.getName())
+                .image(teamVO.getImage())
+                .capacity(teamVO.getCapacity())
+                .isDeleted(teamVO.getIsDeleted())
+                .teamOwnerId(teamVO.getTeamOwnerId())
+                .build();
+
         teamRepository.save(teamEntity);
         return teamEntity;
     }

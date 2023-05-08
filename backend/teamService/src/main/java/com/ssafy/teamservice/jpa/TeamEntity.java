@@ -3,12 +3,8 @@ package com.ssafy.teamservice.jpa;
 import javax.persistence.*;
 import lombok.*;
 
-/**
- * team_owner_id 추가
- */
 @Entity
 @Getter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "team")
@@ -24,7 +20,10 @@ public class TeamEntity {
     private int capacity;
     @Column(name = "is_deleted", nullable = false)
     private int isDeleted;
-//    @Column(length = 100, nullable = false)
+    @Column(nullable = false)
+    private Long teamOwnerId;
+
+    //    @Column(length = 100, nullable = false)
 //    private String code;
 
     public void updateCapacity(int capacity){
@@ -33,5 +32,14 @@ public class TeamEntity {
 
     public void updateIsDelete(){
         this.isDeleted = 1;
+    }
+
+    @Builder
+    public TeamEntity(String name, String image, int capacity, int isDeleted, Long teamOwnerId) {
+        this.name = name;
+        this.image = image;
+        this.capacity = capacity;
+        this.isDeleted = isDeleted;
+        this.teamOwnerId = teamOwnerId;
     }
 }

@@ -48,8 +48,7 @@ public class TeamMemberServiceImpl implements TeamMemberService{
      */
     @Override
     public void joinTeamMember(TeamMemberVO teamMemberVO) {
-        ModelMapper mapper = mapperConfig.modelMapper();
-        TeamMemberEntity teamMemberEntity = mapper.map(teamMemberVO, TeamMemberEntity.class);
+        TeamMemberEntity teamMemberEntity = TeamMemberEntity.builder().teamEntity(teamMemberVO.getTeamEntity()).memberId(teamMemberVO.getMemberId()).build();
         teamMemberRepository.save(teamMemberEntity);
     }
 
@@ -61,10 +60,10 @@ public class TeamMemberServiceImpl implements TeamMemberService{
     @Override
     public List<TeamResponseDto> getTeamList(Long memberId) {
         List<TeamMemberEntity> teamMemberEntityList = teamMemberRepository.findTeamMemberEntityByMemberId(memberId);
-        List<TeamResponseDto> result = new ArrayList<>();
 
         return teamMemberEntityList.stream()
-                .map(teamEntity -> new TeamResponseDto(teamEntity.getTeamEntity())
+                .filter(teamMember -> teamMember.getTeamEntity().getIsDeleted() == 0)
+                .map(teamMember -> new TeamResponseDto(teamMember.getTeamEntity())
                 // , 투표 리스트 추가
                 )
                 .collect(Collectors.toList());
