@@ -18,6 +18,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> getKakao(@RequestBody Map<String, String> code) {
+        System.out.println("/login bodycode : "+ code.get("code"));
         return memberService.joinOrLogin(code.get("code"));
     }
 
@@ -33,8 +34,11 @@ public class MemberController {
 
     //타임아웃 횟수 추가
     @PostMapping("/time-out")
-    public void addCount(@RequestBody String useremail){
-        memberService.addCount(useremail);
+    public void addCount(HttpServletRequest request){
+        String memberStr = request.getHeader("member");
+
+        System.out.println(memberStr);
+
     }
 
 
