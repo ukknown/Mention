@@ -2,8 +2,10 @@ package com.ssafy.teamservice.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class TeamVO {
     private Long teamId;
