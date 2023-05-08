@@ -2,6 +2,7 @@ package com.ssafy.memberservice.controller;
 
 import com.ssafy.memberservice.service.MemberService;
 
+import com.ssafy.memberservice.vo.MemberVO;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,12 @@ public class MemberController {
         System.out.println(memberStr);
 
         return "MemberService Check Completed!";
+    }
+
+    @GetMapping("/member-service/{memberid}")
+    public MemberVO getOrders(@PathVariable Long memberid){
+
+        return memberService.getMemberVO(memberid);
     }
 
     //타임아웃 횟수 추가

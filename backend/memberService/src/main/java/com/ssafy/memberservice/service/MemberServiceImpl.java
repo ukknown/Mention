@@ -12,6 +12,7 @@ import com.ssafy.memberservice.jpa.MemberEntity;
 import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.jwt.JwtTokenProvider;
 import com.ssafy.memberservice.vo.Gender;
+import com.ssafy.memberservice.vo.MemberVO;
 import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
@@ -104,6 +105,24 @@ public class MemberServiceImpl implements MemberService{
 
 
 
+    }
+
+    @Override
+    public MemberVO getMemberVO(Long memberid) {
+        //memberid값을 가진 회원 정보를 찾음
+        Optional<MemberEntity> member = memberRepository.findById(memberid);
+
+        if(member.isPresent()){// 존재한다면
+            //memberid값을 가진 회원 정보를 가져옴
+            MemberEntity entity = member.get();
+            //MemberVO 형태로 반환
+            return MemberVO.builder()
+                    .memberId(entity.getId())
+                    .nickname(entity.getNickname())
+                    .profileImage(entity.getProfileImage())
+                    .build();
+        }
+        return null;
     }
 
     @Override
