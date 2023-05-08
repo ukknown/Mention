@@ -1,5 +1,15 @@
 package com.ssafy.teamservice.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.ssafy.teamservice.service.TeamServiceImpl;
+import com.ssafy.teamservice.utils.RandomCodeGenerator;
+import com.ssafy.teamservice.utils.S3Uploader;
+import com.ssafy.teamservice.vo.TeamVO;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.teamservice.jpa.TeamEntity;
 import com.ssafy.teamservice.service.TeamMemberServiceImpl;
 import com.ssafy.teamservice.service.TeamServiceImpl;

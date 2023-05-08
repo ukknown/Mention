@@ -2,17 +2,14 @@ package com.ssafy.teamservice.service;
 
 import com.ssafy.teamservice.config.MapperConfig;
 import com.ssafy.teamservice.jpa.TeamEntity;
-import com.ssafy.teamservice.jpa.TeamMemberEntity;
 import com.ssafy.teamservice.jpa.TeamMemberRepository;
 import com.ssafy.teamservice.jpa.TeamRepository;
 import com.ssafy.teamservice.utils.error.ErrorCode;
 import com.ssafy.teamservice.utils.exception.CustomException;
 import com.ssafy.teamservice.vo.TeamDetailsResponseDto;
-import com.ssafy.teamservice.vo.TeamMemberVO;
 import com.ssafy.teamservice.vo.TeamVO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TeamServiceImpl implements TeamService{
