@@ -1,7 +1,7 @@
 package com.ssafy.topicservice.service;
 
 import com.ssafy.topicservice.elastic.TopicDocument;
-import com.ssafy.topicservice.vo.PendingTopicResoponseDto;
+import com.ssafy.topicservice.vo.TopicResoponseDto;
 
 import java.util.List;
 
@@ -19,9 +19,11 @@ public interface TopicService {
 
     void saveTopic();
 
-    List<PendingTopicResoponseDto> getPendingTopic();
+    List<TopicResoponseDto> getPendingTopic();
 
     void approveTopic(Long topicId);
 
     void rejectTopic(Long topicId);
+
+//    TopicResoponseDto getRandomOne();
 }
