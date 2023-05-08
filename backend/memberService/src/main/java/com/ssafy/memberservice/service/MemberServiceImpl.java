@@ -62,6 +62,7 @@ public class MemberServiceImpl implements MemberService{
 
 
         if (joinMember == null) {//회원이 없다면
+            System.out.println("회원정보 저장");
             //회원정보 DB 저장
             MemberEntity member = MemberEntity
                     .builder()
@@ -70,7 +71,9 @@ public class MemberServiceImpl implements MemberService{
                     .role(Role.ROLE_USER)
                     .build();
             email = kakaoUserInfoResponse.getEmail();
+            System.out.println("로그인 email : " + email);
             memberRepository.saveAndFlush(member);
+
         } else {
             if(joinMember.getTimeout() < 3){
                 email = joinMember.getEmail();
@@ -81,6 +84,7 @@ public class MemberServiceImpl implements MemberService{
 
         }
 
+        System.out.println("token 생성 함수");
         //jwt 토큰 생성
 //        TokenResponse tokenResponse = jwtTokenProvider.createToken(email);
         TokenResponseDto tokenResponse = jwtTokenProvider.createToken(email);
@@ -106,6 +110,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public KakaoUserInfoResponseDto getKakaoUser(String accessToken) {
+        System.out.println("/getKakaoUser : " + accessToken);
         String email = "";
         String gender = "";
         String profileImage = "";
@@ -148,26 +153,26 @@ public class MemberServiceImpl implements MemberService{
             boolean genderNeedsAgreement = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("gender_needs_agreement").getAsBoolean();
             if(!genderNeedsAgreement){
                 gender = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("gender").getAsString();
+                System.out.println("성별 : "+gender);
             }else{
                 throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_KAKAO_EMAIL_EXCEPTION);
             }
             //프로필 제공 동의 여부
             boolean profileImageNeedsAgreement = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile_image_needs_agreement").getAsBoolean();
             if(!profileImageNeedsAgreement){
-                profileImage = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile_image").getAsString();
+                profileImage = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile").getAsJsonObject().get("profile_image_url").getAsString();
+                System.out.println("프로필 : " + profileImage);
             }else{
                 throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_KAKAO_PROFILEIMAGE_EXCEPTION);
             }
-
-
 
             br.close();
             return KakaoUserInfoResponseDto.builder()
                     .id(id)
                     .email(email)
-                    .nickname(nickname)
                     .gender(gender)
                     .profileImage(profileImage)
+                    .nickname(nickname)
                     .build();
         } catch (IOException e) {
             throw new AuthRuntimeException(AuthExceptionEnum.AUTH_KAKAO_ACCESSTOKEN_FAILED);

@@ -60,6 +60,8 @@ public class JwtTokenProvider {
 
         String accessToken = createAccessToken(claims);
 
+        System.out.println("createToken / accesstoken 발급 : " + accessToken);
+
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
@@ -67,6 +69,7 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, secret_key)
                 .compact();
 
+        System.out.println("createToken / refreshtoken 발급 : " + refreshToken);
         // Redis key 이름과 값 설정
 //        String redisKey = memberEntity.getEmail();
 //        String redisValue = refreshToken;
