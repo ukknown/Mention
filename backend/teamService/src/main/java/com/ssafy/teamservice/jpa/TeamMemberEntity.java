@@ -1,8 +1,6 @@
 package com.ssafy.teamservice.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -22,4 +20,10 @@ public class TeamMemberEntity {
 
     @Column(nullable = false)
     private Long memberId;
+
+    @Builder
+    public TeamMemberEntity(TeamEntity teamEntity, Long memberId){
+        this.teamEntity = teamEntity;
+        this.memberId = memberId;
+    }
 }
