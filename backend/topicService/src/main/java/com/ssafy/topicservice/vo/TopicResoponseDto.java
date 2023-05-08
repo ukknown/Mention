@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PendingTopicResoponseDto {
+public class TopicResoponseDto {
     private Long id;
 
     private String title;
