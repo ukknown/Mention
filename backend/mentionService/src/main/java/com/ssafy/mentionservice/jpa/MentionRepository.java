@@ -1,7 +1,7 @@
 package com.ssafy.mentionservice.jpa;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MentionRepository extends CrudRepository<MentionEntity, Long> {
+public interface MentionRepository extends JpaRepository<MentionEntity, Long> {
 
 }
