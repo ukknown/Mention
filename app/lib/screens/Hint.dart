@@ -1,11 +1,12 @@
 // ignore: file_names
+// ignore_for_file: unused_import
+
 import 'dart:ui';
 
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:app/screens/home_screen.dart';
 
-// ignore: must_be_immutable
 class Hint extends StatefulWidget {
   const Hint({super.key});
 
@@ -16,8 +17,8 @@ class Hint extends StatefulWidget {
 class _HintState extends State<Hint> {
   var firstsigmaX = 6.0;
   var firstsigmaY = 6.0;
-  var secondsigmaX = 0.0;
-  var secondsigmaY = 0.0;
+  var secondsigmaX = 6.0;
+  var secondsigmaY = 6.0;
   var thirdsigmaX = 6.0;
   var thirdsigmaY = 6.0;
 
@@ -143,7 +144,48 @@ class _HintState extends State<Hint> {
                                 ),
                                 IconButton(
                                   padding: const EdgeInsets.all(0),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(32.0),
+                                            ),
+                                          ),
+                                          title: const Text("2단계"),
+                                          content: const Text(
+                                              "3뱅을 사용해 2단계 힌트를 열람할까요?"),
+                                          insetPadding:
+                                              const EdgeInsets.fromLTRB(
+                                                  0, 80, 0, 80),
+                                          actions: [
+                                            TextButton(
+                                              child: const Text('결제'),
+                                              onPressed: () {},
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    // if (secondsigmaX == 0.0) {
+                                    //   setState(
+                                    //     () {
+                                    //       secondsigmaY = 6.0;
+                                    //       secondsigmaX = 6.0;
+                                    //     },
+                                    //   );
+                                    // } else {
+                                    //   setState(
+                                    //     () {
+                                    //       secondsigmaY = 0.0;
+                                    //       secondsigmaX = 0.0;
+                                    //     },
+                                    //   );
+                                    // }
+                                  },
                                   icon: secondsigmaX == 6.0
                                       ? Image.asset(
                                           "assets/images/closelock.png",
@@ -170,31 +212,56 @@ class _HintState extends State<Hint> {
                                 ),
                               ],
                             ),
-                            ImageFiltered(
-                              imageFilter: ImageFilter.blur(
-                                sigmaX: secondsigmaX,
-                                sigmaY: secondsigmaY,
-                              ),
-                              child: Container(
-                                width:
-                                    MediaQuery.of(context).size.height * 0.35,
-                                decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(137, 169, 168, 168),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(28, 7, 28, 7),
-                                  child: Text(
-                                    "상대방의 초성 힌트",
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        color: Color.fromARGB(221, 92, 91, 91)),
-                                    textAlign: TextAlign.center,
+                            secondsigmaX == 6.0
+                                ? ImageFiltered(
+                                    imageFilter: ImageFilter.blur(
+                                      sigmaX: 6.0,
+                                      sigmaY: 6.0,
+                                    ),
+                                    child: Container(
+                                      width:
+                                          MediaQuery.of(context).size.height *
+                                              0.35,
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                            137, 169, 168, 168),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: const Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(28, 7, 28, 7),
+                                        child: Text(
+                                          "상대방의 초성 힌트",
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              color: Color.fromARGB(
+                                                  221, 92, 91, 91)),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: MediaQuery.of(context).size.height *
+                                        0.35,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          137, 169, 168, 168),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(28, 7, 28, 7),
+                                      child: Text(
+                                        "상대방의 초성 힌트",
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            color: Color.fromARGB(
+                                                221, 92, 91, 91)),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -217,8 +284,8 @@ class _HintState extends State<Hint> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
                           vertical: 20,
                           horizontal: 20,
                         ),
@@ -226,17 +293,17 @@ class _HintState extends State<Hint> {
                           children: [
                             Column(
                               children: [
-                                const Text(
+                                Text(
                                   '3단계',
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   height: 2,
                                 ),
                                 Row(
-                                  children: const [
+                                  children: [
                                     Text("이름과 사진"),
                                   ],
                                 ),
