@@ -32,6 +32,24 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-bus-amqp
+	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
+
+	// model mapper
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.1'
+
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-config
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
+	// cloud bootstrap
+	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
+
+	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
 }
 
 dependencyManagement {
