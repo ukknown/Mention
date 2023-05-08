@@ -96,7 +96,7 @@ public class MemberServiceImpl implements MemberService{
         if(optionalMember.isPresent()){
             MemberEntity member = optionalMember.get();
             int timeout = member.getTimeout()+1;
-            member.setTimeout(timeout);
+            member = member.toBuilder().timeout(timeout).build();
             memberRepository.save(member);
         }
 
