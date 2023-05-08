@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class PedometerText extends StatefulWidget {
   final double screenHeight, screenWidth;
@@ -40,9 +41,12 @@ class _PedometerTextState extends State<PedometerText> {
   @override
   Widget build(BuildContext context) {
     final percentage = _stepCount / 3000 * 100;
+    final limitedPercentage = percentage > 100 ? 100 : percentage;
+    final isComplete = percentage >= 100;
     return Padding(
       padding: EdgeInsets.only(
         top: widget.screenHeight * 0.01,
+        left: widget.screenWidth * 0.025,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +61,7 @@ class _PedometerTextState extends State<PedometerText> {
             child: Stack(
               children: [
                 FractionallySizedBox(
-                  widthFactor: percentage / 100,
+                  widthFactor: limitedPercentage / 100,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
@@ -67,7 +71,7 @@ class _PedometerTextState extends State<PedometerText> {
                 ),
                 Center(
                   child: Text(
-                    '${percentage.toInt()}%',
+                    '${limitedPercentage.toInt()}%',
                     style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -77,14 +81,26 @@ class _PedometerTextState extends State<PedometerText> {
               ],
             ),
           ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(100),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Transform.translate(
+                offset: Offset(-widget.screenWidth * 0.03, 0),
+                child: Image.asset(
+                  isComplete
+                      ? 'assets/images/race-flag.png'
+                      : 'assets/images/race-flag-watermark.png',
+                  width: 50,
+                  height: 50,
+                ),
               ),
-            ),
-            child: const Text('획득'),
+              if (isComplete)
+                Lottie.asset(
+                  'assets/animations/click.json',
+                  width: 50,
+                  height: 50,
+                ),
+            ],
           ),
         ],
       ),

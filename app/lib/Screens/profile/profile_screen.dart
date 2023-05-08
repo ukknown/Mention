@@ -1,4 +1,4 @@
-import 'package:app/screens/profile/pedometer.dart';
+import 'package:app/widgets/profile/profile_box/pedometer.dart';
 import 'package:app/widgets/profile/profile_box/profile_card.dart';
 import 'package:app/widgets/profile/profile_box/rank_slot.dart';
 import 'package:flutter/material.dart';
