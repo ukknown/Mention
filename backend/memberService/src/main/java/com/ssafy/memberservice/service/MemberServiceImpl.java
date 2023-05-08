@@ -11,6 +11,7 @@ import com.ssafy.memberservice.exception.member.TimeoutException;
 import com.ssafy.memberservice.jpa.MemberEntity;
 import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.jwt.JwtTokenProvider;
+import com.ssafy.memberservice.vo.Gender;
 import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
@@ -68,6 +69,8 @@ public class MemberServiceImpl implements MemberService{
                     .builder()
                     .email(kakaoUserInfoResponse.getEmail())
                     .nickname(kakaoUserInfoResponse.getNickname())
+                    .gender(kakaoUserInfoResponse.getGender())
+                    .profileImage(kakaoUserInfoResponse.getProfileImage())
                     .role(Role.ROLE_USER)
                     .build();
             email = kakaoUserInfoResponse.getEmail();
@@ -114,6 +117,7 @@ public class MemberServiceImpl implements MemberService{
         String email = "";
         String gender = "";
         String profileImage = "";
+        Gender EnumGender = null;
         try {
             URL url = new URL(userReqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -153,6 +157,8 @@ public class MemberServiceImpl implements MemberService{
             boolean genderNeedsAgreement = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("gender_needs_agreement").getAsBoolean();
             if(!genderNeedsAgreement){
                 gender = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("gender").getAsString();
+
+                EnumGender = Gender.valueOf(gender);
                 System.out.println("성별 : "+gender);
             }else{
                 throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_KAKAO_EMAIL_EXCEPTION);
@@ -170,7 +176,7 @@ public class MemberServiceImpl implements MemberService{
             return KakaoUserInfoResponseDto.builder()
                     .id(id)
                     .email(email)
-                    .gender(gender)
+                    .gender(EnumGender)
                     .profileImage(profileImage)
                     .nickname(nickname)
                     .build();
