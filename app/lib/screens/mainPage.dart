@@ -1,8 +1,8 @@
-import 'package:app/screens/home_screen.dart';
-import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:app/screens/Hint.dart';
+import 'package:app/screens/home_screen.dart';
 import 'package:app/screens/group_screen.dart';
 
 class MainPage extends StatelessWidget {

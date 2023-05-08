@@ -1,10 +1,33 @@
-import 'package:app/Screens/vote_after.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
 
-class GroupMember extends StatelessWidget {
+Future<List<dynamic>> loadJson() async {
+  final String jsonString = await rootBundle.loadString('assets/member.json');
+  return json.decode(jsonString);
+}
+
+class GroupMember extends StatefulWidget {
   const GroupMember({super.key});
+
+  @override
+  State<GroupMember> createState() => _GroupMemberState();
+}
+
+class _GroupMemberState extends State<GroupMember> {
+  late List<dynamic> memberData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadJson().then((value) {
+      setState(() {
+        memberData = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,19 +106,15 @@ class GroupMember extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const SingleChildScrollView(
+                  child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
-                        Member(),
-                        Member(),
-                        Member(),
-                        Member(),
-                        Member(),
-                        Member(),
+                        // 멤버에 데이터 넣는 곳 (json형태로)
+                        ...memberData.map((person) => Member(person: person)),
                       ],
                     ),
                   ),
@@ -114,18 +133,17 @@ class GroupMember extends StatelessWidget {
 }
 
 class Member extends StatelessWidget {
-  const Member({
-    super.key,
-  });
+  final Map<String, dynamic> person;
+  const Member({required this.person, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
           children: [
-            Expanded(
+            const Expanded(
               flex: 4,
               child: CircleAvatar(
                 radius: 40,
@@ -134,8 +152,8 @@ class Member extends StatelessWidget {
             Expanded(
                 flex: 4,
                 child: Text(
-                  '김창영',
-                  style: TextStyle(fontSize: 25),
+                  person["name"],
+                  style: const TextStyle(fontSize: 25),
                 )),
             // Expanded(flex: 1, child: Icon(Icons.person))
           ],
@@ -178,5 +196,3 @@ void _showJoinCodeModal(BuildContext context) {
     barrierDismissible: true,
   );
 }
-
-

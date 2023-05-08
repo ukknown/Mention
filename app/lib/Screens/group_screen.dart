@@ -1,8 +1,9 @@
 import 'package:app/Screens/group_member.dart';
 import 'package:app/widgets/bg_img.dart';
+import 'package:app/widgets/group_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:app/Screens/vote_before.dart';
+
 import 'package:app/widgets/bottom_nav.dart';
 
 class GroupScreen extends StatelessWidget {
@@ -58,6 +59,7 @@ class GroupScreen extends StatelessWidget {
                                               const GroupMember()));
                                 },
                                 child: const Icon(Icons.person)),
+                            // 인원 숫자
                             const Text('24'),
                             const SizedBox(
                               width: 40,
@@ -136,89 +138,9 @@ class Groupbox extends StatelessWidget {
   }
 }
 
-class GroupDetail extends StatelessWidget {
-  const GroupDetail({
-    super.key,
-  });
+// 그룹 디테일 페이지
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 3,
-            blurRadius: 7,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => (const VoteMember())));
-        },
-        child: Column(
-          children: [
-            Expanded(
-              flex: 4,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.asset(
-                  'assets/images/meet.png',
-                  width: 130,
-                  height: 130,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            const Expanded(
-                flex: 1,
-                child: Text(
-                  '밥 먹어보고 싶은 사람',
-                  style: TextStyle(fontSize: 20),
-                )),
-            const Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.person_rounded),
-                  Text(
-                    '15/24',
-                    style: TextStyle(fontSize: 20),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/clock.png',
-                  ),
-                  const Text(
-                    '08:36',
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.orange,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
+// 토픽 만들기
 void _showNewTopicModal(BuildContext context) {
   showDialog(
     context: context,
@@ -228,36 +150,26 @@ void _showNewTopicModal(BuildContext context) {
           return AlertDialog(
             title: const Text('새로운 토픽을 골라주세요'),
             // 여기서 부터 수정
-            content: SingleChildScrollView(
+            content: const SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min, // 변경된 부분
                 children: [
-                  const TextField(
+                  TextField(
                     decoration: InputDecoration(
                       hintText: '\'춤\'이라고 검색해보세요',
                       prefixIcon: Icon(Icons.search),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Expanded(
-                    // 추가된 부분
-                    child: Container(
-                      height: 200, // 주석 처리된 부분
-                      width: double.infinity, // 박스 너비 설정
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListView.builder(
-                        itemCount: 1, // 항목 개수를 1로 설정
-                        itemBuilder: (BuildContext context, int index) {
-                          return const ListTile(
-                            title: Text('검색결과창'), // 검색 결과가 없음을 나타내는 텍스트
-                          );
-                        },
-                      ),
-                    ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    height: 200,
+                    child: Text('검색결과',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight
+                                .bold)), // 검색 결과가 있는 경우에만 '검색결과' 텍스트를 표시
                   ),
+                  SizedBox(height: 10),
                 ],
               ),
             ),

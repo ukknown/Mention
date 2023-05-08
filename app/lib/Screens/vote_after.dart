@@ -1,5 +1,6 @@
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
+import 'package:app/widgets/push_alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
@@ -65,8 +66,17 @@ class _VotePickState extends State<VotePick> {
                             child: Column(
                               children: [
                                 Image.asset('assets/images/crown.png'),
-                                const CircleAvatar(
-                                  radius: 80,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const TestNotificationPage()));
+                                  },
+                                  child: const CircleAvatar(
+                                    radius: 80,
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 20,
