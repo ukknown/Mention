@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Tag(name="그룹 관리")
@@ -42,8 +43,9 @@ public class TeamController {
      */
     @Operation(summary = "MSA 연결 체크 함수")
     @GetMapping("/health-check")
-    public String checkConnection(){
-        return "Team MicroService Check Completed!";
+    public String checkConnection(HttpServletRequest request){
+        String memberStr = request.getHeader("member");
+        return memberStr + "Team MicroService Check Completed!";
     }
 
     /**
