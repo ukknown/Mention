@@ -31,6 +31,7 @@ public class MemberEntity {
     @Column(nullable = false)
     private int timeout;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
 }
