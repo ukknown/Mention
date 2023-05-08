@@ -1,6 +1,6 @@
 {
   "user_id": 1,
-  "profile_image": "example_image1",
+  "profile_image": "profile-example.png",
   "name": "김싸피",
   "coin": 10,
   "most_mentioned_topic": [
@@ -19,16 +19,19 @@
   ],
   "group" : [
     {
+        "group_id" : 1,
         "group_image" : "example_image2",
         "group_name" : "SSAFY",
-        "group_member" : 84
+        "group_member" : 1848
     },
     {
+        "group_id" : 2,
         "group_image" : "example_image3",
         "group_name" : "광주캠퍼스",
-        "group_member" : 250
+        "group_member" : 245
     },
     {
+        "group_id" : 3,
         "group_image" : "example_image4",
         "group_name" : "C105",
         "group_member" : 5
@@ -36,18 +39,21 @@
   ],
   "metion" : [
     {
+        "topic_id" : 1,
         "mention_title" : "mention title example 1",
         "gender" : "male",
         "lagdate" : "2023-05-08-12:00:00",
         "hint" : 0
     },
     {
+        "topic_id" : 2,
         "mention_title" : "mention title example 1",
         "gender" : "female",
         "lagdate" : "2023-05-06-12:00:00",
         "hint" : 1
     },
     {
+        "topic_id" : 3,
         "mention_title" : "mention title example 1",
         "gender" : "unknown",
         "lagdate" : "2023-04-28-12:00:00",

@@ -3,8 +3,19 @@ import 'package:app/widgets/profile/profile_box/profile_card.dart';
 import 'package:app/widgets/profile/profile_box/rank_slot.dart';
 import 'package:flutter/material.dart';
 
+// 이건 나중에 지워야 할 것
+import 'dart:convert';
+import 'package:flutter/services.dart';
+
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
+
+  Future<Map<String, dynamic>> _loadProfileData() async {
+    final jsonString = await rootBundle.loadString('assets/data/profile_screen.json');
+    final jsonData = json.decode(jsonString);
+    return jsonData;
+  }
 
   @override
   Widget build(BuildContext context) {
