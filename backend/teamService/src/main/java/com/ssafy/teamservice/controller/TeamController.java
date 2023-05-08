@@ -1,6 +1,8 @@
 package com.ssafy.teamservice.controller;
 
 import com.ssafy.teamservice.vo.*;
+import com.ssafy.teamservice.vo.dto.TeamDetailsResponseDto;
+import com.ssafy.teamservice.vo.dto.TeamResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

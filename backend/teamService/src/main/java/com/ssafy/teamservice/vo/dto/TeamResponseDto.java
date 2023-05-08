@@ -1,4 +1,4 @@
-package com.ssafy.teamservice.vo;
+package com.ssafy.teamservice.vo.dto;
 
 import com.ssafy.teamservice.jpa.TeamEntity;
 import lombok.*;
