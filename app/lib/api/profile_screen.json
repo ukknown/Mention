@@ -1,0 +1,57 @@
+{
+  "user_id": 1,
+  "profile_image": "example_image1",
+  "name": "김싸피",
+  "coin": 10,
+  "most_mentioned_topic": [
+    {
+        "title" : "이성으로 보인적 있는 사람은?",
+        "mentioned_count" : 13
+    },
+    {
+        "title" : "같이 밥 먹고 싶은 사람은?",
+        "mentioned_count" : 11
+    },
+    {
+        "title" : "비밀을 털어놓을 수 있는 사람은?",
+        "mentioned_count" : 9
+    }
+  ],
+  "group" : [
+    {
+        "group_image" : "example_image2",
+        "group_name" : "SSAFY",
+        "group_member" : 84
+    },
+    {
+        "group_image" : "example_image3",
+        "group_name" : "광주캠퍼스",
+        "group_member" : 250
+    },
+    {
+        "group_image" : "example_image4",
+        "group_name" : "C105",
+        "group_member" : 5
+    }
+  ],
+  "metion" : [
+    {
+        "mention_title" : "mention title example 1",
+        "gender" : "male",
+        "lagdate" : "2023-05-08-12:00:00",
+        "hint" : 0
+    },
+    {
+        "mention_title" : "mention title example 1",
+        "gender" : "female",
+        "lagdate" : "2023-05-06-12:00:00",
+        "hint" : 1
+    },
+    {
+        "mention_title" : "mention title example 1",
+        "gender" : "unknown",
+        "lagdate" : "2023-04-28-12:00:00",
+        "hint" : 2
+    }
+  ]
+}

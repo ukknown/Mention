@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class PedometerText extends StatefulWidget {
   final double screenHeight, screenWidth;
@@ -15,12 +16,35 @@ class PedometerText extends StatefulWidget {
 
 class _PedometerTextState extends State<PedometerText> {
   // final PedometerManager _pedometerManager = PedometerManager();
-  final int _stepCount = 1500;
+  int _stepCount = 3000;
+  bool _showFireworks = false;
+  bool _showClick = true;
 
   @override
   void initState() {
     super.initState();
     // _initPedometer();
+  }
+
+  void _resetStepCount() {
+    setState(() {
+      _stepCount = 0;
+    });
+  }
+
+  void _displayFireworks() async {
+    setState(() {
+      _showFireworks = true;
+      _showClick = false;
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      _showFireworks = false;
+    });
+
+    _resetStepCount();
   }
 
   // void _initPedometer() async {
@@ -40,9 +64,12 @@ class _PedometerTextState extends State<PedometerText> {
   @override
   Widget build(BuildContext context) {
     final percentage = _stepCount / 3000 * 100;
+    final limitedPercentage = percentage > 100 ? 100 : percentage;
+    final isComplete = percentage >= 100;
     return Padding(
       padding: EdgeInsets.only(
         top: widget.screenHeight * 0.01,
+        left: widget.screenWidth * 0.025,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +84,7 @@ class _PedometerTextState extends State<PedometerText> {
             child: Stack(
               children: [
                 FractionallySizedBox(
-                  widthFactor: percentage / 100,
+                  widthFactor: limitedPercentage / 100,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
@@ -67,7 +94,7 @@ class _PedometerTextState extends State<PedometerText> {
                 ),
                 Center(
                   child: Text(
-                    '${percentage.toInt()}%',
+                    '${limitedPercentage.toInt()}%',
                     style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -77,14 +104,46 @@ class _PedometerTextState extends State<PedometerText> {
               ],
             ),
           ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(100),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Transform.translate(
+                offset: Offset(-widget.screenWidth * 0.03, 0),
+                child: Image.asset(
+                  isComplete
+                      ? 'assets/images/race-flag.png'
+                      : 'assets/images/race-flag-watermark.png',
+                  width: 50,
+                  height: 50,
+                ),
               ),
-            ),
-            child: const Text('획득'),
+              if (_showClick && isComplete)
+                Lottie.asset(
+                  'assets/animations/click.json',
+                  width: 50,
+                  height: 50,
+                ),
+              if (_showFireworks)
+                Transform.scale(
+                  scale: 3.0, // 원하는 스케일 값으로 변경하세요.
+                  child: Transform.translate(
+                    offset: Offset(-widget.screenWidth * 0.01, 0),
+                    child: Lottie.asset(
+                      'assets/animations/fireworks.json',
+                      width: 50,
+                      height: 50,
+                    ),
+                  ),
+                ),
+              InkWell(
+                onTap: isComplete ? _displayFireworks : null,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  color: Colors.transparent,
+                ),
+              ),
+            ],
           ),
         ],
       ),
