@@ -1,4 +1,6 @@
 package com.ssafy.topicservice.controller;
+import com.ssafy.topicservice.vo.TopicIdRequestDto;
+import com.ssafy.topicservice.vo.TopicTitleRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import com.ssafy.topicservice.elastic.TopicDocument;
@@ -46,14 +48,14 @@ public class TopicController {
 
     @Operation(summary = "네이버 감정 분석 요청", description = "새로운 토픽일 경우 응모하시겠습니까? 이후 검증")
     @PostMapping("/call/naver")
-    public ResponseEntity<String> goToNaver(@RequestBody Map<String, String> topicCandidate) {
-        return ResponseEntity.ok().body(topicService.goToNaver(topicCandidate.get("topicCandidate")));
+    public ResponseEntity<String> goToNaver(@RequestBody TopicTitleRequestDto topicTitleRequestDto) {
+        return ResponseEntity.ok().body(topicService.goToNaver(topicTitleRequestDto.getTitle()));
     }
 
     @Operation(summary = "새로운 토픽인지 아닌지 검증", description = "새로운 토픽인지 아닌지 검증")
     @PostMapping("/check/similarity")
-    public ResponseEntity<String> checkSimilarity(@RequestBody Map<String, String> inputTopic) {
-        return ResponseEntity.ok().body(topicService.checkSimilarity(inputTopic.get("inputTopic")));
+    public ResponseEntity<String> checkSimilarity(@RequestBody TopicTitleRequestDto topicTitleRequestDto) {
+        return ResponseEntity.ok().body(topicService.checkSimilarity(topicTitleRequestDto.getTitle()));
     }
 
     @Operation(summary = "토픽 저장", description = "추후 데이터 쌓이면 메서드로 변환 예정")
@@ -70,15 +72,15 @@ public class TopicController {
 
     @Operation(summary = "관리자가 응모 토픽을 승인", description = "APPROVE 상태로 변환")
     @PostMapping("/admin/changeStatus/approve")
-    public ResponseEntity<?> approveTopic(@RequestBody Map<String, Long> topicId) {
-        topicService.approveTopic(topicId.get("topicId"));
+    public ResponseEntity<?> approveTopic(@RequestBody TopicIdRequestDto topicIdRequestDto) {
+        topicService.approveTopic(topicIdRequestDto.getTopicId());
         return ResponseEntity.ok().body("승인 완료");
     }
 
     @Operation(summary = "관리자가 응모 토픽을 거절", description = "REJECT 상태로 변환")
     @PostMapping("/admin/changeStatus/reject")
-    public ResponseEntity<?> rejectTopic(@RequestBody Map<String, Long> topicId) {
-        topicService.rejectTopic(topicId.get("topicId"));
+    public ResponseEntity<?> rejectTopic(@RequestBody TopicIdRequestDto topicIdRequestDto) {
+        topicService.rejectTopic(topicIdRequestDto.getTopicId());
         return ResponseEntity.ok().body("거절 완료");
     }
 
