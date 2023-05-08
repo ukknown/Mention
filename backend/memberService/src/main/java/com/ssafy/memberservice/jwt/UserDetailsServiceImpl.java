@@ -3,7 +3,7 @@ package com.ssafy.memberservice.jwt;
 
 import com.ssafy.memberservice.exception.member.MemberExceptionEnum;
 import com.ssafy.memberservice.exception.member.MemberRuntimeException;
-import com.ssafy.memberservice.jpa.MemberEntity;
+import com.ssafy.memberservice.jpa.Member;
 import com.ssafy.memberservice.jpa.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        MemberEntity memberEntity = memberRepository.findByEmail(email)
+        Member memberEntity = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
         log.info("email in loadUserByUsername = " + memberEntity.getEmail());
 

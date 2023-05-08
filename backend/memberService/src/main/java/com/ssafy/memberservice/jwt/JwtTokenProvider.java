@@ -5,7 +5,7 @@ import com.ssafy.memberservice.exception.auth.AuthExceptionEnum;
 import com.ssafy.memberservice.exception.auth.AuthRuntimeException;
 import com.ssafy.memberservice.exception.member.MemberExceptionEnum;
 import com.ssafy.memberservice.exception.member.MemberRuntimeException;
-import com.ssafy.memberservice.jpa.MemberEntity;
+import com.ssafy.memberservice.jpa.Member;
 import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.vo.dto.MemberDto;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
@@ -48,7 +48,7 @@ public class JwtTokenProvider {
 
     public TokenResponseDto createToken(String email) {
 
-        MemberEntity memberEntity =  memberRepository.findByEmail(email)
+        Member memberEntity =  memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberRuntimeException(MemberExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
         Claims claims = Jwts.claims().setSubject(email);

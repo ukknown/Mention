@@ -1,14 +1,13 @@
 package com.ssafy.memberservice.jpa;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
 public interface MemberRepository extends
-    CrudRepository<MemberEntity, Long> {
+    CrudRepository<Member, Long> {
 
-    Optional<MemberEntity> findByEmail(String email);
+    Optional<Member> findByEmail(String email);
 
-    void saveAndFlush(MemberEntity member);
+    void saveAndFlush(Member member);
 }
