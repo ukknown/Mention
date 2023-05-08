@@ -13,6 +13,7 @@ import com.ssafy.teamservice.vo.TeamResponseDto;
 import com.ssafy.teamservice.vo.TeamVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +45,8 @@ public class TeamController {
     @Operation(summary = "MSA 연결 체크 함수")
     @GetMapping("/health-check")
     public String checkConnection(HttpServletRequest request){
-        String memberStr = request.getHeader("member");
-        return memberStr + "Team MicroService Check Completed!";
+        String loginMember = request.getHeader("member");
+        return loginMember + "Team MicroService Check Completed!";
     }
 
     /**
@@ -58,20 +59,23 @@ public class TeamController {
     @PostMapping(path = "/teams", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Transactional
     public ResponseEntity createTeam(
-            @RequestPart(value = "memberid") Long memberId,
+            HttpServletRequest request,
             @RequestPart(value = "name") String name,
             @RequestPart(value = "file", required = false) MultipartFile file
     ){
+         JSONObject loginMember = new JSONObject(request.getHeader("member"));
+         Long loginMemberId = loginMember.getLong("id");
+
          String url = "";
          if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
 
         // String code = randomCodeGenerator.generate();
 
-        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamVO(name, url));
+        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamVO(name, url, loginMemberId));
 
-        teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, memberId));
+        teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, loginMemberId));
 
-        return ResponseEntity.status(HttpStatus.OK).body("팀 생성 완료");
+        return ResponseEntity.status(HttpStatus.OK).body("팀 생성 완료 ~ 🔥");
     }
 
     /**
@@ -80,9 +84,11 @@ public class TeamController {
      */
     @Operation(summary = "회원이 속한 그룹 목록 조회", description = "회원이 속한 그룹의 정보와 진행 중인 투표 2개를 보여줍니다.")
     @GetMapping("/teams")
-    public ResponseEntity<List<TeamResponseDto>> getTeam(){
-        Long memberId = 2L;
-        List<TeamResponseDto> result = teamMemberServiceImpl.getTeamList(memberId);
+    public ResponseEntity<List<TeamResponseDto>> getTeam(HttpServletRequest request){
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long loginMemberId = loginMember.getLong("id");
+
+        List<TeamResponseDto> result = teamMemberServiceImpl.getTeamList(loginMemberId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
