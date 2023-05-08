@@ -7,7 +7,7 @@ import com.ssafy.topicservice.elastic.TopicDocument;
 import com.ssafy.topicservice.jpa.Topic;
 import com.ssafy.topicservice.jpa.TopicRepository;
 import com.ssafy.topicservice.elastic.TopicSearchRepository;
-import com.ssafy.topicservice.vo.PendingTopicResoponseDto;
+import com.ssafy.topicservice.vo.TopicResoponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.similarity.CosineSimilarity;
 import org.springframework.beans.factory.annotation.Value;
@@ -150,10 +150,10 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public List<PendingTopicResoponseDto> getPendingTopic() {
+    public List<TopicResoponseDto> getPendingTopic() {
         List<Topic> topicList = topicRepository.findAllByApproveStatus(ApproveStatus.PENDING);
         return topicList.stream()
-                .map(topic -> PendingTopicResoponseDto.builder()
+                .map(topic -> TopicResoponseDto.builder()
                         .id(topic.getId())
                         .title(topic.getTitle())
                         .approveStatus(topic.getApproveStatus())
@@ -176,6 +176,12 @@ public class TopicServiceImpl implements TopicService{
                         .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
         topic.rejectTopic();
     }
+
+//    @Override
+//    public TopicResoponseDto getRandomOne() {
+//        Topic topic = topicRepository.findTopByOrderByRandom();
+//
+//    }
     private Map<CharSequence, Integer> getCharacterFrequencyVector(String text) {
         Map<CharSequence, Integer> vector = new HashMap<>();
         for (char c : text.toCharArray()) {
