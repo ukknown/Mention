@@ -1,5 +1,6 @@
 package com.ssafy.memberservice.vo.dto.common;
 
+import com.ssafy.memberservice.vo.Gender;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,7 +9,7 @@ import lombok.Getter;
 public class KakaoUserInfoResponseDto {
     private Long id;
     private String email;
-    private String gender;
+    private Gender gender;
     private String profileImage;
     private String nickname;
 }
