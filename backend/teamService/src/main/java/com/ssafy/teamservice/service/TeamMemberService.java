@@ -2,7 +2,7 @@ package com.ssafy.teamservice.service;
 
 import com.ssafy.teamservice.jpa.TeamMemberEntity;
 import com.ssafy.teamservice.vo.TeamMemberVO;
-import com.ssafy.teamservice.vo.TeamResponseDto;
+import com.ssafy.teamservice.vo.dto.TeamResponseDto;
 
 import java.util.List;
 

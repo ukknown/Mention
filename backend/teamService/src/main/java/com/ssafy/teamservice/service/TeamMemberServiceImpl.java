@@ -4,11 +4,9 @@ import com.ssafy.teamservice.config.MapperConfig;
 import com.ssafy.teamservice.jpa.TeamMemberEntity;
 import com.ssafy.teamservice.jpa.TeamMemberRepository;
 import com.ssafy.teamservice.vo.TeamMemberVO;
-import com.ssafy.teamservice.vo.TeamResponseDto;
-import org.modelmapper.ModelMapper;
+import com.ssafy.teamservice.vo.dto.TeamResponseDto;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

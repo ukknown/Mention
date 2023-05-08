@@ -1,7 +1,7 @@
 package com.ssafy.teamservice.service;
 
 import com.ssafy.teamservice.jpa.TeamEntity;
-import com.ssafy.teamservice.vo.TeamDetailsResponseDto;
+import com.ssafy.teamservice.vo.dto.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.TeamDetailVO;
 import com.ssafy.teamservice.vo.TeamVO;
 
