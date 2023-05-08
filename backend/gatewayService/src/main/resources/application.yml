@@ -18,41 +18,39 @@ spring:
     password: guest
   data:
     redis:
-      host: localhost
+      host: k8c1051.p.ssafy.io
       port: 6379
+      password: mention
   cloud:
     gateway:
-      default-filters:
-        - name: GlobalFilter
-          args:
-            baseMessage: Spring Cloud Gateway Global Filter
-            preLogger: true
-            postLogger: true
       routes:
         - id: member-service
           uri: lb://MEMBER-SERVICE
           predicates:
             - Path=/member-service/login
           filters:
-            - CustomFilter
+#            - CustomFilter
         - id: member-service
           uri: lb://MEMBER-SERVICE
           predicates:
             - Path=/member-service/**
           filters:
-            - CustomFilter
+            - AuthorizationHeaderFilter
         - id: topic-service
           uri: lb://TOPIC-SERVICE
           predicates:
             - Path=/topic-service/**
           filters:
-            - CustomFilter
             - AuthorizationHeaderFilter
+
 management:
   endpoints:
     web:
       exposure:
         include: health, refresh, beans, busrefresh, httptrace
 
-
-
+jwt:
+  header: Authorization
+  #echo 'spring-boot-security-jwt-ssafy-project-fairytalebox-spring-boot-security-jwt'|base64
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXNzYWZ5LXByb2plY3QtZmFpcnl0YWxlYm94LXNwcmluZy1ib290LXNlY3VyaXR5LWp3dA==
+  token-validity-in-milliseconds: 600000

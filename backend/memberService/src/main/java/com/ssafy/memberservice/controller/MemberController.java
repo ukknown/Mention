@@ -28,7 +28,6 @@ public class MemberController {
 
         System.out.println(memberStr);
 
-
         return "MemberService Check Completed!";
     }
 
@@ -37,5 +36,7 @@ public class MemberController {
     public void addCount(@RequestBody String useremail){
         memberService.addCount(useremail);
     }
+
+
 
 }
