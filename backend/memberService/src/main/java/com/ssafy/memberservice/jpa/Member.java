@@ -3,6 +3,7 @@ package com.ssafy.memberservice.jpa;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.ssafy.memberservice.vo.Gender;
 import com.ssafy.memberservice.vo.Role;
 import lombok.*;
 
@@ -11,17 +12,20 @@ import lombok.*;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberEntity {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     private String email;
-    private String gender;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    @NotNull
     private String nickname;
+    @NotNull
     private String profileImage;
-    private  String bangAmount;
+    private int bangAmount;
     private int timeout;
     @Enumerated(EnumType.STRING)
     private Role role;
