@@ -166,24 +166,29 @@ public class TeamController {
         // 해당 그룹에 있는 사용자가 맞는지 확인 -> 404
         TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
 
-        // 토큰 = 관리자 이거나 나가려는 사용자 토큰 = 나가려는 사용자 아이디인 경우만 가능 -> UNAUTHORIZED(401)
-        if(teamVO.getMemberId() != memberId && teamEntity.getTeamOwnerId() != teamVO.getMemberId()) {
+        TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, teamVO.getMemberId());
+
+        // 회원 토큰일 경우, 방장 토큰일 경우
+        if(teamVO.getMemberId() == memberId){
+            teamMemberServiceImpl.deleteMemberFromTeam(teamMemberVO);
+        } else if(teamVO.getMemberId() == teamEntity.getTeamOwnerId()){
+            if(teamVO.getMemberId() == memberId){
+                // 방장이 나가는 경우 -> 그룹은 삭제
+                teamMemberServiceImpl.deleteMemberFromTeam(teamMemberVO);
+                teamServiceImpl.updateIsDeleteTrue(teamVO);
+                return ResponseEntity.status(HttpStatus.OK).body("그룹 삭제 완료 ~ 🔥");
+            } else {
+                // 방장이 사용자를 강퇴시키는 경우 - isKickOut 컬럼 값 1로 변경
+                teamMemberServiceImpl.updateIsKickOut(teamMemberVO);
+            }
+        } else {
             throw new CustomException(ErrorCode.UNATHORIZED);
         }
 
         // team.capacity 업데이트
         teamServiceImpl.updateCapacity(teamVO, false);
 
-        // team_member에서 삭제
-        teamMemberServiceImpl.deleteMemberFromTeam(new TeamMemberVO(teamEntity, teamVO.getMemberId()));
-
-        // 방장이 나가거나 그룹의 모든 인원이 나가면 그룹은 삭제
-        if(teamEntity.getCapacity() == 0 || teamEntity.getTeamOwnerId() == teamVO.getMemberId()) {
-            teamServiceImpl.updateIsDeleteTrue(teamVO);
-            return ResponseEntity.status(HttpStatus.OK).body("그룹 삭제 완료 ~ 🔥");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body("그룹에서 나가기 완료 ~ 🔥");
+        return ResponseEntity.status(HttpStatus.OK).body("그룹에서 나가기/강퇴 완료 ~ 🔥");
     }
 
     public TeamVO convertRequestToVO(HttpServletRequest request){
