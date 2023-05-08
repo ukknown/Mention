@@ -1,6 +1,6 @@
 package com.ssafy.memberservice.jwt;
 
-import com.ssafy.memberservice.jpa.Member;
+import com.ssafy.memberservice.jpa.MemberEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +14,7 @@ public class CustomUserDetails implements UserDetails {
     private String email;
     private Set<GrantedAuthority> authorities;
 
-    public CustomUserDetails(Member member) {
+    public CustomUserDetails(MemberEntity member) {
         this.email = member.getEmail();
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(member.getRole().name()));

@@ -8,7 +8,7 @@ import com.ssafy.memberservice.exception.auth.AuthRuntimeException;
 import com.ssafy.memberservice.exception.member.MemberExceptionEnum;
 import com.ssafy.memberservice.exception.member.MemberRuntimeException;
 import com.ssafy.memberservice.exception.member.TimeoutException;
-import com.ssafy.memberservice.jpa.Member;
+import com.ssafy.memberservice.jpa.MemberEntity;
 import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.jwt.JwtTokenProvider;
 import com.ssafy.memberservice.vo.Role;
@@ -58,12 +58,12 @@ public class MemberServiceImpl implements MemberService{
 
         String email = "";
         //받아옴 email 정보를 이용해 해당 이메일로 가입된 회원 있는지 조회
-        Member joinMember = memberRepository.findByEmail(kakaoUserInfoResponse.getEmail()).orElse(null);
+        MemberEntity joinMember = memberRepository.findByEmail(kakaoUserInfoResponse.getEmail()).orElse(null);
 
 
         if (joinMember == null) {//회원이 없다면
             //회원정보 DB 저장
-            Member member = Member
+            MemberEntity member = MemberEntity
                     .builder()
                     .email(kakaoUserInfoResponse.getEmail())
                     .nickname(kakaoUserInfoResponse.getNickname())
@@ -91,10 +91,10 @@ public class MemberServiceImpl implements MemberService{
     //timeout +1
     @Override
     public void addCount(String useremail) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(useremail);
+        Optional<MemberEntity> optionalMember = memberRepository.findByEmail(useremail);
 
         if(optionalMember.isPresent()){
-            Member member = optionalMember.get();
+            MemberEntity member = optionalMember.get();
             int timeout = member.getTimeout()+1;
             member = member.toBuilder().timeout(timeout).build();
             memberRepository.save(member);
@@ -153,7 +153,7 @@ public class MemberServiceImpl implements MemberService{
             }
             //프로필 제공 동의 여부
             boolean profileImageNeedsAgreement = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile_image_needs_agreement").getAsBoolean();
-            if(profileImageNeedsAgreement){
+            if(!profileImageNeedsAgreement){
                 profileImage = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile_image").getAsString();
             }else{
                 throw new MemberRuntimeException(MemberExceptionEnum.MEMBER_KAKAO_PROFILEIMAGE_EXCEPTION);
