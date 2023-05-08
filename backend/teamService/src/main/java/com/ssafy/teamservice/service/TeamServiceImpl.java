@@ -63,11 +63,10 @@ public class TeamServiceImpl implements TeamService{
     }
 
     @Override
-    public TeamEntity updateCapacity(TeamVO teamVO, boolean isIn) {
+    public void updateCapacity(TeamVO teamVO, boolean isIn) {
         TeamEntity teamEntity = findById(teamVO);
         if(isIn) teamEntity.updateCapacity(teamEntity.getCapacity() + 1);
         else teamEntity.updateCapacity(teamEntity.getCapacity() - 1);
-        return teamEntity;
     }
 
     @Override
@@ -77,7 +76,7 @@ public class TeamServiceImpl implements TeamService{
     }
 
     /**
-     * 팀 상세정보 DTO 조회
+     * 팀 상세정보 조회
      * @param teamVO
      * @return
      */
