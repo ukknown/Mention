@@ -44,8 +44,8 @@ public class TeamController {
     @Operation(summary = "MSA 연결 체크 함수")
     @GetMapping("/health-check")
     public String checkConnection(HttpServletRequest request){
-        String loginMember = request.getHeader("member");
-        return loginMember + "Team MicroService Check Completed!";
+        TeamVO teamVO = convertRequestToVO(request);
+        return teamVO.getMemberId() + "Team MicroService Check Completed!";
     }
 
     /**
@@ -62,17 +62,16 @@ public class TeamController {
             @RequestPart(value = "name") String name,
             @RequestPart(value = "file", required = false) MultipartFile file
     ){
-         JSONObject loginMember = new JSONObject(request.getHeader("member"));
-         Long loginMemberId = loginMember.getLong("id");
+        TeamVO teamVO = convertRequestToVO(request);
 
          String url = "";
          if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
 
         // String code = randomCodeGenerator.generate();
 
-        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamDetailVO(name, url, loginMemberId));
+        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamDetailVO(name, url, teamVO.getMemberId()));
 
-        teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, loginMemberId));
+        teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, teamVO.getMemberId()));
 
         return ResponseEntity.status(HttpStatus.OK).body("팀 생성 완료 ~ 🔥");
     }
@@ -84,9 +83,8 @@ public class TeamController {
     @Operation(summary = "회원이 속한 그룹 목록 조회", description = "회원이 속한 그룹의 정보와 진행 중인 투표 2개를 보여줍니다.")
     @GetMapping("/teams")
     public ResponseEntity<List<TeamResponseDto>> getTeam(HttpServletRequest request){
-        JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        Long loginMemberId = loginMember.getLong("id");
-        List<TeamResponseDto> result = teamMemberServiceImpl.getTeamList(loginMemberId);
+        TeamVO teamVO = convertRequestToVO(request);
+        List<TeamResponseDto> result = teamMemberServiceImpl.getTeamList(teamVO.getMemberId());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -101,10 +99,8 @@ public class TeamController {
             HttpServletRequest request,
             @PathVariable("teamid") Long teamId
     ){
-        JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        Long loginMemberId = loginMember.getLong("id");
-
-        TeamVO teamVO = new TeamVO(teamId, loginMemberId);
+        TeamVO teamVO = convertRequestToVO(request);
+        teamVO.setTeamId(teamId);
 
         // 존재하지 않는 아이디일 경우 -> 404 반환
         if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
@@ -127,16 +123,14 @@ public class TeamController {
             HttpServletRequest request,
             @PathVariable("teamid") Long teamId
     ){
-        JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        Long loginMemberId = loginMember.getLong("id");
-
-        TeamVO teamVO = new TeamVO(teamId, loginMemberId);
+        TeamVO teamVO = convertRequestToVO(request);
+        teamVO.setTeamId(teamId);
 
         // teamId가 존재하는지 확인 -> 404
         if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
 
         TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
-        TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, loginMemberId);
+        TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, teamVO.getMemberId());
 
         // 이미 입장한 그룹인지 확인
         if(teamMemberServiceImpl.existsByMemberIdAndTeamEntity(teamMemberVO)){
@@ -144,7 +138,7 @@ public class TeamController {
         }
 
         teamMemberServiceImpl.joinTeamMember(teamMemberVO);
-        teamServiceImpl.updateCapacity(new TeamVO(teamId), true);
+        teamServiceImpl.updateCapacity(teamVO, true);
 
         return ResponseEntity.status(HttpStatus.OK).body("그룹 입장 완료 ~ 🔥");
     }
@@ -156,41 +150,46 @@ public class TeamController {
      * @return
      */
     @Operation(summary = "그룹 나가기", description = "방장 또는 회원은 그룹을 나갑니다. 방장이 나가거나 그룹의 모든 인원이 나가면 그룹은 삭제됩니다.")
-    @DeleteMapping("/teams/{teamid}")
+    @DeleteMapping("/teams/{teamid}/{memberid}")
     @Transactional
     public ResponseEntity deleteMemberFromTeam(
             HttpServletRequest request,
-            @PathVariable("teamid") Long teamId
+            @PathVariable("teamid") Long teamId,
+            @PathVariable("memberid") Long memberId
     ){
-        JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        Long loginMemberId = loginMember.getLong("id");
-        String loginMemberRole = loginMember.getString("role");
-
-        // 토큰 = 관리자 이거나 나가려는 사용자 토큰 = 나가려는 사용자 아이디인 경우만 가능 -> UNAUTHORIZED(401)
-//        if(토큰 != 관리자 || memberId != 토큰) throw new CustomException(ErrorCode.UNATHORIZED);
-
-        TeamVO teamVO = new TeamVO(teamId, loginMemberId);
+        TeamVO teamVO = convertRequestToVO(request);
+        teamVO.setTeamId(teamId);
 
         // teamId가 존재하는지 확인 -> 404
         if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
 
         // 해당 그룹에 있는 사용자가 맞는지 확인 -> 404
+        TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
+
+        // 토큰 = 관리자 이거나 나가려는 사용자 토큰 = 나가려는 사용자 아이디인 경우만 가능 -> UNAUTHORIZED(401)
+        if(teamVO.getMemberId() != memberId && teamEntity.getTeamOwnerId() != teamVO.getMemberId()) {
+            throw new CustomException(ErrorCode.UNATHORIZED);
+        }
 
         // team.capacity 업데이트
-        TeamEntity teamEntity = teamServiceImpl.updateCapacity(teamVO, false);
+        teamServiceImpl.updateCapacity(teamVO, false);
 
         // team_member에서 삭제
-        teamMemberServiceImpl.deleteMemberFromTeam(new TeamMemberVO(teamEntity, loginMemberId));
+        teamMemberServiceImpl.deleteMemberFromTeam(new TeamMemberVO(teamEntity, teamVO.getMemberId()));
 
         // 방장이 나가거나 그룹의 모든 인원이 나가면 그룹은 삭제
-        if(teamEntity.getCapacity() == 0
-//            || 팀 방장 아이디 == 나가려는 사용자 아이디
-        ) {
+        if(teamEntity.getCapacity() == 0 || teamEntity.getTeamOwnerId() == teamVO.getMemberId()) {
             teamServiceImpl.updateIsDeleteTrue(teamVO);
             return ResponseEntity.status(HttpStatus.OK).body("그룹 삭제 완료 ~ 🔥");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("그룹에서 나가기 완료 ~ 🔥");
+    }
+
+    public TeamVO convertRequestToVO(HttpServletRequest request){
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long loginMemberId = loginMember.getLong("id");
+        return new TeamVO(loginMemberId);
     }
 
 }
