@@ -87,7 +87,6 @@ public class TeamController {
     public ResponseEntity<List<TeamResponseDto>> getTeam(HttpServletRequest request){
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long loginMemberId = loginMember.getLong("id");
-
         List<TeamResponseDto> result = teamMemberServiceImpl.getTeamList(loginMemberId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
