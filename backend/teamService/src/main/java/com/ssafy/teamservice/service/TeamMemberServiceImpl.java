@@ -12,11 +12,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class TeamMemberServiceImpl implements TeamMemberService{
-    private final MapperConfig mapperConfig;
     private final TeamMemberRepository teamMemberRepository;
 
-    public TeamMemberServiceImpl(MapperConfig mapperConfig, TeamMemberRepository teamMemberRepository) {
-        this.mapperConfig = mapperConfig;
+    public TeamMemberServiceImpl(TeamMemberRepository teamMemberRepository) {
         this.teamMemberRepository = teamMemberRepository;
     }
 
@@ -46,7 +44,10 @@ public class TeamMemberServiceImpl implements TeamMemberService{
      */
     @Override
     public void joinTeamMember(TeamMemberVO teamMemberVO) {
-        TeamMemberEntity teamMemberEntity = TeamMemberEntity.builder().teamEntity(teamMemberVO.getTeamEntity()).memberId(teamMemberVO.getMemberId()).build();
+        TeamMemberEntity teamMemberEntity = TeamMemberEntity.builder()
+                .teamEntity(teamMemberVO.getTeamEntity())
+                .memberId(teamMemberVO.getMemberId())
+                .build();
         teamMemberRepository.save(teamMemberEntity);
     }
 
@@ -67,6 +68,12 @@ public class TeamMemberServiceImpl implements TeamMemberService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void updateIsKickOut(TeamMemberVO teamMemberVO) {
+        TeamMemberEntity teamMemberEntity = findByMemberIdAndTeamEntity(teamMemberVO);
+        teamMemberEntity.updateIsKickOut();
+    }
+
     /**
      * 그룹에서 회원 삭제
      * @param teamMemberVO
@@ -76,4 +83,6 @@ public class TeamMemberServiceImpl implements TeamMemberService{
         TeamMemberEntity teamMemberEntity = findByMemberIdAndTeamEntity(teamMemberVO);
         teamMemberRepository.deleteById(teamMemberEntity.getId());
     }
+
+
 }

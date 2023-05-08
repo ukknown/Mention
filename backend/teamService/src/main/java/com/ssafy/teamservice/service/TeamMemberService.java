@@ -12,4 +12,5 @@ public interface TeamMemberService {
     void joinTeamMember(TeamMemberVO teamMemberVO);
     void deleteMemberFromTeam(TeamMemberVO teamMemberVO);
     List<TeamResponseDto> getTeamList(Long memberId);
+    void updateIsKickOut(TeamMemberVO teamMemberVO);
 }
