@@ -22,11 +22,11 @@ public class MentionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long vote_id;
+    private Long voteId;
 
-    private Long voter_id;
+    private Long voterId;
 
-    private Long picker_id;
+    private Long pickerId;
 
     private String hint;
 
