@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class FCMNotificationApiController {
     private final FCMService fcmService;
-    @PostMapping()
+    @PostMapping("")
     public String sendNotificationByToken(@RequestBody FCMNotificationRequestDto fcmNotificationRequestDto){
         return fcmService.sendNotificationByToken(fcmNotificationRequestDto);
     }
