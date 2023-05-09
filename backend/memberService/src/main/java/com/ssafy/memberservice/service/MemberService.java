@@ -21,4 +21,6 @@ public interface MemberService {
     void calBang(int bang, Long loginMemberId);
 
     void addTimeout(Long loginMemberId);
+
+    boolean isBan(Long loginMemberId);
 }
