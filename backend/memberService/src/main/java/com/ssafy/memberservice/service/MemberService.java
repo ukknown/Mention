@@ -18,4 +18,6 @@ public interface MemberService {
     void addCount(String useremail);
 
     MemberVO getMemberVO(Long memberid);
+
+    void calBang(int bang, Long loginMemberId);
 }

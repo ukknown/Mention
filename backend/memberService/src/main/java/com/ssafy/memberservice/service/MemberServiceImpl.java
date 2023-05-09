@@ -126,6 +126,23 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public void calBang(int bang, Long loginMemberId) {
+        //memberid값을 가진 회원 정보를 찾음
+        Optional<MemberEntity> memberInfo = memberRepository.findById(loginMemberId);
+
+        if(memberInfo.isPresent()) {// 존재한다면
+            //memberid값을 가진 회원 정보를 가져옴
+            MemberEntity entity = memberInfo.get();
+            int bangAmount = entity.getBangAmount() + 1;
+            entity = entity.toBuilder()
+                    .bangAmount(bangAmount)
+                    .build();
+            memberRepository.save(entity);
+        }
+    }
+
+
+    @Override
     public KakaoUserInfoResponseDto getKakaoUser(String accessToken) {
         String email = "";
         String gender = "";
