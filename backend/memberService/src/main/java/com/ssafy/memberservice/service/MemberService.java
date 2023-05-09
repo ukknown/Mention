@@ -1,6 +1,8 @@
 package com.ssafy.memberservice.service;
 
 
+import com.ssafy.memberservice.vo.MemberVO;
+import com.ssafy.memberservice.vo.MyPageVO;
 import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
@@ -13,6 +15,15 @@ public interface MemberService {
 
 
     ResponseEntity<TokenResponseDto> joinOrLogin(String code);
+    
 
-    void addCount(String useremail);
+    MemberVO getMemberVO(Long memberid);
+
+    void calBang(int bang, Long loginMemberId);
+
+    void addTimeout(Long loginMemberId);
+
+    boolean isBan(Long loginMemberId);
+
+    MyPageVO getMypage(Long memberid);
 }
