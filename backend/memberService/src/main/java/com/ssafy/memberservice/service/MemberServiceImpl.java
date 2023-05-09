@@ -12,6 +12,8 @@ import com.ssafy.memberservice.jpa.MemberEntity;
 import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.jwt.JwtTokenProvider;
 import com.ssafy.memberservice.vo.Gender;
+import com.ssafy.memberservice.vo.MemberVO;
+import com.ssafy.memberservice.vo.MyPageVO;
 import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
@@ -59,10 +61,23 @@ public class MemberServiceImpl implements MemberService{
 
         String email = "";
         //받아옴 email 정보를 이용해 해당 이메일로 가입된 회원 있는지 조회
-        MemberEntity joinMember = memberRepository.findByEmail(kakaoUserInfoResponse.getEmail()).orElse(null);
+//        MemberEntity joinMember = memberRepository.findByEmail(kakaoUserInfoResponse.getEmail()).orElse(null);
+        Optional<MemberEntity> joinMember = memberRepository.findByEmail(kakaoUserInfoResponse.getEmail());
 
+        if (joinMember.isPresent()) {//회원이 있다면
 
-        if (joinMember == null) {//회원이 없다면
+            MemberEntity member = joinMember.get();
+
+            if(member.getTimeout() < 3){
+
+                email = member.getEmail();
+
+            }else{ //timeout이 3을 넘었으면 영구정지된 사용자
+
+                System.out.println("영구 정지");
+                throw new TimeoutException("영구 정지된 사용자");
+            }
+        } else {
             //회원정보 DB 저장
             MemberEntity member = MemberEntity
                     .builder()
@@ -74,16 +89,8 @@ public class MemberServiceImpl implements MemberService{
                     .build();
             email = kakaoUserInfoResponse.getEmail();
             memberRepository.saveAndFlush(member);
-
-        } else {
-            if(joinMember.getTimeout() < 3){
-                email = joinMember.getEmail();
-            }else{ //timeout이 3을 넘었으면 영구정지된 사용자
-                throw new TimeoutException("영구 정지된 사용자");
-            }
-
         }
-
+        System.out.println("토큰 생성 전 : " + email);
         //jwt 토큰 생성
         TokenResponseDto tokenResponse = jwtTokenProvider.createToken(email);
 
@@ -91,9 +98,46 @@ public class MemberServiceImpl implements MemberService{
     }
 
     //timeout +1
+
+
     @Override
-    public void addCount(String useremail) {
-        Optional<MemberEntity> optionalMember = memberRepository.findByEmail(useremail);
+    public MemberVO getMemberVO(Long memberid) {
+        //memberid값을 가진 회원 정보를 찾음
+        Optional<MemberEntity> member = memberRepository.findById(memberid);
+
+        if(member.isPresent()){// 존재한다면
+            //memberid값을 가진 회원 정보를 가져옴
+            MemberEntity entity = member.get();
+            //MemberVO 형태로 반환
+            return MemberVO.builder()
+                    .memberId(entity.getId())
+                    .nickname(entity.getNickname())
+                    .profileImage(entity.getProfileImage())
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
+    public void calBang(int bang, Long loginMemberId) {
+        //memberid값을 가진 회원 정보를 찾음
+        Optional<MemberEntity> memberInfo = memberRepository.findById(loginMemberId);
+
+        if(memberInfo.isPresent()) {// 존재한다면
+            //memberid값을 가진 회원 정보를 가져옴
+            MemberEntity entity = memberInfo.get();
+            int bangAmount = entity.getBangAmount() + bang;
+            entity = entity.toBuilder()
+                    .bangAmount(bangAmount)
+                    .build();
+            memberRepository.save(entity);
+        }
+    }
+
+    //timeout +1
+    @Override
+    public void addTimeout(Long loginMemberId) {
+        Optional<MemberEntity> optionalMember = memberRepository.findById(loginMemberId);
 
         if(optionalMember.isPresent()){
             MemberEntity member = optionalMember.get();
@@ -102,9 +146,29 @@ public class MemberServiceImpl implements MemberService{
             memberRepository.save(member);
         }
 
-
-
     }
+    //영구 정지 사용자 조회
+    @Override
+    public boolean isBan(Long loginMemberId) {
+        //현재 timeout값이 2면 true 아니면 false
+        Optional<MemberEntity> Member = memberRepository.findById(loginMemberId);
+
+        if(Member.isPresent()) {
+            MemberEntity member = Member.get();
+            if(member.getTimeout() >= 2){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //마이페이지 들어갈 정보 요청
+    @Override
+    public MyPageVO getMypage(Long memberid) {
+        return null;
+    }
+
 
     @Override
     public KakaoUserInfoResponseDto getKakaoUser(String accessToken) {
