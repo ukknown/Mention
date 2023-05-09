@@ -1,5 +1,7 @@
 // ignore: file_names
 
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:app/screens/home_screen.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +93,6 @@ class _MainPageState extends State<MainPage> {
               child: Swiper(
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
                     margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                     decoration: BoxDecoration(
                       color: const Color(0xFFA3B3F9),
@@ -104,6 +105,48 @@ class _MainPageState extends State<MainPage> {
                           offset: const Offset(4, 7),
                         )
                       ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 20,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: Image.asset("assets/images/coin.png"),
+                              ),
+                              Flexible(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "싸피 8기 광주",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    Text(
+                                      "👤 20",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   );
                   // return Image.asset(
