@@ -35,7 +35,7 @@ class GroupList extends StatelessWidget {
                     width: screenWidth * 0.05,
                   ),
                   Text(
-                    "내 그룹dd",
+                    "내 그룹",
                     style: TextStyle(
                       fontSize: screenWidth * 0.1,
                       fontWeight: FontWeight.w500,
