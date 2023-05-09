@@ -5,10 +5,13 @@ import com.ssafy.memberservice.service.MemberService;
 import com.ssafy.memberservice.vo.MemberVO;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Member;
 import java.util.Map;
 
 @RestController
@@ -33,14 +36,23 @@ public class MemberController {
     }
 
     @GetMapping("/member-service/{memberid}")
-    public MemberVO getOrders(@PathVariable Long memberid){
+    public ResponseEntity<MemberVO> getOrders(@PathVariable Long memberid){
+        MemberVO memberVO = memberService.getMemberVO(memberid);
 
-        return memberService.getMemberVO(memberid);
+        return ResponseEntity.status(HttpStatus.OK).body(memberVO);
+    }
+
+    @PatchMapping ("/bang/{bang}")
+    public ResponseEntity calBang(@PathVariable int bang, HttpServletRequest request){
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long loginMemberId = loginMember.getLong("id");
+        memberService.calBang(bang, loginMemberId);
+        return ResponseEntity.status(HttpStatus.OK).body("뱅 업데이트 완료");
     }
 
     //타임아웃 횟수 추가
-    @PostMapping("/time-out")
-    public void addCount(HttpServletRequest request){
+    @PatchMapping("/time-out/{out}")
+    public void addCount(@PathVariable int out ,HttpServletRequest request){
         String memberStr = request.getHeader("member");
 
         System.out.println(memberStr);
