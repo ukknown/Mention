@@ -2,7 +2,7 @@ package com.ssafy.topicservice.controller;
 
 import com.ssafy.topicservice.elastic.TopicDocument;
 import com.ssafy.topicservice.service.TopicService;
-import com.ssafy.topicservice.vo.PendingTopicResoponseDto;
+import com.ssafy.topicservice.vo.TopicResoponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +60,7 @@ public class TopicController {
 
     // 관리자가 토픽 응모 리스트 조회
     @GetMapping("/admin/pendingList")
-    public ResponseEntity<List<PendingTopicResoponseDto>> getPendingTopic() {
+    public ResponseEntity<List<TopicResoponseDto>> getPendingTopic() {
         return ResponseEntity.ok().body(topicService.getPendingTopic());
     }
 
@@ -77,5 +77,10 @@ public class TopicController {
         topicService.rejectTopic(topicId.get("topicId"));
         return ResponseEntity.ok().body("거절 완료");
     }
+
+//    @GetMapping("/random/one/{teamId}")
+//    public ResponseEntity<TopicResoponseDto> getRandomOne() {
+//        return ResponseEntity.ok().body(topicService.getRandomOne());
+//    }
 
 }
