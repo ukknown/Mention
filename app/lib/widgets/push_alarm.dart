@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -32,7 +34,7 @@ class _TestNotificationPageState extends State<TestNotificationPage> {
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        0, 'Test', '테스트', platformChannelSpecifics);
+        0, 'Mention', '누군가 당신에게 멘션을 보냈습니다.', platformChannelSpecifics);
   }
 
   @override

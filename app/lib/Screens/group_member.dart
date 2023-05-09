@@ -23,7 +23,7 @@ class _GroupMemberState extends State<GroupMember> {
   void initState() {
     super.initState();
     loadJson().then((value) {
-      setState(() {
+      setState(() { 
         memberData = value;
       });
     });

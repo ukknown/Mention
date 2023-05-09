@@ -45,8 +45,10 @@ class GroupScreen extends StatelessWidget {
                               style: TextStyle(fontSize: 25),
                             ),
                             // 이름 수정
-                            Icon(Icons.border_color_outlined)
                           ],
+                        ),
+                        const SizedBox(
+                          height: 10,
                         ),
                         Row(
                           children: [
