@@ -164,6 +164,12 @@ public class TopicServiceImpl implements TopicService{
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
         topic.approveTopic();
+        TopicDocument topicDocument = TopicDocument.builder()
+                .id(topicSearchRepository.count()+1)
+                .title(topic.getTitle())
+                .build();
+        topicSearchRepository.save(topicDocument);
+
     }
 
     @Override
