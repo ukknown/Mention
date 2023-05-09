@@ -13,6 +13,7 @@ import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.jwt.JwtTokenProvider;
 import com.ssafy.memberservice.vo.Gender;
 import com.ssafy.memberservice.vo.MemberVO;
+import com.ssafy.memberservice.vo.MyPageVO;
 import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
@@ -160,6 +161,12 @@ public class MemberServiceImpl implements MemberService{
         }
 
         return false;
+    }
+
+    //마이페이지 들어갈 정보 요청
+    @Override
+    public MyPageVO getMypage(Long memberid) {
+        return null;
     }
 
 

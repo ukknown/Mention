@@ -4,6 +4,7 @@ import com.ssafy.memberservice.exception.member.TimeoutException;
 import com.ssafy.memberservice.service.MemberService;
 
 import com.ssafy.memberservice.vo.MemberVO;
+import com.ssafy.memberservice.vo.MyPageVO;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -32,6 +33,12 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/me/{memberid}")
+    public ResponseEntity<MyPageVO> getMypage(@PathVariable Long memberid){
+        MyPageVO myPageVO = memberService.getMypage(memberid);
+        return ResponseEntity.status(HttpStatus.OK).body(myPageVO);
+    }
+
 
     @PatchMapping ("/bang/{bang}")
     public ResponseEntity calBang(@PathVariable int bang, HttpServletRequest request){
@@ -56,6 +63,8 @@ public class MemberController {
         }
 
     }
+
+
 
 
 
