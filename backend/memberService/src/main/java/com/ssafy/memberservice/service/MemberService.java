@@ -14,10 +14,11 @@ public interface MemberService {
 
 
     ResponseEntity<TokenResponseDto> joinOrLogin(String code);
-
-    void addCount(String useremail);
+    
 
     MemberVO getMemberVO(Long memberid);
 
     void calBang(int bang, Long loginMemberId);
+
+    void addTimeout(Long loginMemberId);
 }

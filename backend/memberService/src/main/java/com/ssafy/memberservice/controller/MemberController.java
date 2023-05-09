@@ -51,11 +51,16 @@ public class MemberController {
     }
 
     //타임아웃 횟수 추가
-    @PatchMapping("/time-out/{out}")
-    public void addCount(@PathVariable int out ,HttpServletRequest request){
-        String memberStr = request.getHeader("member");
+    @PatchMapping("/time-out")
+    public ResponseEntity addTimeout(HttpServletRequest request){
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long loginMemberId = loginMember.getLong("id");
 
-        System.out.println(memberStr);
+        memberService.addTimeout(loginMemberId);
+
+        return ResponseEntity.status(HttpStatus.OK).body("timeout 증가 완료");
+
+        //System.out.println(memberStr);
 
     }
 

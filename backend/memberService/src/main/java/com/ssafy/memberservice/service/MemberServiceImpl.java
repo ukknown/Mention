@@ -92,20 +92,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     //timeout +1
-    @Override
-    public void addCount(String useremail) {
-        Optional<MemberEntity> optionalMember = memberRepository.findByEmail(useremail);
 
-        if(optionalMember.isPresent()){
-            MemberEntity member = optionalMember.get();
-            int timeout = member.getTimeout()+1;
-            member = member.toBuilder().timeout(timeout).build();
-            memberRepository.save(member);
-        }
-
-
-
-    }
 
     @Override
     public MemberVO getMemberVO(Long memberid) {
@@ -133,12 +120,26 @@ public class MemberServiceImpl implements MemberService{
         if(memberInfo.isPresent()) {// 존재한다면
             //memberid값을 가진 회원 정보를 가져옴
             MemberEntity entity = memberInfo.get();
-            int bangAmount = entity.getBangAmount() + 1;
+            int bangAmount = entity.getBangAmount() + bang;
             entity = entity.toBuilder()
                     .bangAmount(bangAmount)
                     .build();
             memberRepository.save(entity);
         }
+    }
+
+    //timeout +1
+    @Override
+    public void addTimeout(Long loginMemberId) {
+        Optional<MemberEntity> optionalMember = memberRepository.findById(loginMemberId);
+
+        if(optionalMember.isPresent()){
+            MemberEntity member = optionalMember.get();
+            int timeout = member.getTimeout()+1;
+            member = member.toBuilder().timeout(timeout).build();
+            memberRepository.save(member);
+        }
+
     }
 
 
