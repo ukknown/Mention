@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.gson.JsonParseException;
 import com.ssafy.notificationservice.vo.FCMMessage;
-import com.ssafy.notificationservice.vo.dto.FCMNotificationRequestDto;
+import com.ssafy.notificationservice.vo.dto.FCMRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -23,7 +23,7 @@ public class FCMServiceImpl implements FCMService{
     private final ObjectMapper objectMapper;
 
     @Override
-    public String sendNotificationByToken(FCMNotificationRequestDto requestDto) {
+    public String sendNotificationByToken(FCMRequestDto requestDto) {
         // test
         return null;
     }
