@@ -1,9 +1,6 @@
 package com.ssafy.mentionservice.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,11 +25,7 @@ public class VoteEntity {
 
     private LocalDateTime dueDate;
 
-    @PostLoad
     public void updateIsCompleted() {
-        if (!isCompleted && LocalDateTime.now().isAfter(dueDate)) {
-            isCompleted = true;
-        }
+        this.isCompleted = true;
     }
-
 }
