@@ -5,11 +5,13 @@ class RankSlot extends StatelessWidget {
     super.key,
     required this.screenWidth,
     required this.screenHeight,
+    required this.topic,
     required this.rank,
   });
 
   final double screenWidth;
   final double screenHeight;
+  final Map<String, dynamic> topic;
   final int rank;
 
   @override
@@ -56,7 +58,7 @@ class RankSlot extends StatelessWidget {
                         width: screenWidth * 0.01,
                       ),
                       Text(
-                        "이성으로 보인적 있는 사람은?",
+                        topic['title'],
                         style: TextStyle(
                             fontSize: screenWidth * 0.04,
                             fontWeight: FontWeight.w600),
@@ -77,7 +79,7 @@ class RankSlot extends StatelessWidget {
                         width: screenWidth * 0.01,
                       ),
                       Text(
-                        "00",
+                        topic['mentioned_count'].toString(),
                         style: TextStyle(
                           fontSize: screenWidth * 0.055,
                           fontWeight: FontWeight.w500,

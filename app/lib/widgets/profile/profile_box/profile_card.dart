@@ -10,10 +10,19 @@ class ProfileCard extends StatelessWidget {
     super.key,
     required this.screenHeight,
     required this.screenWidth,
+    required this.profileImage,
+    required this.name,
+    required this.coin,
+    required this.groupCount,
+    required this.mentionCount,
   });
 
-  final double screenHeight;
-  final double screenWidth;
+  final double screenHeight, screenWidth;
+  final String profileImage;
+  final String name;
+  final int coin;
+  final int groupCount;
+  final int mentionCount;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +58,7 @@ class ProfileCard extends StatelessWidget {
                     padding: EdgeInsets.only(top: screenHeight * 0.01),
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/images/profile-example.png',
+                        'assets/images/$profileImage',
                       ),
                     ),
                   ),
@@ -61,7 +70,9 @@ class ProfileCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          SettingButton(screenWidth: screenWidth, screenHeight: screenHeight),
+                          SettingButton(
+                              screenWidth: screenWidth,
+                              screenHeight: screenHeight),
                           const SizedBox(
                             width: 20,
                           ),
@@ -75,7 +86,7 @@ class ProfileCard extends StatelessWidget {
                         height: screenHeight * 0.02,
                       ),
                       Text(
-                        "김싸피",
+                        name,
                         style: TextStyle(
                           fontSize: screenWidth * 0.1,
                           fontWeight: FontWeight.w500,
@@ -93,6 +104,7 @@ class ProfileCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GroupButton(
+                  groupCount: groupCount,
                   screenWidth: screenWidth,
                   screenHeight: screenHeight,
                 ),
@@ -100,6 +112,7 @@ class ProfileCard extends StatelessWidget {
                   width: screenWidth * 0.125,
                 ),
                 MentionButton(
+                  mentionCount: mentionCount,
                   screenWidth: screenWidth,
                   screenHeight: screenHeight,
                 ),
@@ -107,6 +120,7 @@ class ProfileCard extends StatelessWidget {
                   width: screenWidth * 0.125,
                 ),
                 CoinButton(
+                  coin: coin,
                   screenWidth: screenWidth,
                   screenHeight: screenHeight,
                 ),
@@ -118,5 +132,3 @@ class ProfileCard extends StatelessWidget {
     );
   }
 }
-
-

@@ -1,0 +1,22 @@
+{
+    "group" : [
+        {
+            "group_id" : 1,
+            "group_image" : "example_image2",
+            "group_name" : "SSAFY",
+            "group_member" : 1848
+        },
+        {
+            "group_id" : 2,
+            "group_image" : "example_image3",
+            "group_name" : "광주캠퍼스",
+            "group_member" : 245
+        },
+        {
+            "group_id" : 3,
+            "group_image" : "example_image4",
+            "group_name" : "C105",
+            "group_member" : 5
+        }
+      ]
+}

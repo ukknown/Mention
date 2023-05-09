@@ -6,9 +6,11 @@ class MentionButton extends StatelessWidget {
     super.key,
     required this.screenWidth,
     required this.screenHeight,
+    required this.mentionCount,
   });
 
   final double screenWidth, screenHeight;
+  final int mentionCount;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +34,9 @@ class MentionButton extends StatelessWidget {
             height: screenWidth * 0.125,
             width: screenWidth * 0.125,
           ),
-          const Text(
-            "00",
-            style: TextStyle(
+          Text(
+            "$mentionCount",
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
             ),
           ),

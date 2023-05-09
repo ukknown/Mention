@@ -6,9 +6,11 @@ class GroupButton extends StatelessWidget {
     super.key,
     required this.screenWidth,
     required this.screenHeight,
+    required this.groupCount,
   });
 
   final double screenWidth, screenHeight;
+  final int groupCount;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +34,9 @@ class GroupButton extends StatelessWidget {
             height: screenWidth * 0.125,
             width: screenWidth * 0.125,
           ),
-          const Text(
-            "00",
-            style: TextStyle(
+          Text(
+            '$groupCount',
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
             ),
           ),

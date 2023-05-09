@@ -13,6 +13,7 @@ class GroupList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffAAC6EF),
       body: Center(
         child: Column(
           children: [

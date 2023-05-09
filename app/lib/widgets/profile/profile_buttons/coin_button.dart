@@ -6,9 +6,11 @@ class CoinButton extends StatelessWidget {
     super.key,
     required this.screenWidth,
     required this.screenHeight,
+    required this.coin,
   });
 
   final double screenWidth, screenHeight;
+  final int coin;
 
   void _showModal(BuildContext context) {
     showDialog(
@@ -73,9 +75,9 @@ class CoinButton extends StatelessWidget {
             height: screenWidth * 0.125,
             width: screenWidth * 0.125,
           ),
-          const Text(
-            "00",
-            style: TextStyle(
+          Text(
+            "$coin",
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
             ),
           ),
