@@ -217,8 +217,8 @@ class _HintState extends State<Hint> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
                           vertical: 20,
                           horizontal: 20,
                         ),
@@ -226,17 +226,17 @@ class _HintState extends State<Hint> {
                           children: [
                             Column(
                               children: [
-                                const Text(
+                                Text(
                                   '3단계',
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   height: 2,
                                 ),
                                 Row(
-                                  children: const [
+                                  children: [
                                     Text("이름과 사진"),
                                   ],
                                 ),

@@ -1,3 +1,4 @@
+import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/profile/profile_box/pedometer.dart';
 import 'package:app/widgets/profile/profile_box/profile_card.dart';
 import 'package:app/widgets/profile/profile_box/rank_slot.dart';
@@ -24,6 +25,7 @@ class ProfilePage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xffAAC6EF),
+      bottomNavigationBar: const BottomNav(),
       body: FutureBuilder(
         future: loadProfileData(),
         builder: (
@@ -108,7 +110,9 @@ class ProfilePage extends StatelessWidget {
                         SizedBox(
                           height: screenHeight * 0.02,
                         ),
-                        for (var entry in profileData['most_mentioned_topic'].asMap().entries)
+                        for (var entry in profileData['most_mentioned_topic']
+                            .asMap()
+                            .entries)
                           RankSlot(
                             screenWidth: screenWidth,
                             screenHeight: screenHeight,
