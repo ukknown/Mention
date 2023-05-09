@@ -3,13 +3,21 @@ import 'package:flutter/material.dart';
 
 class MentionBox extends StatelessWidget {
   const MentionBox({
-    super.key,
+    Key? key,
     required this.screenWidth,
     required this.screenHeight,
-  });
+    required this.topicId,
+    required this.topicTitle,
+    required this.gender,
+    required this.hint,
+  }) : super(key: key);
 
   final double screenWidth;
   final double screenHeight;
+  final int topicId;
+  final String topicTitle;
+  final String gender;
+  final int hint;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +35,7 @@ class MentionBox extends StatelessWidget {
         child: Container(
           width: screenWidth * 0.8,
           decoration: BoxDecoration(
-            color: const Color(0xffa3b3f9),
+            color: genderColor(),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Column(
@@ -40,11 +48,11 @@ class MentionBox extends StatelessWidget {
                     width: screenWidth * 0.65,
                     height: screenHeight * 0.025,
                   ),
-                  HintCounter(),
+                  hintCounter(),
                 ],
               ),
               Text(
-                "토픽제목",
+                topicTitle,
                 style: TextStyle(fontSize: screenWidth * 0.05),
               ),
               SizedBox(
@@ -57,14 +65,24 @@ class MentionBox extends StatelessWidget {
     );
   }
 
-  Row HintCounter() {
+  Color genderColor() {
+    if (gender == "male") {
+      return const Color(0xFFA3B3F9);
+    } else if (gender == "female") {
+      return const Color(0xFFFEB6C4);
+    } else {
+      return const Color(0xFFFFFFFF);
+    }
+  }
+
+  Widget hintCounter() {
     return Row(
       children: [
         Container(
           width: screenWidth * 0.025,
           height: screenWidth * 0.025,
-          decoration: const BoxDecoration(
-            color: Colors.green,
+          decoration: BoxDecoration(
+            color: hint > 0 ? Colors.green : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
@@ -74,8 +92,8 @@ class MentionBox extends StatelessWidget {
         Container(
           width: screenWidth * 0.025,
           height: screenWidth * 0.025,
-          decoration: const BoxDecoration(
-            color: Colors.green,
+          decoration: BoxDecoration(
+            color: hint > 1 ? Colors.green : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
@@ -85,8 +103,8 @@ class MentionBox extends StatelessWidget {
         Container(
           width: screenWidth * 0.025,
           height: screenWidth * 0.025,
-          decoration: const BoxDecoration(
-            color: Colors.grey,
+          decoration: BoxDecoration(
+            color: hint > 2 ? Colors.green : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),

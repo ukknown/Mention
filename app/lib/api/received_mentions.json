@@ -1,22 +1,22 @@
 {
-    "metion" : [
+    "mentions" : [
         {
             "topic_id" : 1,
-            "mention_title" : "mention title example 1",
+            "topic_title" : "mention title example 1",
             "gender" : "male",
             "lagdate" : "2023-05-08-12:00:00",
             "hint" : 0
         },
         {
             "topic_id" : 2,
-            "mention_title" : "mention title example 1",
+            "topic_title" : "mention title example 1",
             "gender" : "female",
             "lagdate" : "2023-05-06-12:00:00",
             "hint" : 1
         },
         {
             "topic_id" : 3,
-            "mention_title" : "mention title example 1",
+            "topic_title" : "mention title example 1",
             "gender" : "unknown",
             "lagdate" : "2023-04-28-12:00:00",
             "hint" : 2

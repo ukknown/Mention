@@ -38,7 +38,6 @@ class ProfilePage extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             final profileData = snapshot.data!;
-            print(profileData);
             return SingleChildScrollView(
               child: Center(
                 child: Column(
