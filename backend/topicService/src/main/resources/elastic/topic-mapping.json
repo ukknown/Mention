@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "id": {
+      "type": "keyword"
+    },
+    "title": {
+      "type": "text",
+      "fields": {
+        "kor": {
+          "type": "text",
+          "analyzer": "korean"
+        },
+        "ngram": {
+          "type": "text",
+          "analyzer": "my_ngram_analyzer"
+        }
+      }
+    }
+  }
+}
