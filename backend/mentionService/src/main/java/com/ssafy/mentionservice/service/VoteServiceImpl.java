@@ -1,5 +1,7 @@
 package com.ssafy.mentionservice.service;
 
+import com.ssafy.mentionservice.jpa.MentionEntity;
+import com.ssafy.mentionservice.jpa.MentionRepository;
 import com.ssafy.mentionservice.jpa.VoteEntity;
 import com.ssafy.mentionservice.jpa.VoteRepository;
 import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
@@ -19,6 +21,8 @@ public class VoteServiceImpl implements VoteService{
 
     private final VoteRepository voteRepository;
 
+    private final MentionRepository mentionRepository;
+
     //TODO 알람 전송
     @Override
     @Transactional
@@ -28,16 +32,22 @@ public class VoteServiceImpl implements VoteService{
         VoteEntity voteEntity = VoteEntity.builder()
                 .teamId(createVoteRequestDto.getTeamId())
                 .topicTitle(createVoteRequestDto.getTopicTitle())
-                .isCompleted(true)
+                .isCompleted(false)
                 .dueDate(dueDate)
                 .build();
         voteRepository.save(voteEntity);
     }
 
     @Override
-    public List<VoteResponseDto> getVoteList(Long teamId) {
-        List<VoteEntity> voteList = voteRepository.findAllByTeamIdAndIsCompletedIsFalse(teamId);
+    public List<VoteResponseDto> getVoteList(Long teamId, Long memberId) {
+        updateExpiredVotes();
+        List<Long> voteIdList = mentionRepository.findAllByVoterId(memberId)
+                .stream()
+                .map(MentionEntity::getVoteId)
+                .collect(Collectors.toList());
+        List<VoteEntity> voteList = voteRepository.findAllByTeamIdAndIsCompletedIsFalseOrderByDueDateAsc(teamId);
         return voteList.stream()
+                .filter(vote -> !voteIdList.contains(vote.getId()))
                 .map(vote -> VoteResponseDto.builder()
                         .id(vote.getId())
                         .teamId(vote.getTeamId())
@@ -47,5 +57,15 @@ public class VoteServiceImpl implements VoteService{
                         .dueDate(vote.getDueDate())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    private void updateExpiredVotes() {
+        List<VoteEntity> notCompletedVotes = voteRepository.findAllByIsCompletedIsFalse();
+        LocalDateTime now = LocalDateTime.now();
+        notCompletedVotes.forEach(vote -> {
+            if (now.isAfter(vote.getDueDate())) {
+                vote.updateIsCompleted();
+            }
+        });
     }
 }

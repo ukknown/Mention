@@ -28,7 +28,7 @@ public class MentionController {
 
     @Operation(summary = "MSA 연결 체크")
     @GetMapping("/health-check")
-    public String checkConnection(HttpServletRequest request){
+    public String checkConnection(HttpServletRequest request) {
         return "MentionService Check Completed!";
     }
 
@@ -41,8 +41,10 @@ public class MentionController {
 
     @Operation(summary = "그룹에서 진행중인 투표 조회", description = "TODO 토큰 받아서 본인이 진행한 것 빼고 보여줘야함.")
     @GetMapping("/vote/{teamId}")
-    public ResponseEntity<List<VoteResponseDto>> getVoteList(@PathVariable Long teamId) {
-        return ResponseEntity.ok().body(voteService.getVoteList(teamId));
+    public ResponseEntity<List<VoteResponseDto>> getVoteList(HttpServletRequest request,
+                                                             @PathVariable Long teamId) {
+        Long memberId = loadMember(request).getMemberId();
+        return ResponseEntity.ok().body(voteService.getVoteList(teamId, memberId));
     }
 
     @Operation(summary = "멘션 생성", description = "상대방을 멘션!하다~")
@@ -63,7 +65,6 @@ public class MentionController {
                 .role(role)
                 .build();
     }
-
 
 
 }
