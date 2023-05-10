@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 Future<List<dynamic>> loadJson() async {
-  final String jsonString = await rootBundle.loadString('assets/member.json');
+  final String jsonString = await rootBundle.loadString('lib/api/member.json');
   return json.decode(jsonString);
 }
 
