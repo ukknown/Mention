@@ -1,8 +1,10 @@
+import 'package:app/Screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
-import 'screens/mainPage.dart';
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AndroidAlarmManager.initialize();
   runApp(const Mention());
 }
 
@@ -23,6 +25,6 @@ class Mention extends StatelessWidget {
           ),
           cardColor: const Color(0xFFF4EDDB),
         ),
-        home: const MainPage());
+        home: const HomeScreen());
   }
 }

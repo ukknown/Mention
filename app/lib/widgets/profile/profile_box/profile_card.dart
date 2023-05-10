@@ -1,3 +1,7 @@
+import 'package:app/widgets/profile/profile_buttons/coin_button.dart';
+import 'package:app/widgets/profile/profile_buttons/group_button.dart';
+import 'package:app/widgets/profile/profile_buttons/mention_button.dart';
+import 'package:app/widgets/profile/profile_buttons/setting_button.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
@@ -6,15 +10,24 @@ class ProfileCard extends StatelessWidget {
     super.key,
     required this.screenHeight,
     required this.screenWidth,
+    required this.profileImage,
+    required this.name,
+    required this.coin,
+    required this.groupCount,
+    required this.mentionCount,
   });
 
-  final double screenHeight;
-  final double screenWidth;
+  final double screenHeight, screenWidth;
+  final String profileImage;
+  final String name;
+  final int coin;
+  final int groupCount;
+  final int mentionCount;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: screenHeight * 0.3,
+      height: screenHeight * 0.32,
       width: screenWidth * 0.9,
       decoration: BoxDecoration(
         color: const Color(0xffA3B3F9),
@@ -23,7 +36,7 @@ class ProfileCard extends StatelessWidget {
           BoxShadow(
             offset: const Offset(-5, -5),
             blurRadius: 5,
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withOpacity(0.5),
             inset: true,
           ),
         ],
@@ -45,7 +58,8 @@ class ProfileCard extends StatelessWidget {
                     padding: EdgeInsets.only(top: screenHeight * 0.01),
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/images/profile-example.png',
+                        'assets/images/$profileImage',
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -57,10 +71,9 @@ class ProfileCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Image.asset(
-                            'assets/images/setting.png',
-                            height: screenWidth * 0.075,
-                          ),
+                          SettingButton(
+                              screenWidth: screenWidth,
+                              screenHeight: screenHeight),
                           const SizedBox(
                             width: 20,
                           ),
@@ -71,43 +84,46 @@ class ProfileCard extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: screenHeight * 0.01,
+                        height: screenHeight * 0.02,
                       ),
                       Text(
-                        "김싸피",
+                        name,
                         style: TextStyle(
                           fontSize: screenWidth * 0.1,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       SizedBox(
-                        height: screenHeight * 0.05,
+                        height: screenHeight * 0.04,
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  children: [
-                    Text("groups"),
-                    Text("number"),
-                  ],
+                GroupButton(
+                  groupCount: groupCount,
+                  screenWidth: screenWidth,
+                  screenHeight: screenHeight,
                 ),
-                Column(
-                  children: [
-                    Text("metions"),
-                    Text("number"),
-                  ],
+                SizedBox(
+                  width: screenWidth * 0.125,
                 ),
-                Column(
-                  children: [
-                    Text("bangs"),
-                    Text("number"),
-                  ],
+                MentionButton(
+                  mentionCount: mentionCount,
+                  screenWidth: screenWidth,
+                  screenHeight: screenHeight,
+                ),
+                SizedBox(
+                  width: screenWidth * 0.125,
+                ),
+                CoinButton(
+                  coin: coin,
+                  screenWidth: screenWidth,
+                  screenHeight: screenHeight,
                 ),
               ],
             ),

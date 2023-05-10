@@ -1,4 +1,4 @@
-import 'package:app/widgets/notice_box.dart';
+import 'package:app/widgets/profile/profile_box/notice_box.dart';
 import 'package:flutter/material.dart';
 
 class NoticePage extends StatelessWidget {
