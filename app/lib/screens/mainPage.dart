@@ -1,13 +1,22 @@
+<<<<<<< HEAD
 // ignore: file_names
 
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:app/screens/home_screen.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
+=======
+>>>>>>> cf928d5f576624a8cd9c595709d18504b30b63be
 import 'package:flutter/material.dart';
+import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:app/screens/Hint.dart';
+<<<<<<< HEAD
 import 'package:app/screens/profile_screen.dart';
+=======
+import 'package:app/screens/home_screen.dart';
+import 'package:app/screens/group_screen.dart';
+>>>>>>> cf928d5f576624a8cd9c595709d18504b30b63be
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -92,6 +101,7 @@ class _MainPageState extends State<MainPage> {
               flex: 5,
               child: Swiper(
                 itemBuilder: (BuildContext context, int index) {
+<<<<<<< HEAD
                   return Container(
                     margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                     decoration: BoxDecoration(
@@ -167,6 +177,18 @@ class _MainPageState extends State<MainPage> {
                           ),
                         ],
                       ),
+=======
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const GroupScreen()));
+                    },
+                    child: Image.asset(
+                      "assets/images/mainCard.png",
+                      // fit: BoxFit.fill,
+>>>>>>> cf928d5f576624a8cd9c595709d18504b30b63be
                     ),
                   );
                   // return Image.asset(

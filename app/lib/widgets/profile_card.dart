@@ -88,23 +88,23 @@ class ProfileCard extends StatelessWidget {
                 ),
               ],
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
-                  children: const [
+                  children: [
                     Text("groups"),
                     Text("number"),
                   ],
                 ),
                 Column(
-                  children: const [
+                  children: [
                     Text("metions"),
                     Text("number"),
                   ],
                 ),
                 Column(
-                  children: const [
+                  children: [
                     Text("bangs"),
                     Text("number"),
                   ],

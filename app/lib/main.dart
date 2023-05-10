@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/home_screen.dart';
+import 'screens/mainPage.dart';
 
 void main() {
   runApp(const Mention());
@@ -9,23 +9,20 @@ void main() {
 class Mention extends StatelessWidget {
   const Mention({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(
-          backgroundColor: const Color(0xFFE7626C),
-        ),
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(
-            color: Color(0xFF232B55),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+            backgroundColor: const Color(0xFFABC6EF),
           ),
+          textTheme: const TextTheme(
+            displayLarge: TextStyle(
+              color: Color(0xFF232B55),
+            ),
+          ),
+          cardColor: const Color(0xFFF4EDDB),
         ),
-        cardColor: const Color(0xFFF4EDDB),
-      ),
-      home: const HomeScreen(),
-    );
+        home: const MainPage());
   }
 }

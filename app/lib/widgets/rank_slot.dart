@@ -27,20 +27,20 @@ class RankSlot extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.only(right: screenWidth * 0.05),
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Rank"),
+              Text("Rank"),
               Column(
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Text("imoji"),
                       Text("topicName"),
                     ],
                   ),
                   Row(
-                    children: const [
+                    children: [
                       Text("bangIcon"),
                       Text("number"),
                     ],
