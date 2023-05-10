@@ -144,7 +144,27 @@ class _MainPageState extends State<MainPage> {
                                 ),
                               ),
                             ],
-                          )
+                          ),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.71,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.1,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF5C6EAE),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Text("test"),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [],
+                          ),
                         ],
                       ),
                     ),
