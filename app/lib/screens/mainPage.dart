@@ -1,12 +1,26 @@
+import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:app/screens/profile/profile_page.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:app/screens/Hint.dart';
 import 'package:app/screens/home_screen.dart';
 import 'package:app/screens/group_screen.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  final List<String> imgList = [
+    'assets/images/completetoday.png',
+    'assets/images/tomention.png',
+    'assets/images/topic.png',
+    'assets/images/cashwalk.png'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -20,173 +34,96 @@ class MainPage extends StatelessWidget {
         ),
       ),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: ListView(
-                children: [
-                  ListTile(
-                    title: const Text("다음으로"),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Hint(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 2,
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return Image.asset(
-                    "assets/images/dailyQuestCheck.png",
-                    // fit: BoxFit.fill,
-                  );
-                },
-                itemCount: 3,
-                pagination: const SwiperPagination(
-                  margin: EdgeInsets.all(30),
-                ),
-                // control: const SwiperControl(),
-              ),
-            ),
-            Flexible(
-              flex: 4,
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
+          backgroundColor: Colors.transparent,
+          body: Column(
+            children: [
+              Flexible(
+                flex: 1,
+                child: ListView(
+                  children: [
+                    ListTile(
+                      title: const Text("다음으로"),
+                      onTap: () {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const GroupScreen()));
-                    },
-                    child: Image.asset(
-                      "assets/images/mainCard.png",
-                      // fit: BoxFit.fill,
+                            builder: (context) => const Hint(),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-                // itemHeight: 500,
-                // itemWidth: 500,
-                itemCount: 10,
-                viewportFraction: 0.8,
-                scale: 0.9,
-                pagination: const SwiperPagination(
-                  margin: EdgeInsets.all(0),
+                  ],
                 ),
               ),
-            ),
-            Flexible(
-              flex: 1,
-              child: Container(),
-            )
-          ],
-        ),
-        bottomNavigationBar: CircleNavBar(
-          activeIndex: 1,
-          activeIcons: [
-            IconButton(
-                icon: const Icon(Icons.person),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Hint(),
-                    ),
-                  );
-                  // print("프로필이동");
-                },
-                color: Colors.deepPurple),
-            IconButton(
-                icon: const Icon(Icons.home),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  );
-                },
-                color: Colors.black),
-            IconButton(
-                icon: const Icon(Icons.favorite),
-                onPressed: () {
-                  // print("favorite");
-                },
-                color: Colors.deepPurple),
-          ],
-          inactiveIcons: [
-            IconButton(
-                icon: const Icon(Icons.person),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Hint(),
-                    ),
-                  );
-                  // print("프로필이동");
-                },
-                color: Colors.black),
-            IconButton(
-                icon: const Icon(Icons.home),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  );
-                },
-                color: Colors.black),
-            IconButton(
-                icon: const Icon(Icons.favorite),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Hint(),
-                    ),
-                  );
-                },
-                color: Colors.black),
-          ],
-          color: Colors.white,
-          circleColor: Colors.white,
-          height: 60,
+              Flexible(
+                flex: 2,
+                child: Swiper(
+                  itemBuilder: (BuildContext context, int index) {
+                    return Image.asset(imgList[index]
 
-          circleWidth: 60,
-          // tabCurve: ,
-          // padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
-          cornerRadius: const BorderRadius.only(
-            topLeft: Radius.circular(8),
-            topRight: Radius.circular(8),
-            // bottomRight: Radius.circular(24),
-            // bottomLeft: Radius.circular(24),
+                        // fit: BoxFit.fill,
+                        );
+                  },
+                  onTap: (index) {
+                    // debugPrint(imgList[index]);
+                    imgList[index] == "assets/images/cashwalk.png"
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfilePage(),
+                            ),
+                          )
+                        : Null;
+                  },
+                  // autoplay: true,
+                  itemCount: imgList.length,
+                  pagination: const SwiperPagination(
+                    margin: EdgeInsets.all(20),
+                  ),
+                  // control: const SwiperControl(),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Flexible(
+                flex: 5,
+                child: Swiper(
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const GroupScreen()));
+                      },
+                      child: Image.asset(
+                        "assets/images/mainCard.png",
+                        // fit: BoxFit.fill,
+                      ),
+                    );
+                    // return Image.asset(
+                    //   "assets/images/mainCard.png",
+                    //   // fit: BoxFit.fill,
+                    // );
+                  },
+                  // itemHeight: 500,
+                  // itemWidth: 500,
+                  itemCount: 3,
+                  viewportFraction: 0.8,
+                  scale: 0.81,
+                  pagination: const SwiperPagination(
+                    margin: EdgeInsets.all(0.0),
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: Container(),
+              )
+            ],
           ),
-          shadowColor: const Color(0xff6177E5),
-          circleShadowColor: const Color(0xff6177E5),
-          elevation: 10,
-          gradient: const LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.white, Colors.white],
-          ),
-          circleGradient: const LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Color(0xff6177E5), Color(0xff6177E5)],
-          ),
-        ),
-      ),
+          bottomNavigationBar: const BottomNav()),
     );
   }
 }
