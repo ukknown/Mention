@@ -113,15 +113,13 @@ class _PedometerTextState extends State<PedometerText> {
                   isComplete
                       ? 'assets/images/race-flag.png'
                       : 'assets/images/race-flag-watermark.png',
-                  width: 50,
-                  height: 50,
+                  width: widget.screenWidth * 0.1,
                 ),
               ),
               if (_showClick && isComplete)
                 Lottie.asset(
                   'assets/animations/click.json',
-                  width: 50,
-                  height: 50,
+                  width: widget.screenWidth * 0.12,
                 ),
               if (_showFireworks)
                 Transform.scale(
@@ -130,16 +128,15 @@ class _PedometerTextState extends State<PedometerText> {
                     offset: Offset(-widget.screenWidth * 0.01, 0),
                     child: Lottie.asset(
                       'assets/animations/fireworks.json',
-                      width: 50,
-                      height: 50,
+                      width: widget.screenWidth * 0.1,
                     ),
                   ),
                 ),
               InkWell(
                 onTap: isComplete ? _displayFireworks : null,
                 child: Container(
-                  width: 50,
-                  height: 50,
+                  width: widget.screenWidth * 0.15,
+                  height: widget.screenHeight * 0.05,
                   color: Colors.transparent,
                 ),
               ),

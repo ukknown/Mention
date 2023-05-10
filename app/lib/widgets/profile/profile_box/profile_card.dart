@@ -59,6 +59,7 @@ class ProfileCard extends StatelessWidget {
                     child: ClipOval(
                       child: Image.asset(
                         'assets/images/$profileImage',
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),

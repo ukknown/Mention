@@ -7,9 +7,17 @@ class MyGroup extends StatelessWidget {
     super.key,
     required this.screenHeight,
     required this.screenWidth,
+    required this.groupId,
+    required this.groupImage,
+    required this.groupName,
+    required this.groupMember,
   });
 
   final double screenHeight, screenWidth;
+  final int groupId;
+  final String groupImage;
+  final String groupName;
+  final int groupMember;
 
   @override
   Widget build(BuildContext context) {
@@ -42,61 +50,69 @@ class MyGroup extends StatelessWidget {
               ),
             ],
           ),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: SizedBox(
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/ssafy.png',
-                      height: screenWidth * 0.25,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: screenHeight * 0.01,
+              horizontal: screenWidth * 0.035,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: SizedBox(
+                    width: screenHeight * 0.15,
+                    height: screenHeight * 0.15,
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/images/$groupImage',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: screenWidth * 0.03,
-              ),
-              Expanded(
-                flex: 3,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "GroupName",
-                      style: TextStyle(
-                        color: const Color(0xff2E2E2E),
-                        fontSize: screenWidth * 0.075,
-                      ),
-                    ),
-                    SizedBox(
-                      height: screenHeight * 0.01,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.person,
-                          color: const Color(0xff2E2E2E),
-                          size: screenWidth * 0.08,
-                        ),
-                        SizedBox(
-                          width: screenWidth * 0.02,
-                        ),
-                        Text(
-                          "24",
-                          style: TextStyle(
-                            color: const Color(0xff2E2E2E),
-                            fontSize: screenWidth * 0.05,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                SizedBox(
+                  width: screenWidth * 0.03,
                 ),
-              ),
-            ],
+                Expanded(
+                  flex: 4,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        groupName,
+                        style: TextStyle(
+                          color: const Color(0xff2E2E2E),
+                          fontSize: screenWidth * 0.075,
+                        ),
+                      ),
+                      SizedBox(
+                        height: screenHeight * 0.01,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.person,
+                            color: const Color(0xff2E2E2E),
+                            size: screenWidth * 0.08,
+                          ),
+                          SizedBox(
+                            width: screenWidth * 0.02,
+                          ),
+                          Text(
+                            groupMember.toString(),
+                            style: TextStyle(
+                              color: const Color(0xff2E2E2E),
+                              fontSize: screenWidth * 0.05,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
