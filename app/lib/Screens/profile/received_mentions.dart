@@ -74,8 +74,8 @@ class _ReceivedMentionsState extends State<ReceivedMentions> {
                     screenHeight: widget.screenHeight,
                     topicId: mention['topic_id'],
                     topicTitle: mention['topic_title'],
-                    gender: mention['gender'],
-                    hint: mention['hint'],
+                    sender: mention['sender'],
+                    hint_step: mention['hint_step'],
                   ),
               ],
             );

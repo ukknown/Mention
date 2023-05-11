@@ -8,16 +8,16 @@ class MentionBox extends StatelessWidget {
     required this.screenHeight,
     required this.topicId,
     required this.topicTitle,
-    required this.gender,
-    required this.hint,
+    required this.sender,
+    required this.hint_step,
   }) : super(key: key);
 
   final double screenWidth;
   final double screenHeight;
   final int topicId;
   final String topicTitle;
-  final String gender;
-  final int hint;
+  final dynamic sender;
+  final int hint_step;
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +66,9 @@ class MentionBox extends StatelessWidget {
   }
 
   Color genderColor() {
-    if (gender == "male") {
+    if (sender["gender"] == "male") {
       return const Color(0xFFA3B3F9);
-    } else if (gender == "female") {
+    } else if (sender["gender"] == "female") {
       return const Color(0xFFFEB6C4);
     } else {
       return const Color(0xFFFFFFFF);
@@ -82,7 +82,7 @@ class MentionBox extends StatelessWidget {
           width: screenWidth * 0.025,
           height: screenWidth * 0.025,
           decoration: BoxDecoration(
-            color: hint > 0 ? Colors.green : Colors.grey,
+            color: hint_step > 0 ? Colors.green : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
@@ -93,7 +93,7 @@ class MentionBox extends StatelessWidget {
           width: screenWidth * 0.025,
           height: screenWidth * 0.025,
           decoration: BoxDecoration(
-            color: hint > 1 ? Colors.green : Colors.grey,
+            color: hint_step > 1 ? Colors.green : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
@@ -104,7 +104,7 @@ class MentionBox extends StatelessWidget {
           width: screenWidth * 0.025,
           height: screenWidth * 0.025,
           decoration: BoxDecoration(
-            color: hint > 2 ? Colors.green : Colors.grey,
+            color: hint_step > 2 ? Colors.green : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
