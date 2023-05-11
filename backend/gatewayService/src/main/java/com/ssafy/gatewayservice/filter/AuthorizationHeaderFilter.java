@@ -139,17 +139,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 //        if(subject == null || subject.isEmpty()){
 //            returnValue = false;
 //        }
-//        //토큰 만료 확인
-//        Claims claims = Jwts.parser().setSigningKey(env.getProperty("jwt.secret")).parseClaimsJws(jwt).getBody();
-//
-//        Date expriration = claims.getExpiration();
-//        log.info("",expriration);
-//
-//        if(expriration.before(new Date())){ //access 토큰 유효 시간이 현재 시간 이전이면
-//            if(!isRefreshVaild(jwt)) { //refresh 유효시간이 끝났으면
-//                returnValue = false;
-//            }
-//        }
+
 
         return returnValue;
     }
@@ -157,7 +147,6 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     private boolean isRefreshVaild(String jwt) {
 
         jwt = jwt.trim();
-//        String json = (String) redisTemplate.opsForValue().get(jwt);
         Map<String, Object> result = (Map<String, Object>) redisTemplate.opsForValue().get(jwt);
         Integer id = (Integer) result.get("id");
         String email = (String) result.get("email");
