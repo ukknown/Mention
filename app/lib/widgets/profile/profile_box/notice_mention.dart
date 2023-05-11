@@ -11,14 +11,16 @@ class NoticeMention extends StatelessWidget {
     required this.created,
     required this.id,
     required this.sender,
+    required this.title,
   }) : super(key: key);
 
   final double screenWidth;
   final double screenHeight;
   final String name;
+  final int id;
+  final String title;
   final bool isRead;
   final DateTime created;
-  final int id;
   final Sender? sender;
 
   @override
@@ -39,7 +41,7 @@ class NoticeMention extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: screenWidth * 0.04,
-                vertical: screenHeight * 0.01,
+                vertical: screenHeight * 0.02,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/profile/profile_box/my_group.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _GroupListState extends State<GroupList> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffAAC6EF),
+      bottomNavigationBar: const BottomNav(),
       body: Center(
         child: FutureBuilder(
           future: _loadGroups(),

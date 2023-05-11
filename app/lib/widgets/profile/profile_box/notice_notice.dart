@@ -9,11 +9,13 @@ class NoticeNotice extends StatelessWidget {
     required this.isRead,
     required this.created,
     required this.id,
+    required this.title,
   });
 
   final double screenWidth;
   final double screenHeight;
   final String name;
+  final String title;
   final bool isRead;
   final DateTime created;
   final int id;
@@ -42,7 +44,7 @@ class NoticeNotice extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("$name님, 새로운 이벤트를 확인해보세요!"),
-                  Text("${created.toString()}"),
+                  Text(created.toString()),
                   Padding(
                     padding: EdgeInsets.only(
                       top: screenHeight * 0.01,

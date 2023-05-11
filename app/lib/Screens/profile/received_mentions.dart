@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/profile/profile_box/mention_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,7 @@ class _ReceivedMentionsState extends State<ReceivedMentions> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffAAC6EF),
+      bottomNavigationBar: const BottomNav(),
       body: FutureBuilder<List<dynamic>>(
         future: loadMentionsData(),
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> mentions) {

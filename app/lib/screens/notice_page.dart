@@ -1,4 +1,5 @@
 import 'package:app/api/notice_model.dart';
+import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/profile/profile_box/notice_box.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -25,6 +26,7 @@ class _NoticePageState extends State<NoticePage> {
 
     return Scaffold(
       backgroundColor: const Color(0xffAAC6EF),
+      bottomNavigationBar: const BottomNav(),
       body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -63,16 +65,31 @@ class _NoticePageState extends State<NoticePage> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: screenHeight * 0.02,
+                    Expanded(
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.notices.length,
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: screenHeight * 0.01),
+                        itemBuilder: (context, index) {
+                          var notice = snapshot.data!.notices[index];
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05,
+                            ),
+                            child: NoticeBox(
+                              screenWidth: screenWidth,
+                              screenHeight: screenHeight,
+                              name: name,
+                              notice: notice,
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                    for (var notice in snapshot.data!.notices)
-                      NoticeBox(
-                        screenWidth: screenWidth,
-                        screenHeight: screenHeight,
-                        name: name,
-                        notice: notice,
-                      )
+                    SizedBox(
+                      height: screenHeight * 0.03,
+                    )
                   ],
                 );
               }

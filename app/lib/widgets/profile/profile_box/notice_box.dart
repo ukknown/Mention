@@ -25,6 +25,7 @@ class NoticeBox extends StatelessWidget {
         screenHeight: screenHeight,
         name: name,
         isRead: notice.isRead,
+        title: notice.data.title,
         created: notice.data.createdDate,
         id: notice.data.id,
         sender: notice.data.sender,
@@ -35,6 +36,7 @@ class NoticeBox extends StatelessWidget {
         screenHeight: screenHeight,
         name: name,
         isRead: notice.isRead,
+        title: notice.data.title,
         created: notice.data.createdDate,
         id: notice.data.id,
       );
