@@ -33,9 +33,12 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/me/{memberid}")
-    public ResponseEntity<MyPageVO> getMypage(@PathVariable Long memberid){
-        MyPageVO myPageVO = memberService.getMypage(memberid);
+    //프로필
+    @GetMapping("/me")
+    public ResponseEntity<MyPageVO> getMypage(HttpServletRequest request){
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long loginMemberId = loginMember.getLong("id");
+        MyPageVO myPageVO = memberService.getMypage(loginMemberId);
         return ResponseEntity.status(HttpStatus.OK).body(myPageVO);
     }
 
