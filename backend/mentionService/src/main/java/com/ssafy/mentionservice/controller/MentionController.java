@@ -6,6 +6,8 @@ import com.ssafy.mentionservice.vo.CreateMentionRequestDto;
 import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
 import com.ssafy.mentionservice.vo.MemberVo;
 import com.ssafy.mentionservice.vo.VoteResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -17,31 +19,35 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mention-service")
+@Tag(name = "멘션/투표 관리")
 public class MentionController {
 
     private final MentionService mentionService;
     private final VoteService voteService;
 
 
+    @Operation(summary = "MSA 연결 체크")
     @GetMapping("/health-check")
-    public String checkConnection(HttpServletRequest request){
+    public String checkConnection(HttpServletRequest request) {
         return "MentionService Check Completed!";
     }
 
-    //투표 생성
+    @Operation(summary = "투표 생성", description = "사용자가 투표를 생성합니다.")
     @PostMapping("/vote/create")
     public ResponseEntity<?> createVote(@RequestBody CreateVoteRequestDto createVoteRequestDto) {
         voteService.createVote(createVoteRequestDto);
         return ResponseEntity.ok().body("투표 생성 완료");
     }
 
-    // 그룹에서 진행중인 투표 조회
+    @Operation(summary = "그룹에서 진행중인 투표 조회", description = "TODO 토큰 받아서 본인이 진행한 것 빼고 보여줘야함.")
     @GetMapping("/vote/{teamId}")
-    public ResponseEntity<List<VoteResponseDto>> getVoteList(@PathVariable Long teamId) {
-        return ResponseEntity.ok().body(voteService.getVoteList(teamId));
+    public ResponseEntity<List<VoteResponseDto>> getVoteList(HttpServletRequest request,
+                                                             @PathVariable Long teamId) {
+        Long memberId = loadMember(request).getMemberId();
+        return ResponseEntity.ok().body(voteService.getVoteList(teamId, memberId));
     }
 
-    //멘션 생성
+    @Operation(summary = "멘션 생성", description = "상대방을 멘션!하다~")
     @PostMapping("/mention/create")
     public ResponseEntity<?> createMention(HttpServletRequest request,
                                            @RequestBody CreateMentionRequestDto createMentionRequestDto) {
@@ -59,7 +65,6 @@ public class MentionController {
                 .role(role)
                 .build();
     }
-
 
 
 }
