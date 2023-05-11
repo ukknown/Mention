@@ -8,5 +8,4 @@ import lombok.Getter;
 public class KakaoTokenResponseDto {
 
     private String accessToken;
-    private String refreshToken;
 }

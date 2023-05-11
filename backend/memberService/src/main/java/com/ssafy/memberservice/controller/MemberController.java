@@ -26,18 +26,21 @@ public class MemberController {
     public ResponseEntity<TokenResponseDto> getKakao(@RequestBody Map<String, String> code) {
         try{
             //ResponseEntity<TokenResponseDto> responseLogin = memberService.joinOrLogin(code.get("code"));
-            return memberService.joinOrLogin(code.get("code"));
+            return memberService.joinOrLogin(code.get("token"));
         } catch(TimeoutException e){
-            TokenResponseDto forbidden = new TokenResponseDto("forbidden", "금지된 사용자");
+            TokenResponseDto forbidden = new TokenResponseDto("timeout 3회 이상 금지된 사용자");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(forbidden);
         }
     }
 
-    @GetMapping("/me/{memberid}")
-    public ResponseEntity<MyPageVO> getMypage(@PathVariable Long memberid){
-        MyPageVO myPageVO = memberService.getMypage(memberid);
-        return ResponseEntity.status(HttpStatus.OK).body(myPageVO);
-    }
+//    //프로필
+//    @GetMapping("/me")
+//    public ResponseEntity<MyPageVO> getMypage(HttpServletRequest request){
+//        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+//        Long loginMemberId = loginMember.getLong("id");
+//        MyPageVO myPageVO = memberService.getMypage(loginMemberId);
+//        return ResponseEntity.status(HttpStatus.OK).body(myPageVO);
+//    }
 
 
     @PatchMapping ("/bang/{bang}")
