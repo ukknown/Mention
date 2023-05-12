@@ -1,5 +1,9 @@
-import 'package:app/screens/mainPage.dart';
+// ignore_for_file: avoid_print
+
+import 'package:app/Screens/mainPage.dart';
 import 'package:flutter/material.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:app/widgets/login_platform.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,6 +14,47 @@ class HomeScreen extends StatefulWidget {
 
 // 94B8EB
 class _HomeScreenState extends State<HomeScreen> {
+  // ignore: unused_field
+  LoginPlatform _loginPlatform = LoginPlatform.none;
+
+  void signInWithKakao() async {
+    try {
+      bool isInstalled = await isKakaoTalkInstalled();
+
+      OAuthToken token = isInstalled
+          ? await UserApi.instance.loginWithKakaoTalk()
+          : await UserApi.instance.loginWithKakaoAccount();
+      print(token.accessToken);
+
+      setState(() {
+        _loginPlatform = LoginPlatform.kakao;
+      });
+    } catch (error) {
+      print('카카오톡으로 로그인 실패 $error');
+    }
+  }
+
+  void signOut() async {
+    switch (_loginPlatform) {
+      case LoginPlatform.facebook:
+        break;
+      case LoginPlatform.google:
+        break;
+      case LoginPlatform.naver:
+        break;
+      case LoginPlatform.apple:
+        break;
+      case LoginPlatform.none:
+        break;
+      case LoginPlatform.kakao:
+        await UserApi.instance.logout();
+        break;
+    }
+    setState(() {
+      _loginPlatform = LoginPlatform.none;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,12 +84,15 @@ class _HomeScreenState extends State<HomeScreen> {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainPage(),
-                    ),
-                  );
+                  signInWithKakao();
+                  _loginPlatform == LoginPlatform.kakao
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainPage(),
+                          ),
+                        )
+                      : null;
                 },
                 child: Container(
                   margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
