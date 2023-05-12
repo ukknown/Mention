@@ -1,4 +1,5 @@
 package com.ssafy.topicservice.controller;
+import com.ssafy.topicservice.vo.MemberVo;
 import com.ssafy.topicservice.vo.TopicIdRequestDto;
 import com.ssafy.topicservice.vo.TopicTitleRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,9 +8,11 @@ import com.ssafy.topicservice.elastic.TopicDocument;
 import com.ssafy.topicservice.service.TopicService;
 import com.ssafy.topicservice.vo.TopicResoponseDto;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -47,8 +50,11 @@ public class TopicController {
 
     @Operation(summary = "네이버 감정 분석 요청", description = "새로운 토픽일 경우 응모하시겠습니까? 이후 검증")
     @PostMapping("/call/naver")
-    public ResponseEntity<String> goToNaver(@RequestBody TopicTitleRequestDto topicTitleRequestDto) {
-        return ResponseEntity.ok().body(topicService.goToNaver(topicTitleRequestDto.getTitle()));
+    public ResponseEntity<String> goToNaver(HttpServletRequest request,
+                                            @RequestBody TopicTitleRequestDto topicTitleRequestDto) {
+        Long memberId = loadMember(request).getMemberId();
+        System.out.println(memberId);
+        return ResponseEntity.ok().body(topicService.goToNaver(topicTitleRequestDto.getTitle(), memberId));
     }
 
     @Operation(summary = "새로운 토픽인지 아닌지 검증", description = "새로운 토픽인지 아닌지 검증")
@@ -81,6 +87,16 @@ public class TopicController {
     public ResponseEntity<?> rejectTopic(@RequestBody TopicIdRequestDto topicIdRequestDto) {
         topicService.rejectTopic(topicIdRequestDto.getTopicId());
         return ResponseEntity.ok().body("거절 완료");
+    }
+
+    private MemberVo loadMember(HttpServletRequest request) {
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long id = loginMember.getLong("id");
+        String role = loginMember.getString("role");
+        return MemberVo.builder()
+                .memberId(id)
+                .role(role)
+                .build();
     }
 
 //    @GetMapping("/random/one/{teamId}")

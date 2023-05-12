@@ -4,7 +4,6 @@ import com.ssafy.memberservice.exception.member.TimeoutException;
 import com.ssafy.memberservice.service.MemberService;
 
 import com.ssafy.memberservice.vo.MemberVO;
-import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -32,14 +31,14 @@ public class MemberController {
         }
     }
 
-    //프로필
-    @GetMapping("/me")
-    public ResponseEntity<MyPageVO> getMypage(HttpServletRequest request){
-        JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        Long loginMemberId = loginMember.getLong("id");
-        MyPageVO myPageVO = memberService.getMypage(loginMemberId);
-        return ResponseEntity.status(HttpStatus.OK).body(myPageVO);
-    }
+//    //프로필
+//    @GetMapping("/me")
+//    public ResponseEntity<MyPageVO> getMypage(HttpServletRequest request){
+//        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+//        Long loginMemberId = loginMember.getLong("id");
+//        MyPageVO myPageVO = memberService.getMypage(loginMemberId);
+//        return ResponseEntity.status(HttpStatus.OK).body(myPageVO);
+//    }
 
 
     @PatchMapping ("/bang/{bang}")
@@ -51,16 +50,14 @@ public class MemberController {
     }
 
     //타임아웃 횟수 추가
-    @PatchMapping("/time-out")
-    public ResponseEntity addTimeout(HttpServletRequest request){
-        JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        Long loginMemberId = loginMember.getLong("id");
+    @GetMapping("/time-out")
+    public ResponseEntity addTimeout(@RequestParam Long memberId){
 
-        if(!memberService.isBan(loginMemberId)){
-            memberService.addTimeout(loginMemberId);
+        if(!memberService.isBan(memberId)){
+            memberService.addTimeout(memberId);
             return ResponseEntity.status(HttpStatus.OK).body("timeout 증가 완료");
         }else{
-            memberService.addTimeout(loginMemberId);
+            memberService.addTimeout(memberId);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("영구 정지");
         }
 

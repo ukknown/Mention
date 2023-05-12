@@ -11,7 +11,7 @@ public interface TopicService {
 
     void deleteElastic();
 
-    String goToNaver(String topicCandidate);
+    String goToNaver(String topicCandidate, Long memberId);
 
     List<TopicDocument> searchByTitle(String title);
 
