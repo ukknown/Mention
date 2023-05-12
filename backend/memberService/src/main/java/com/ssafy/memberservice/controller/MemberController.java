@@ -4,7 +4,7 @@ import com.ssafy.memberservice.exception.member.TimeoutException;
 import com.ssafy.memberservice.service.MemberService;
 
 import com.ssafy.memberservice.vo.MemberVO;
-import com.ssafy.memberservice.vo.MyPageVO;
+import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Member;
 import java.util.Map;
 
 @RestController
@@ -33,14 +32,14 @@ public class MemberController {
         }
     }
 
-//    //프로필
-//    @GetMapping("/me")
-//    public ResponseEntity<MyPageVO> getMypage(HttpServletRequest request){
-//        JSONObject loginMember = new JSONObject(request.getHeader("member"));
-//        Long loginMemberId = loginMember.getLong("id");
-//        MyPageVO myPageVO = memberService.getMypage(loginMemberId);
-//        return ResponseEntity.status(HttpStatus.OK).body(myPageVO);
-//    }
+    //프로필
+    @GetMapping("/me")
+    public ResponseEntity<MyPageVO> getMypage(HttpServletRequest request){
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long loginMemberId = loginMember.getLong("id");
+        MyPageVO myPageVO = memberService.getMypage(loginMemberId);
+        return ResponseEntity.status(HttpStatus.OK).body(myPageVO);
+    }
 
 
     @PatchMapping ("/bang/{bang}")

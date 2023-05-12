@@ -11,9 +11,11 @@ import com.ssafy.memberservice.exception.member.TimeoutException;
 import com.ssafy.memberservice.jpa.MemberEntity;
 import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.jwt.JwtTokenProvider;
+import com.ssafy.memberservice.service.FeignClient.MentionServiceFeignClient;
+import com.ssafy.memberservice.service.FeignClient.TeamServiceFeignClient;
 import com.ssafy.memberservice.vo.Gender;
 import com.ssafy.memberservice.vo.MemberVO;
-import com.ssafy.memberservice.vo.MyPageVO;
+import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
@@ -37,7 +39,8 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
-
+    private final TeamServiceFeignClient teamServiceFeignClient;
+    private final MentionServiceFeignClient mentionServiceFeignClient;
     @Value("${kakao.client-id}")
     private String API_KEY;
 
@@ -158,33 +161,35 @@ public class MemberServiceImpl implements MemberService{
         return false;
     }
 
-    //마이페이지 들어갈 정보 요청
-//    @Override
-//    public MyPageVO getMypage(Long memberid) {
-//        Optional<MemberEntity> Member = memberRepository.findById(memberid);
-//
-//        int group = 0;
-//        int mentionCount = 0;
-//        String topTopic = "";
-//        if(Member.isPresent()){
-//            MemberEntity member = Member.get();
-//            group = orderServiceFeignClient.getGroupCount(memberid);
-//
-//            return MyPageVO.builder()
-//                    .profileImage(member.getProfileImage())
-//                    .nickname(member.getNickname())
-//                    .bangAmount(member.getBangAmount())
-//                    .GroupCount(group)
-////                    .mentionCount()
-////                    .topTopic()
-//                    .build();
-//
-//        }
-//
-//
-//
-//        return null;
-//    }
+//    마이페이지 들어갈 정보 요청
+//    프사, 이름, 뱅 수, 그룹 수, 받은 멘션 수, 멘션 많은 받은 토픽
+    @Override
+    public MyPageVO getMypage(Long memberid) {
+        Optional<MemberEntity> Member = memberRepository.findById(memberid);
+
+        int group = 0;
+        int mentionCount = 0;
+        String topTopic = "";
+        if(Member.isPresent()){
+            MemberEntity member = Member.get();
+            group = teamServiceFeignClient.getGroupCount(memberid);
+            mentionCount = mentionServiceFeignClient.getMention(memberid);
+
+            return MyPageVO.builder()
+                    .profileImage(member.getProfileImage())
+                    .nickname(member.getNickname())
+                    .bangAmount(member.getBangAmount())
+                    .GroupCount(group)
+//                    .mentionCount()
+//                    .topTopic()
+                    .build();
+
+        }
+
+
+
+        return null;
+    }
 
 
     @Override
