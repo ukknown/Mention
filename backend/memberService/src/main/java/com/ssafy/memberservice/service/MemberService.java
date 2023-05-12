@@ -2,6 +2,7 @@ package com.ssafy.memberservice.service;
 
 
 import com.ssafy.memberservice.vo.MemberVO;
+import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
 import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
@@ -11,8 +12,11 @@ public interface MemberService {
 
     KakaoUserInfoResponseDto getKakaoUser(String accessToken);
 
+    ResponseEntity<TokenResponseDto> joinOrLoginC(String code);
 
     ResponseEntity<TokenResponseDto> joinOrLogin(String code);
+
+    KakaoTokenResponseDto getKakaoToken(String code);
     
 
     MemberVO getMemberVO(Long memberid);

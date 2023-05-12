@@ -15,6 +15,7 @@ import com.ssafy.memberservice.service.FeignClient.MentionServiceFeignClient;
 import com.ssafy.memberservice.service.FeignClient.TeamServiceFeignClient;
 import com.ssafy.memberservice.vo.Gender;
 import com.ssafy.memberservice.vo.MemberVO;
+import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
 import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
@@ -96,6 +97,49 @@ public class MemberServiceImpl implements MemberService{
         return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
     }
 
+    @Override
+    @Transactional
+    public ResponseEntity<TokenResponseDto> joinOrLoginC(String code) {
+        KakaoTokenResponseDto kakaoTokenResponse = getKakaoToken(code);
+        KakaoUserInfoResponseDto kakaoUserInfoResponse = getKakaoUser(kakaoTokenResponse.getAccessToken());
+
+
+        String email = "";
+        //받아옴 email 정보를 이용해 해당 이메일로 가입된 회원 있는지 조회
+        Optional<MemberEntity> joinMember = memberRepository.findByEmail(kakaoUserInfoResponse.getEmail());
+
+        if (joinMember.isPresent()) {//회원이 있다면
+
+            MemberEntity member = joinMember.get();
+
+            if(member.getTimeout() < 3){
+
+                email = member.getEmail();
+
+            }else{ //timeout이 3을 넘었으면 영구정지된 사용자
+
+                System.out.println("영구 정지");
+                throw new TimeoutException("영구 정지된 사용자");
+            }
+        } else {
+            //회원정보 DB 저장
+            MemberEntity member = MemberEntity
+                    .builder()
+                    .email(kakaoUserInfoResponse.getEmail())
+                    .nickname(kakaoUserInfoResponse.getNickname())
+                    .gender(kakaoUserInfoResponse.getGender())
+                    .profileImage(kakaoUserInfoResponse.getProfileImage())
+                    .role(Role.ROLE_USER)
+                    .build();
+            email = kakaoUserInfoResponse.getEmail();
+            memberRepository.saveAndFlush(member);
+        }
+        System.out.println("토큰 생성 전 : " + email);
+        //jwt 토큰 생성
+        TokenResponseDto tokenResponse = jwtTokenProvider.createToken(email);
+
+        return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+    }
 
 
     @Override
@@ -264,6 +308,57 @@ public class MemberServiceImpl implements MemberService{
             throw new AuthRuntimeException(AuthExceptionEnum.AUTH_KAKAO_ACCESSTOKEN_FAILED);
         }
     }
+
+    @Override
+    public KakaoTokenResponseDto getKakaoToken(String code) {
+
+        try {
+            URL url = new URL(tokenReqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            //POST 요청을 위해 기본값이 false인 setDoOutput을 true로
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            //POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            StringBuilder sb = new StringBuilder();
+            sb.append("grant_type=authorization_code");
+            sb.append("&client_id=" + API_KEY);
+            sb.append("&redirect_uri=" + REDIRECT_URI);
+            sb.append("&code=" + code);
+            bw.write(sb.toString());
+            bw.flush();
+
+            //결과 코드가 200이라면 성공
+            int responseCode = conn.getResponseCode();
+            log.info("토큰 가져올 때 responseCode : " + responseCode);
+
+            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+
+            br.close();
+            bw.close();
+
+            //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+
+            return KakaoTokenResponseDto.builder()
+                    .accessToken(element.getAsJsonObject().get("access_token").getAsString())
+                    .build();
+
+        } catch (IOException e) {
+            throw new AuthRuntimeException(AuthExceptionEnum.AUTH_KAKAO_ACCESSTOKEN_FAILED);
+        }
+    }
+
 
 
 }

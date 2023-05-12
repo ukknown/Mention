@@ -32,6 +32,17 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/loginC")
+    public ResponseEntity<TokenResponseDto> getKakaoComputer(@RequestBody Map<String, String> code) {
+        try{
+            //ResponseEntity<TokenResponseDto> responseLogin = memberService.joinOrLogin(code.get("code"));
+            return memberService.joinOrLoginC(code.get("token"));
+        } catch(TimeoutException e){
+            TokenResponseDto forbidden = new TokenResponseDto("timeout 3회 이상 금지된 사용자");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(forbidden);
+        }
+    }
+
     //프로필
     @GetMapping("/me")
     public ResponseEntity<MyPageVO> getMypage(HttpServletRequest request){
