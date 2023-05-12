@@ -1,4 +1,4 @@
-package com.ssafy.memberservice.vo;
+package com.ssafy.memberservice.vo.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
