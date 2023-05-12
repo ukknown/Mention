@@ -4,7 +4,6 @@ import com.ssafy.memberservice.exception.member.TimeoutException;
 import com.ssafy.memberservice.service.MemberService;
 
 import com.ssafy.memberservice.vo.MemberVO;
-import com.ssafy.memberservice.vo.MyPageVO;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Member;
 import java.util.Map;
 
 @RestController
@@ -52,16 +50,14 @@ public class MemberController {
     }
 
     //타임아웃 횟수 추가
-    @PatchMapping("/time-out")
-    public ResponseEntity addTimeout(HttpServletRequest request){
-        JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        Long loginMemberId = loginMember.getLong("id");
+    @GetMapping("/time-out")
+    public ResponseEntity addTimeout(@RequestParam Long memberId){
 
-        if(!memberService.isBan(loginMemberId)){
-            memberService.addTimeout(loginMemberId);
+        if(!memberService.isBan(memberId)){
+            memberService.addTimeout(memberId);
             return ResponseEntity.status(HttpStatus.OK).body("timeout 증가 완료");
         }else{
-            memberService.addTimeout(loginMemberId);
+            memberService.addTimeout(memberId);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("영구 정지");
         }
 

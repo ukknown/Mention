@@ -1,5 +1,6 @@
 package com.ssafy.topicservice.service;
 
+import com.ssafy.topicservice.Feignclient.MemberServiceFeignClient;
 import com.ssafy.topicservice.exception.TopicExceptionEnum;
 import com.ssafy.topicservice.exception.TopicRuntimeException;
 import com.ssafy.topicservice.jpa.ApproveStatus;
@@ -32,6 +33,7 @@ public class TopicServiceImpl implements TopicService{
 
     private final TopicSearchRepository topicSearchRepository;
     private final TopicRepository topicRepository;
+    private final MemberServiceFeignClient memberServiceFeignClient;
 
     @Value("${naver.app.key}")
     private String NAVER_KEY;
@@ -77,7 +79,7 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public String goToNaver(String topicCandidate) {
+    public String goToNaver(String topicCandidate, Long memberId) {
         try {
             WebClient webClient = WebClient.builder()
                 .baseUrl("https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze")
@@ -97,7 +99,7 @@ public class TopicServiceImpl implements TopicService{
             String sentiment = (String) ((Map<String, Object>) response.get("document")).get("sentiment");
 
             if (sentiment.equals("negative")) {
-                // TODO member time out 추가
+                memberServiceFeignClient.addTimeout(memberId);
                 return "부적절한 토픽입니다.";
             } else {
                 Topic topic = Topic.builder()
@@ -105,7 +107,6 @@ public class TopicServiceImpl implements TopicService{
                         .approveStatus(ApproveStatus.PENDING)
                         .build();
                 topicRepository.save(topic);
-                // TODO member 하루 1회 코인 --
                 return "응모가 완료되었습니다.";
             }
         } catch (TopicRuntimeException e) {
