@@ -168,12 +168,13 @@ public class MemberServiceImpl implements MemberService{
         Optional<MemberEntity> Member = memberRepository.findById(memberid);
 
         int group = 0;
-        int mentionCount = 0;
-        String topTopic = "";
+//        int mentionCount = 0;
+//        String topTopic = "";
         if(Member.isPresent()){
             MemberEntity member = Member.get();
             group = teamServiceFeignClient.getGroupCount(memberid);
-            mentionCount = mentionServiceFeignClient.getMention(memberid);
+            //mentionCount = mentionServiceFeignClient.getMention(memberid);
+            System.out.println(group);
 
             return MyPageVO.builder()
                     .profileImage(member.getProfileImage())
