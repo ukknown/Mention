@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Getter
 @AllArgsConstructor
-public enum TopicExceptionEnum {
+public enum MentionServiceExceptionEnum {
     TOPIC_NOT_EXIST(HttpStatus.NOT_FOUND, "T0001", "id 값에 해당하는 토픽이 없습니다."),
     TOPIC_NAVER_EXCEPTION(HttpStatus.BAD_REQUEST, "T0002", "네이버 api 오류");
 
@@ -16,7 +16,7 @@ public enum TopicExceptionEnum {
     private final String errorCode;
     private final String errorMessage;
 
-    public static Map<String, Object> convertMap(TopicExceptionEnum ex) {
+    public static Map<String, Object> convertMap(MentionServiceExceptionEnum ex) {
         Map<String, Object> map = new HashMap<>();
         map.put("status", ex.getHttpStatus().value());
         map.put("code", ex.getErrorCode());

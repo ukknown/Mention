@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-    @ExceptionHandler({TopicRuntimeException.class})
+    @ExceptionHandler({MentionServiceRuntimeException.class})
     private ResponseEntity<ExceptionResponseEntity> topicExceptionHandler(
-            final TopicRuntimeException runError) {
+            final MentionServiceRuntimeException runError) {
         return new ResponseEntity<>(
                 new ExceptionResponseEntity(
                         runError.getErrorEnum().getHttpStatus().value(),
