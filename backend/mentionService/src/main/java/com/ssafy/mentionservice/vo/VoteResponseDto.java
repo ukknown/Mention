@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 @Builder
 public class VoteResponseDto {
 
-    private Long id;
+    private Long voteId;
 
-    private Long teamId;
+    private String topicTitle;
 
-    private TopicEntity topic;
+    private String emoji;
 
     private Boolean isCompleted;
 
