@@ -148,6 +148,11 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
         jwt = jwt.trim();
         Map<String, Object> result = (Map<String, Object>) redisTemplate.opsForValue().get(jwt);
+
+        if(result == null){
+            System.out.println("redis null값");
+            throw new NullPointerException("redis에 access token과 일치하는 값 없음");
+        }
         Integer id = (Integer) result.get("id");
         String email = (String) result.get("email");
         String nickname = (String) result.get("nickname");
