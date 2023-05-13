@@ -2,10 +2,7 @@ package com.ssafy.mentionservice.controller;
 
 import com.ssafy.mentionservice.service.MentionService;
 import com.ssafy.mentionservice.service.VoteService;
-import com.ssafy.mentionservice.vo.CreateMentionRequestDto;
-import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
-import com.ssafy.mentionservice.vo.MemberVo;
-import com.ssafy.mentionservice.vo.VoteResponseDto;
+import com.ssafy.mentionservice.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
