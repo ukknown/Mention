@@ -62,16 +62,14 @@ public class TeamController {
     ){
          TeamVO teamVO = convertRequestToVO(request);
 
-         log.info("로그인한 아이디~ : " + teamVO);
-
          String url = "";
          if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
 
-        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamDetailVO(name, url, (long) teamVO.getMemberId()));
+         TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamDetailVO(name, url, (long) teamVO.getMemberId()));
 
-        teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, (long) teamVO.getMemberId()));
+         teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, (long) teamVO.getMemberId()));
 
-        return ResponseEntity.status(HttpStatus.OK).body("팀 생성 완료 ~ 🔥");
+         return ResponseEntity.status(HttpStatus.OK).body("팀 생성 완료 ~ 🔥");
     }
 
     /**
@@ -101,7 +99,7 @@ public class TeamController {
         teamVO.setTeamId(teamId);
 
         // 존재하지 않는 아이디일 경우 -> 404 반환
-        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
 
         TeamDetailsResponseDto result = teamServiceImpl.getTeamDetails(teamVO);
 
@@ -125,7 +123,7 @@ public class TeamController {
         teamVO.setTeamId(teamId);
 
         // teamId가 존재하는지 확인 -> 404
-        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
 
         TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
         TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, (long) teamVO.getMemberId());
@@ -159,7 +157,7 @@ public class TeamController {
         teamVO.setTeamId(teamId);
 
         // teamId가 존재하는지 확인 -> 404
-        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
 
         // 해당 그룹에 있는 사용자가 맞는지 확인 -> 404
         TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
@@ -190,11 +188,11 @@ public class TeamController {
     }
 
     public TeamVO convertRequestToVO(HttpServletRequest request){
-        log.info("request → " + request);
+        if(request.getHeader("member") == null){
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        log.info("loginMember → " + loginMember);
         int loginMemberId = loginMember.getInt("id");
-        log.info("id → " + loginMemberId);
         return new TeamVO(loginMemberId);
     }
 }
