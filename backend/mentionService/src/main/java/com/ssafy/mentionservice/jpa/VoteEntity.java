@@ -18,7 +18,9 @@ public class VoteEntity {
 
     private Long teamId;
 
-    private String topicTitle;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id")
+    private TopicEntity topic;
 
     private Boolean isCompleted;
 

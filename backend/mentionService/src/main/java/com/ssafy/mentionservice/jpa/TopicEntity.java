@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -20,12 +23,17 @@ public class TopicEntity {
 
     private String title;
 
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+    private List<VoteEntity> vote = new ArrayList<>();
+
     @Column(columnDefinition = "bigint default 0")
     @Builder.Default
     private Long popularity = 0L;
 
     @Enumerated(EnumType.STRING)
     private ApproveStatus approveStatus; // APPROVE, PENDING, REJECT
+
+    private String emoji;
 
     public void approveTopic() {
         this.approveStatus = ApproveStatus.APPROVE;
