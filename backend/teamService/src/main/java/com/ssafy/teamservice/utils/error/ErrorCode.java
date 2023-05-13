@@ -10,7 +10,9 @@ import static org.springframework.http.HttpStatus.*;
 @AllArgsConstructor
 public enum ErrorCode {
     UNATHORIZED(UNAUTHORIZED, "해당 기능을 실행할 권한이 없습니다."),
-    DATA_NOT_FOUND(NOT_FOUND, "해당 아이디와 일치하는 데이터가 존재하지 않습니다."),
+    INVALID_TOKEN(UNAUTHORIZED, "일치하는 토큰이 존재하지 않습니다."),
+    TEAM_NOT_FOUND(NOT_FOUND, "해당 팀 아이디와 일치하는 데이터가 존재하지 않습니다."),
+    MEMBER_NOT_FOUND(NOT_FOUND, "해당 팀 안에 회원이 존재하지 않습니다."),
     FILE_UPLOAD_ERROR(SERVICE_UNAVAILABLE, "S3 업로드 : 파일 변환 실패"),
     CONFLICT_TEAM_MEMBER(CONFLICT, "이미 그룹에 가입한 멤버입니다.");
 

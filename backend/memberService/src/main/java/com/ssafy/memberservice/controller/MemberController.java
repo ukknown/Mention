@@ -101,7 +101,7 @@ public class MemberController {
 
 
     //타 서비스 요청
-    @GetMapping("/member-service/{memberid}")
+    @GetMapping("/feign/{memberid}")
     public ResponseEntity<MemberVO> getMembers(@PathVariable Long memberid){
         MemberVO memberVO = memberService.getMemberVO(memberid);
 
