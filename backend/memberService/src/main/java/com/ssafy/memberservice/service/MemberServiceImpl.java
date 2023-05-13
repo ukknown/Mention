@@ -20,6 +20,7 @@ import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
 import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
+import com.ssafy.memberservice.vo.dto.request.RequestJoin;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import com.ssafy.memberservice.vo.dto.response.TopTopicDto;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +101,37 @@ public class MemberServiceImpl implements MemberService{
         //jwt 토큰 생성
         TokenResponseDto tokenResponse = jwtTokenProvider.createToken(email);
 
+        return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<TokenResponseDto> joinInLocal(RequestJoin requestJoin) {
+        Optional<MemberEntity> joinMember = memberRepository.findByEmail(requestJoin.getEmail());
+
+        String email = "";
+
+        if(joinMember.isPresent()){
+            MemberEntity member = joinMember.get();
+            if(member.getTimeout() < 3){
+                email = member.getEmail();
+            }else{ //timeout이 3을 넘었으면 영구정지된 사용자
+                throw new TimeoutException("영구 정지된 사용자");
+            }
+        } else {
+            MemberEntity member = MemberEntity
+                    .builder()
+                    .email(requestJoin.getEmail())
+                    .nickname(requestJoin.getNickname())
+                    .gender(Gender.female)
+                    .profileImage("https://mention-bucket.s3.ap-northeast-2.amazonaws.com/static/team-image/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-17_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_11.14.48-removebg-preview.png")
+                    .role(Role.ROLE_USER)
+                    .build();
+            email = requestJoin.getEmail();
+            memberRepository.saveAndFlush(member);
+        }
+
+        TokenResponseDto tokenResponse = jwtTokenProvider.createToken(email);
         return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
     }
 
