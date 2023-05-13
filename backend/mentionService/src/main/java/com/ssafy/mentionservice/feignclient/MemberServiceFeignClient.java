@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "member-service")
 public interface MemberServiceFeignClient {
-    @GetMapping("/member-service/time-out")
+    @GetMapping("/member-service/feign/time-out")
     ResponseEntity addTimeout(@RequestParam Long memberId);
 }
