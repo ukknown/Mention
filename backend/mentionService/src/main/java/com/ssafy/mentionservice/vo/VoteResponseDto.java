@@ -1,5 +1,6 @@
 package com.ssafy.mentionservice.vo;
 
+import com.ssafy.mentionservice.jpa.TopicEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,7 +14,7 @@ public class VoteResponseDto {
 
     private Long teamId;
 
-    private String topicTitle;
+    private TopicEntity topic;
 
     private Boolean isCompleted;
 
