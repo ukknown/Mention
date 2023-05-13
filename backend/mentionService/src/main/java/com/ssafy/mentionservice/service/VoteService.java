@@ -9,5 +9,5 @@ public interface VoteService {
 
     void createVote(CreateVoteRequestDto createVoteRequestDto);
 
-    List<VoteResponseDto> getVoteList(Long teamId, Long memberId);
+    List<VoteResponseDto> getVoteList(Long teamId, Long memberId, String type);
 }

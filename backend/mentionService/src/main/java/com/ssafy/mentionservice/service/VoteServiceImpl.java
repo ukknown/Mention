@@ -1,7 +1,7 @@
 package com.ssafy.mentionservice.service;
 
-import com.ssafy.mentionservice.exception.TopicExceptionEnum;
-import com.ssafy.mentionservice.exception.TopicRuntimeException;
+import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
+import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
 import com.ssafy.mentionservice.vo.VoteResponseDto;
@@ -33,7 +33,7 @@ public class VoteServiceImpl implements VoteService{
     @Transactional
     public void createVote(CreateVoteRequestDto createVoteRequestDto) {
         TopicEntity topic = topicRepository.findById(createVoteRequestDto.getTopicId())
-                .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
+                .orElseThrow(()-> new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NOT_EXIST));
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime dueDate = now.plusHours(24);
         VoteEntity voteEntity = VoteEntity.builder()
@@ -46,24 +46,28 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public List<VoteResponseDto> getVoteList(Long teamId, Long memberId) {
+    public List<VoteResponseDto> getVoteList(Long teamId, Long memberId, String type) {
         updateExpiredVotes();
         List<Long> voteIdList = mentionRepository.findAllByVoterId(memberId)
                 .stream()
                 .map(MentionEntity::getVoteId)
                 .collect(Collectors.toList());
         List<VoteEntity> voteList = voteRepository.findAllByTeamIdAndIsCompletedIsFalseOrderByDueDateAsc(teamId);
-        return voteList.stream()
-                .filter(vote -> !voteIdList.contains(vote.getId()))
-                .map(vote -> VoteResponseDto.builder()
-                        .id(vote.getId())
-                        .teamId(vote.getTeamId())
-                        .topic(vote.getTopic())
-                        .isCompleted(vote.getIsCompleted())
-                        .participant(vote.getParticipant())
-                        .dueDate(vote.getDueDate())
-                        .build())
-                .collect(Collectors.toList());
+
+        if (type.equals("TWO")) {
+            return voteList.stream()
+                    .filter(vote -> !voteIdList.contains(vote.getId()))
+                    .map(this::mapToDto)
+                    .limit(2)
+                    .collect(Collectors.toList());
+        } else if (type.equals("ALL")) {
+            return voteList.stream()
+                    .filter(vote -> !voteIdList.contains(vote.getId()))
+                    .map(this::mapToDto)
+                    .collect(Collectors.toList());
+        } else {
+            throw new MentionServiceRuntimeException(MentionServiceExceptionEnum.TYPE_NONE_EXCEPTION);
+        }
     }
 
     private void updateExpiredVotes() {
@@ -85,5 +89,16 @@ public class VoteServiceImpl implements VoteService{
         for(int i = 0; i < 5; i++) {
             dailyTopics.add(allTopics.get(i));
         }
+    }
+
+    private VoteResponseDto mapToDto(VoteEntity vote) {
+        return VoteResponseDto.builder()
+                .voteId(vote.getId())
+                .topicTitle(vote.getTopic().getTitle())
+                .emoji(vote.getTopic().getEmoji())
+                .isCompleted(vote.getIsCompleted())
+                .participant(vote.getParticipant())
+                .dueDate(vote.getDueDate())
+                .build();
     }
 }
