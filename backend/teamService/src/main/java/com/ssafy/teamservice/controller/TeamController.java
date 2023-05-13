@@ -1,5 +1,7 @@
 package com.ssafy.teamservice.controller;
 
+import com.ssafy.teamservice.service.TeamMemberService;
+import com.ssafy.teamservice.service.TeamService;
 import com.ssafy.teamservice.vo.*;
 import com.ssafy.teamservice.vo.dto.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.dto.TeamResponseDto;
@@ -31,9 +33,9 @@ import java.util.List;
 @RequestMapping("/team-service")
 @Slf4j
 public class TeamController {
-    private final TeamServiceImpl teamServiceImpl;
+    private final TeamService teamService;
     private final S3Uploader s3Uploader;
-    private final TeamMemberServiceImpl teamMemberServiceImpl;
+    private final TeamMemberService teamMemberService;
 
     /**
      * MSA 연결 확인
@@ -62,16 +64,14 @@ public class TeamController {
     ){
          TeamVO teamVO = convertRequestToVO(request);
 
-         log.info("로그인한 아이디~ : " + teamVO);
-
          String url = "";
          if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
 
-        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamDetailVO(name, url, (long) teamVO.getMemberId()));
+         TeamEntity teamEntity = teamService.createTeam(new TeamDetailVO(name, url, (long) teamVO.getMemberId()));
 
-        teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, (long) teamVO.getMemberId()));
+         teamMemberService.joinTeamMember(new TeamMemberVO(teamEntity, (long) teamVO.getMemberId()));
 
-        return ResponseEntity.status(HttpStatus.OK).body("팀 생성 완료 ~ 🔥");
+         return ResponseEntity.status(HttpStatus.OK).body("팀 생성 완료 ~ 🔥");
     }
 
     /**
@@ -82,7 +82,7 @@ public class TeamController {
     @GetMapping("/teams")
     public ResponseEntity<List<TeamResponseDto>> getTeam(HttpServletRequest request){
         TeamVO teamVO = convertRequestToVO(request);
-        List<TeamResponseDto> result = teamMemberServiceImpl.getTeamList((long) teamVO.getMemberId());
+        List<TeamResponseDto> result = teamMemberService.getTeamList((long) teamVO.getMemberId());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -101,9 +101,9 @@ public class TeamController {
         teamVO.setTeamId(teamId);
 
         // 존재하지 않는 아이디일 경우 -> 404 반환
-        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        if(!teamService.existsById(teamVO)) throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
 
-        TeamDetailsResponseDto result = teamServiceImpl.getTeamDetails(teamVO);
+        TeamDetailsResponseDto result = teamService.getTeamDetails(teamVO);
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -125,18 +125,18 @@ public class TeamController {
         teamVO.setTeamId(teamId);
 
         // teamId가 존재하는지 확인 -> 404
-        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        if(!teamService.existsById(teamVO)) throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
 
-        TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
+        TeamEntity teamEntity = teamService.findById(teamVO);
         TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, (long) teamVO.getMemberId());
 
         // 이미 입장한 그룹인지 확인
-        if(teamMemberServiceImpl.existsByMemberIdAndTeamEntity(teamMemberVO)){
+        if(teamMemberService.existsByMemberIdAndTeamEntity(teamMemberVO)){
             throw new CustomException(ErrorCode.CONFLICT_TEAM_MEMBER);
         }
 
-        teamMemberServiceImpl.joinTeamMember(teamMemberVO);
-        teamServiceImpl.updateCapacity(teamVO, true);
+        teamMemberService.joinTeamMember(teamMemberVO);
+        teamService.updateCapacity(teamVO, true);
 
         return ResponseEntity.status(HttpStatus.OK).body("그룹 입장 완료 ~ 🔥");
     }
@@ -159,42 +159,54 @@ public class TeamController {
         teamVO.setTeamId(teamId);
 
         // teamId가 존재하는지 확인 -> 404
-        if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+        if(!teamService.existsById(teamVO)) throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
 
         // 해당 그룹에 있는 사용자가 맞는지 확인 -> 404
-        TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
+        TeamEntity teamEntity = teamService.findById(teamVO);
 
         TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, (long) teamVO.getMemberId());
 
         // 회원 토큰일 경우, 방장 토큰일 경우
         if(teamVO.getMemberId() == memberId){
-            teamMemberServiceImpl.deleteMemberFromTeam(teamMemberVO);
+            teamMemberService.deleteMemberFromTeam(teamMemberVO);
         } else if(teamVO.getMemberId() == teamEntity.getTeamOwnerId()){
             if(teamVO.getMemberId() == memberId){
                 // 방장이 나가는 경우 -> 그룹은 삭제
-                teamMemberServiceImpl.deleteMemberFromTeam(teamMemberVO);
-                teamServiceImpl.updateIsDeleteTrue(teamVO);
+                teamMemberService.deleteMemberFromTeam(teamMemberVO);
+                teamService.updateIsDeleteTrue(teamVO);
                 return ResponseEntity.status(HttpStatus.OK).body("그룹 삭제 완료 ~ 🔥");
             } else {
                 // 방장이 사용자를 강퇴시키는 경우 - isKickOut 컬럼 값 1로 변경
-                teamMemberServiceImpl.updateIsKickOut(teamMemberVO);
+                teamMemberService.updateIsKickOut(teamMemberVO);
             }
         } else {
             throw new CustomException(ErrorCode.UNATHORIZED);
         }
 
         // team.capacity 업데이트
-        teamServiceImpl.updateCapacity(teamVO, false);
+        teamService.updateCapacity(teamVO, false);
 
         return ResponseEntity.status(HttpStatus.OK).body("그룹에서 나가기/강퇴 완료 ~ 🔥");
     }
 
+    /**
+     * MSA 통신 코드
+     * @param memberid
+     * @return
+     */
+    @GetMapping("/teams/count/{memberid}")
+    public ResponseEntity<Integer> getTeamCount(@PathVariable("memberid") Long memberid){
+        System.out.println("im here ");
+        return ResponseEntity.status(HttpStatus.OK).body(teamMemberService.getTeamCount(memberid));
+    }
+
+
     public TeamVO convertRequestToVO(HttpServletRequest request){
-        log.info("request → " + request);
+        if(request.getHeader("member") == null){
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        log.info("loginMember → " + loginMember);
         int loginMemberId = loginMember.getInt("id");
-        log.info("id → " + loginMemberId);
         return new TeamVO(loginMemberId);
     }
 }

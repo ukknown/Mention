@@ -55,7 +55,7 @@ public class TeamServiceImpl implements TeamService{
     @Override
     public TeamEntity findById(TeamVO teamVO) {
         return teamRepository.findById(teamVO.getTeamId())
-                .orElseThrow(() -> new CustomException(ErrorCode.DATA_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class TeamServiceImpl implements TeamService{
         TeamEntity teamEntity = findById(teamVO);
 
         if(teamEntity.getIsDeleted() == 1) {
-            throw new CustomException(ErrorCode.DATA_NOT_FOUND);
+            throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
         }
 
         List<Long> memberList = teamMemberRepository.getMemberByTeamEntity(teamEntity);
@@ -97,7 +97,7 @@ public class TeamServiceImpl implements TeamService{
                 .collect(Collectors.toList());
 
         // 투표 리스트 조회
-        List<VoteVO> voteList = mentionServiceClient.getTop2VoteList(teamVO.getTeamId());
+        List<VoteVO> voteList = mentionServiceClient.getVoteList(teamVO.getTeamId(), (long) teamVO.getMemberId(), "ALL");
 
         return new TeamDetailsResponseDto(teamEntity, memberResultList, voteList);
     }

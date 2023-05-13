@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .antMatchers("/member-service/loginC").permitAll()
                 .antMatchers("/member-service/time-out").permitAll()
                 .antMatchers("/member-service/login-local").permitAll()
+                .antMatchers("/member-service/feign/**").permitAll()
 //                .antMatchers("/api/member/test").permitAll()
                 .anyRequest().authenticated();
 
