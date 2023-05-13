@@ -45,6 +45,7 @@ public class SecurityConfig {
                 //.antMatchers("/member-service/login").hasRole("USER")
                 .antMatchers("/member-service/login").permitAll()
                 .antMatchers("/member-service/time-out").permitAll()
+                .antMatchers("/member-service/login-local").permitAll()
 //                .antMatchers("/api/member/test").permitAll()
                 .anyRequest().authenticated();
 
