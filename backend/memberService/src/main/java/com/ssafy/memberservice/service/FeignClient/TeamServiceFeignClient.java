@@ -4,10 +4,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "team-service", url = "http://localhost:8082/team-service")
+@FeignClient(name = "team-service")
 public interface TeamServiceFeignClient {
 
-    @GetMapping("/GroupCount/{memberid}")
+    @GetMapping("/team-service/group-count/{memberid}")
     Integer getGroupCount(@PathVariable Long memberid);
 
 }
