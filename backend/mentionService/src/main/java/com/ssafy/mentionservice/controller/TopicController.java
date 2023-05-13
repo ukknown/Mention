@@ -49,11 +49,6 @@ public class TopicController {
         return ResponseEntity.ok().body(documents);
     }
 
-    @GetMapping("/daily")
-    public ResponseEntity<List<String>> getDailyTopic() {
-        return ResponseEntity.ok().body(topicService.getDailyTopic());
-    }
-
     @Operation(summary = "네이버 감정 분석 요청", description = "새로운 토픽일 경우 응모하시겠습니까? 이후 검증")
     @PostMapping("/call/naver")
     public ResponseEntity<String> goToNaver(HttpServletRequest request,
