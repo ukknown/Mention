@@ -3,8 +3,8 @@ package com.ssafy.mentionservice.service;
 import com.ssafy.mentionservice.feignclient.MemberServiceFeignClient;
 import com.ssafy.mentionservice.elastic.TopicDocument;
 import com.ssafy.mentionservice.elastic.TopicSearchRepository;
-import com.ssafy.mentionservice.exception.TopicExceptionEnum;
-import com.ssafy.mentionservice.exception.TopicRuntimeException;
+import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
+import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
 import com.ssafy.mentionservice.jpa.ApproveStatus;
 import com.ssafy.mentionservice.jpa.TopicEntity;
 import com.ssafy.mentionservice.jpa.TopicRepository;
@@ -14,7 +14,6 @@ import org.apache.commons.text.similarity.CosineSimilarity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -110,8 +109,8 @@ public class TopicServiceImpl implements TopicService{
                 topicRepository.save(topic);
                 return "응모가 완료되었습니다.";
             }
-        } catch (TopicRuntimeException e) {
-            throw new TopicRuntimeException(TopicExceptionEnum.TOPIC_NAVER_EXCEPTION);
+        } catch (MentionServiceRuntimeException e) {
+            throw new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NAVER_EXCEPTION);
         }
     }
 
@@ -165,7 +164,7 @@ public class TopicServiceImpl implements TopicService{
     @Transactional
     public void approveTopic(Long topicId) {
         TopicEntity topic = topicRepository.findById(topicId)
-                .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
+                .orElseThrow(()-> new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NOT_EXIST));
         topic.approveTopic();
         TopicDocument topicDocument = TopicDocument.builder()
                 .id(topicSearchRepository.count()+1)
@@ -179,7 +178,7 @@ public class TopicServiceImpl implements TopicService{
     @Transactional
     public void rejectTopic(Long topicId) {
         TopicEntity topic = topicRepository.findById(topicId)
-                        .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
+                        .orElseThrow(()-> new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NOT_EXIST));
         topic.rejectTopic();
     }
 
