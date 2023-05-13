@@ -5,24 +5,24 @@ import com.ssafy.topicservice.exception.TopicExceptionEnum;
 import com.ssafy.topicservice.exception.TopicRuntimeException;
 import com.ssafy.topicservice.jpa.ApproveStatus;
 import com.ssafy.topicservice.elastic.TopicDocument;
-import com.ssafy.topicservice.jpa.Topic;
+import com.ssafy.topicservice.jpa.TopicEntity;
 import com.ssafy.topicservice.jpa.TopicRepository;
 import com.ssafy.topicservice.elastic.TopicSearchRepository;
 import com.ssafy.topicservice.vo.TopicResoponseDto;
+import com.ssafy.topicservice.vo.TopicTitleRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.similarity.CosineSimilarity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -67,6 +67,23 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
+    public List<String> getDailyTopic() {
+        return dailyTopics;
+    }
+
+    private List<String> dailyTopics = new ArrayList<>();
+    @Override
+    @Scheduled(cron = "0 51 18 * * ?")
+    public void setDailyTopic() {
+        List<TopicEntity> allTopics = topicRepository.findAll();
+        Collections.shuffle(allTopics);
+        dailyTopics.clear();
+        for(int i = 0; i < 5; i++) {
+            dailyTopics.add(allTopics.get(i).getTitle());
+        }
+    }
+
+    @Override
     @Transactional
     public void deleteElastic() {
         topicSearchRepository.deleteAll();
@@ -102,7 +119,7 @@ public class TopicServiceImpl implements TopicService{
                 memberServiceFeignClient.addTimeout(memberId);
                 return "부적절한 토픽입니다.";
             } else {
-                Topic topic = Topic.builder()
+                TopicEntity topic = TopicEntity.builder()
                         .title(topicCandidate)
                         .approveStatus(ApproveStatus.PENDING)
                         .build();
@@ -118,7 +135,7 @@ public class TopicServiceImpl implements TopicService{
     @Transactional
     public void saveTopic() {
         for (String title : titles) {
-            Topic topic = Topic.builder()
+            TopicEntity topic = TopicEntity.builder()
                     .title(title)
                     .approveStatus(ApproveStatus.APPROVE)
                     .build();
@@ -129,11 +146,11 @@ public class TopicServiceImpl implements TopicService{
     @Override
     @Transactional
     public String checkSimilarity(String inputTopic) {
-        List<Topic> topicList = topicRepository.findAll();
+        List<TopicEntity> topicList = topicRepository.findAll();
         double threshold = 0.8;
         CosineSimilarity cosineSimilarity = new CosineSimilarity(); // 객체 생성
 
-        for (Topic topic : topicList) {
+        for (TopicEntity topic : topicList) {
             Map<CharSequence, Integer> inputVector = getCharacterFrequencyVector(inputTopic);
             Map<CharSequence, Integer> topicVector = getCharacterFrequencyVector(topic.getTitle());
             double similarity = cosineSimilarity.cosineSimilarity(inputVector, topicVector);
@@ -149,7 +166,7 @@ public class TopicServiceImpl implements TopicService{
 
     @Override
     public List<TopicResoponseDto> getPendingTopic() {
-        List<Topic> topicList = topicRepository.findAllByApproveStatus(ApproveStatus.PENDING);
+        List<TopicEntity> topicList = topicRepository.findAllByApproveStatus(ApproveStatus.PENDING);
         return topicList.stream()
                 .map(topic -> TopicResoponseDto.builder()
                         .id(topic.getId())
@@ -162,7 +179,7 @@ public class TopicServiceImpl implements TopicService{
     @Override
     @Transactional
     public void approveTopic(Long topicId) {
-        Topic topic = topicRepository.findById(topicId)
+        TopicEntity topic = topicRepository.findById(topicId)
                 .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
         topic.approveTopic();
         TopicDocument topicDocument = TopicDocument.builder()
@@ -176,7 +193,7 @@ public class TopicServiceImpl implements TopicService{
     @Override
     @Transactional
     public void rejectTopic(Long topicId) {
-        Topic topic = topicRepository.findById(topicId)
+        TopicEntity topic = topicRepository.findById(topicId)
                         .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
         topic.rejectTopic();
     }

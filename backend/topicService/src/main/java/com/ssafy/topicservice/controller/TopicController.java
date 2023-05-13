@@ -48,6 +48,11 @@ public class TopicController {
         return ResponseEntity.ok().body(documents);
     }
 
+    @GetMapping("/daily")
+    public ResponseEntity<List<String>> getDailyTopic() {
+        return ResponseEntity.ok().body(topicService.getDailyTopic());
+    }
+
     @Operation(summary = "네이버 감정 분석 요청", description = "새로운 토픽일 경우 응모하시겠습니까? 이후 검증")
     @PostMapping("/call/naver")
     public ResponseEntity<String> goToNaver(HttpServletRequest request,
@@ -74,6 +79,7 @@ public class TopicController {
     public ResponseEntity<List<TopicResoponseDto>> getPendingTopic() {
         return ResponseEntity.ok().body(topicService.getPendingTopic());
     }
+
 
     @Operation(summary = "관리자가 응모 토픽을 승인", description = "APPROVE 상태로 변환")
     @PostMapping("/admin/changeStatus/approve")
