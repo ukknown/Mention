@@ -4,6 +4,7 @@ import com.ssafy.memberservice.exception.member.TimeoutException;
 import com.ssafy.memberservice.service.MemberService;
 
 import com.ssafy.memberservice.vo.MemberVO;
+import com.ssafy.memberservice.vo.dto.request.RequestJoin;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -29,6 +30,11 @@ public class MemberController {
             TokenResponseDto forbidden = new TokenResponseDto("timeout 3회 이상 금지된 사용자");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(forbidden);
         }
+    }
+
+    @PostMapping("/login-local")
+    public ResponseEntity<?> createMember(@RequestBody RequestJoin requestJoin){
+        return memberService.joinInLocal(requestJoin);
     }
 
 //    //프로필
