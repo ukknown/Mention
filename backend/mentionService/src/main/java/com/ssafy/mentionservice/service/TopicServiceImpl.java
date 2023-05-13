@@ -65,23 +65,6 @@ public class TopicServiceImpl implements TopicService{
         }
     }
 
-
-    private List<String> dailyTopics = new ArrayList<>();
-    @Override
-    @Scheduled(cron = "0 51 18 * * ?")
-    public void setDailyTopic() {
-        List<TopicEntity> allTopics = topicRepository.findAll();
-        Collections.shuffle(allTopics);
-        dailyTopics.clear();
-        for(int i = 0; i < 5; i++) {
-            dailyTopics.add(allTopics.get(i).getTitle());
-        }
-    }
-
-    public List<String> getDailyTopics() {
-        return dailyTopics;
-    }
-
     @Override
     @Transactional
     public void deleteElastic() {

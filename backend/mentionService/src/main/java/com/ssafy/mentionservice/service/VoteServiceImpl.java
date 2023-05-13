@@ -6,10 +6,13 @@ import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
 import com.ssafy.mentionservice.vo.VoteResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,9 +27,7 @@ public class VoteServiceImpl implements VoteService{
 
     private final TopicRepository topicRepository;
 
-    private final TopicService topicService;
 
-    private List<String> dailyTopics = topicService.getDailyTopics();
     //TODO 알람 전송
     @Override
     @Transactional
@@ -73,5 +74,16 @@ public class VoteServiceImpl implements VoteService{
                 vote.updateIsCompleted();
             }
         });
+    }
+
+    private List<TopicEntity> dailyTopics = new ArrayList<>();
+    @Scheduled(cron = "0 51 18 * * ?")
+    private void setDailyTopic() {
+        List<TopicEntity> allTopics = topicRepository.findAll();
+        Collections.shuffle(allTopics);
+        dailyTopics.clear();
+        for(int i = 0; i < 5; i++) {
+            dailyTopics.add(allTopics.get(i));
+        }
     }
 }
