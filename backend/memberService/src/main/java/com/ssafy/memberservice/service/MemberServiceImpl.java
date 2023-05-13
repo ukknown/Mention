@@ -13,6 +13,7 @@ import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.jwt.JwtTokenProvider;
 import com.ssafy.memberservice.service.FeignClient.MentionServiceFeignClient;
 import com.ssafy.memberservice.service.FeignClient.TeamServiceFeignClient;
+import com.ssafy.memberservice.service.FeignClient.TopicServiceFeignClient;
 import com.ssafy.memberservice.vo.Gender;
 import com.ssafy.memberservice.vo.MemberVO;
 import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
@@ -20,6 +21,8 @@ import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
+import com.ssafy.memberservice.vo.dto.response.TopTopicDto;
+import com.ssafy.memberservice.vo.dto.topicDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -42,6 +47,7 @@ public class MemberServiceImpl implements MemberService{
     private final JwtTokenProvider jwtTokenProvider;
     private final TeamServiceFeignClient teamServiceFeignClient;
     private final MentionServiceFeignClient mentionServiceFeignClient;
+    private final TopicServiceFeignClient topicServiceFeignClient;
     @Value("${kakao.client-id}")
     private String API_KEY;
 
@@ -212,21 +218,18 @@ public class MemberServiceImpl implements MemberService{
         Optional<MemberEntity> Member = memberRepository.findById(memberid);
 
         int group = 0;
-//        int mentionCount = 0;
-//        String topTopic = "";
+        List<TopTopicDto> topTopic;
         if(Member.isPresent()){
             MemberEntity member = Member.get();
             group = teamServiceFeignClient.getGroupCount(memberid);
-            //mentionCount = mentionServiceFeignClient.getMention(memberid);
+            topTopic = topicServiceFeignClient.getTopTopic(memberid);
             System.out.println(group);
-
             return MyPageVO.builder()
                     .profileImage(member.getProfileImage())
                     .nickname(member.getNickname())
                     .bangAmount(member.getBangAmount())
                     .GroupCount(group)
-//                    .mentionCount()
-//                    .topTopic()
+                    .topTopic(topTopic)
                     .build();
 
         }

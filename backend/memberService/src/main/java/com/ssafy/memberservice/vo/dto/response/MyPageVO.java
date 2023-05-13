@@ -13,6 +13,5 @@ public class MyPageVO {
     private String nickname;
     private int bangAmount;
     private int GroupCount;
-//    private int mentionCount;
-//    private String topTopic;
+    private List<TopTopicDto> topTopic;
 }
