@@ -1,5 +1,9 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_import, unnecessary_string_interpolations
+// import 'dart:convert';
+import 'dart:convert';
 
+import 'package:http/http.dart' as http;
+import 'dart:io';
 import 'package:app/Screens/mainPage.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -16,7 +20,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // ignore: unused_field
   LoginPlatform _loginPlatform = LoginPlatform.none;
-
   void signInWithKakao() async {
     try {
       bool isInstalled = await isKakaoTalkInstalled();
@@ -24,11 +27,30 @@ class _HomeScreenState extends State<HomeScreen> {
       OAuthToken token = isInstalled
           ? await UserApi.instance.loginWithKakaoTalk()
           : await UserApi.instance.loginWithKakaoAccount();
+
       print(token.accessToken);
 
-      setState(() {
-        _loginPlatform = LoginPlatform.kakao;
-      });
+      final loginUrl =
+          Uri.parse("http://k8c105.p.ssafy.io:8000/member-service/login");
+
+      final data = {"token": token.accessToken};
+      final jsonData = jsonEncode(data);
+
+      final response = await http.post(
+        loginUrl,
+        headers: <String, String>{"Content-Type": "application/json"},
+        body: jsonData,
+      );
+      print(jsonData);
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        setState(() {
+          _loginPlatform = LoginPlatform.kakao;
+        });
+        print(responseData);
+      } else {
+        print('에러 : ${response.statusCode}');
+      }
     } catch (error) {
       print('카카오톡으로 로그인 실패 $error');
     }
