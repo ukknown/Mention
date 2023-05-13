@@ -1,4 +1,4 @@
-package com.ssafy.memberservice.vo;
+package com.ssafy.memberservice.vo.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +13,5 @@ public class MyPageVO {
     private String nickname;
     private int bangAmount;
     private int GroupCount;
-    private int mentionCount;
-    private String topTopic;
+    private List<TopTopicDto> topTopic;
 }
