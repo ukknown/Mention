@@ -1,7 +1,6 @@
 package com.ssafy.memberservice.service.FeignClient;
 
 import com.ssafy.memberservice.vo.dto.response.TopTopicDto;
-import com.ssafy.memberservice.vo.dto.topicDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
