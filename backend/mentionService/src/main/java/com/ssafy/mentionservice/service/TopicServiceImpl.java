@@ -65,10 +65,6 @@ public class TopicServiceImpl implements TopicService{
         }
     }
 
-    @Override
-    public List<String> getDailyTopic() {
-        return dailyTopics;
-    }
 
     private List<String> dailyTopics = new ArrayList<>();
     @Override
@@ -80,6 +76,10 @@ public class TopicServiceImpl implements TopicService{
         for(int i = 0; i < 5; i++) {
             dailyTopics.add(allTopics.get(i).getTitle());
         }
+    }
+
+    public List<String> getDailyTopics() {
+        return dailyTopics;
     }
 
     @Override
@@ -95,6 +95,7 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
+    @Transactional
     public String goToNaver(String topicCandidate, Long memberId) {
         try {
             WebClient webClient = WebClient.builder()
@@ -121,6 +122,7 @@ public class TopicServiceImpl implements TopicService{
                 TopicEntity topic = TopicEntity.builder()
                         .title(topicCandidate)
                         .approveStatus(ApproveStatus.PENDING)
+                        .emoji("사용자가 넣은 이미지")
                         .build();
                 topicRepository.save(topic);
                 return "응모가 완료되었습니다.";
@@ -137,6 +139,7 @@ public class TopicServiceImpl implements TopicService{
             TopicEntity topic = TopicEntity.builder()
                     .title(title)
                     .approveStatus(ApproveStatus.APPROVE)
+                    .emoji("이모지 아직 없다")
                     .build();
             topicRepository.save(topic);
         }

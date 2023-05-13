@@ -11,9 +11,9 @@ public interface TopicService {
 
     void deleteElastic();
 
-    List<String> getDailyTopic();
-
     void setDailyTopic();
+
+    List<String> getDailyTopics();
 
     String goToNaver(String topicCandidate, Long memberId);
 

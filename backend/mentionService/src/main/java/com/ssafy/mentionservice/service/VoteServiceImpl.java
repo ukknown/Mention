@@ -1,9 +1,8 @@
 package com.ssafy.mentionservice.service;
 
-import com.ssafy.mentionservice.jpa.MentionEntity;
-import com.ssafy.mentionservice.jpa.MentionRepository;
-import com.ssafy.mentionservice.jpa.VoteEntity;
-import com.ssafy.mentionservice.jpa.VoteRepository;
+import com.ssafy.mentionservice.exception.TopicExceptionEnum;
+import com.ssafy.mentionservice.exception.TopicRuntimeException;
+import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
 import com.ssafy.mentionservice.vo.VoteResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +22,22 @@ public class VoteServiceImpl implements VoteService{
 
     private final MentionRepository mentionRepository;
 
+    private final TopicRepository topicRepository;
+
+    private final TopicService topicService;
+
+    private List<String> dailyTopics = topicService.getDailyTopics();
     //TODO 알람 전송
     @Override
     @Transactional
     public void createVote(CreateVoteRequestDto createVoteRequestDto) {
+        TopicEntity topic = topicRepository.findById(createVoteRequestDto.getTopicId())
+                .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime dueDate = now.plusHours(24);
         VoteEntity voteEntity = VoteEntity.builder()
                 .teamId(createVoteRequestDto.getTeamId())
-                .topicTitle(createVoteRequestDto.getTopicTitle())
+                .topic(topic)
                 .isCompleted(false)
                 .dueDate(dueDate)
                 .build();
@@ -51,7 +57,7 @@ public class VoteServiceImpl implements VoteService{
                 .map(vote -> VoteResponseDto.builder()
                         .id(vote.getId())
                         .teamId(vote.getTeamId())
-                        .topicTitle(vote.getTopicTitle())
+                        .topic(vote.getTopic())
                         .isCompleted(vote.getIsCompleted())
                         .participant(vote.getParticipant())
                         .dueDate(vote.getDueDate())
