@@ -22,7 +22,6 @@ import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import com.ssafy.memberservice.vo.dto.response.TopTopicDto;
-import com.ssafy.memberservice.vo.dto.topicDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
