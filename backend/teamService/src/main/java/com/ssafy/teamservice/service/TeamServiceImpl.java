@@ -97,9 +97,9 @@ public class TeamServiceImpl implements TeamService{
                 .collect(Collectors.toList());
 
         // 투표 리스트 조회
-//        List<VoteVO> voteList = mentionServiceClient.getTop2VoteList(teamVO.getTeamId());
+        List<VoteVO> voteList = mentionServiceClient.getVoteList(teamVO.getTeamId(), (long) teamVO.getMemberId(), "ALL");
 
-        return new TeamDetailsResponseDto(teamEntity, memberResultList, null);
+        return new TeamDetailsResponseDto(teamEntity, memberResultList, voteList);
     }
 
     /**
