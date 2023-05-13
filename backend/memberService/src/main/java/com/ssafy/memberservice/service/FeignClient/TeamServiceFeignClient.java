@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "team-service")
 public interface TeamServiceFeignClient {
 
-    @GetMapping("/team-service/group-count/{memberid}")
+    @GetMapping("/team-service/teams/count/{memberid}")
     Integer getGroupCount(@PathVariable Long memberid);
 
 }
