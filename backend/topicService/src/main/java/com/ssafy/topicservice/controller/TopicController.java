@@ -58,7 +58,6 @@ public class TopicController {
     public ResponseEntity<String> goToNaver(HttpServletRequest request,
                                             @RequestBody TopicTitleRequestDto topicTitleRequestDto) {
         Long memberId = loadMember(request).getMemberId();
-        System.out.println(memberId);
         return ResponseEntity.ok().body(topicService.goToNaver(topicTitleRequestDto.getTitle(), memberId));
     }
 
