@@ -4,6 +4,7 @@ import com.ssafy.teamservice.vo.*;
 import com.ssafy.teamservice.vo.dto.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.dto.TeamResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/team-service")
+@Slf4j
 public class TeamController {
     private final TeamServiceImpl teamServiceImpl;
     private final S3Uploader s3Uploader;
@@ -56,16 +58,18 @@ public class TeamController {
     public ResponseEntity createTeam(
             HttpServletRequest request,
             @RequestPart(value = "name") String name,
-            @RequestPart(value = "file") MultipartFile file
+            @RequestPart(value = "file", required = false) MultipartFile file
     ){
-        TeamVO teamVO = convertRequestToVO(request);
+         TeamVO teamVO = convertRequestToVO(request);
+
+         log.info("로그인한 아이디~ : " + teamVO);
 
          String url = "";
          if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
 
-        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamDetailVO(name, url, teamVO.getMemberId()));
+        TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamDetailVO(name, url, (long) teamVO.getMemberId()));
 
-        teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, teamVO.getMemberId()));
+        teamMemberServiceImpl.joinTeamMember(new TeamMemberVO(teamEntity, (long) teamVO.getMemberId()));
 
         return ResponseEntity.status(HttpStatus.OK).body("팀 생성 완료 ~ 🔥");
     }
@@ -78,7 +82,7 @@ public class TeamController {
     @GetMapping("/teams")
     public ResponseEntity<List<TeamResponseDto>> getTeam(HttpServletRequest request){
         TeamVO teamVO = convertRequestToVO(request);
-        List<TeamResponseDto> result = teamMemberServiceImpl.getTeamList(teamVO.getMemberId());
+        List<TeamResponseDto> result = teamMemberServiceImpl.getTeamList((long) teamVO.getMemberId());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -124,7 +128,7 @@ public class TeamController {
         if(!teamServiceImpl.existsById(teamVO)) throw new CustomException(ErrorCode.DATA_NOT_FOUND);
 
         TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
-        TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, teamVO.getMemberId());
+        TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, (long) teamVO.getMemberId());
 
         // 이미 입장한 그룹인지 확인
         if(teamMemberServiceImpl.existsByMemberIdAndTeamEntity(teamMemberVO)){
@@ -160,7 +164,7 @@ public class TeamController {
         // 해당 그룹에 있는 사용자가 맞는지 확인 -> 404
         TeamEntity teamEntity = teamServiceImpl.findById(teamVO);
 
-        TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, teamVO.getMemberId());
+        TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, (long) teamVO.getMemberId());
 
         // 회원 토큰일 경우, 방장 토큰일 경우
         if(teamVO.getMemberId() == memberId){
@@ -186,9 +190,11 @@ public class TeamController {
     }
 
     public TeamVO convertRequestToVO(HttpServletRequest request){
+        log.info("request → " + request);
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
-        Long loginMemberId = loginMember.getLong("id");
+        log.info("loginMember → " + loginMember);
+        int loginMemberId = loginMember.getInt("id");
+        log.info("id → " + loginMemberId);
         return new TeamVO(loginMemberId);
     }
-
 }
