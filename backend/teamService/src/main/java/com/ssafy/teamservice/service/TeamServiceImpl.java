@@ -1,35 +1,31 @@
 package com.ssafy.teamservice.service;
 
 import com.ssafy.teamservice.client.MemberServiceClient;
-import com.ssafy.teamservice.config.MapperConfig;
+import com.ssafy.teamservice.client.MentionServiceClient;
 import com.ssafy.teamservice.jpa.TeamEntity;
 import com.ssafy.teamservice.jpa.TeamMemberRepository;
 import com.ssafy.teamservice.jpa.TeamRepository;
 import com.ssafy.teamservice.utils.error.ErrorCode;
 import com.ssafy.teamservice.utils.exception.CustomException;
 import com.ssafy.teamservice.vo.MemberVO;
+import com.ssafy.teamservice.vo.VoteVO;
 import com.ssafy.teamservice.vo.dto.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.TeamDetailVO;
 import com.ssafy.teamservice.vo.TeamVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService{
-    private final MapperConfig mapperConfig;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final MemberServiceClient memberServiceClient;
+    private final MentionServiceClient mentionServiceClient;
 
-    public TeamServiceImpl(MapperConfig mapperConfig, TeamRepository teamRepository,
-                           TeamMemberRepository teamMemberRepository, MemberServiceClient memberServiceClient) {
-        this.mapperConfig = mapperConfig;
-        this.teamRepository = teamRepository;
-        this.teamMemberRepository = teamMemberRepository;
-        this.memberServiceClient = memberServiceClient;
-    }
 
     /**
      * 그룹(팀) 생성
@@ -97,13 +93,13 @@ public class TeamServiceImpl implements TeamService{
 
         // List<Long> -> List<MemberVO> 로 만들기
         List<MemberVO> memberResultList = memberList.stream()
-                .map(memberId -> memberServiceClient.getOrders(memberId))
+                .map(memberId -> memberServiceClient.getMembers(memberId))
                 .collect(Collectors.toList());
 
         // 투표 리스트 조회
+        List<VoteVO> voteList = mentionServiceClient.getTop2VoteList(teamVO.getTeamId());
 
-        TeamDetailsResponseDto teamDetailsResponseDto = new TeamDetailsResponseDto(teamEntity, memberResultList);
-        return teamDetailsResponseDto;
+        return new TeamDetailsResponseDto(teamEntity, memberResultList, voteList);
     }
 
     /**
