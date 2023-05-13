@@ -63,16 +63,26 @@ public class MemberController {
 
     //타임아웃 횟수 추가
     @GetMapping("/time-out")
-    public ResponseEntity addTimeout(@RequestParam Long memberId){
+    public ResponseEntity addTimeout(HttpServletRequest request){
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long memberId = loginMember.getLong("id");
 
-        if(!memberService.isBan(memberId)){
+        if(!memberService.isBan(memberId)){ //timeout 성립 여부 확인 false = 성립안됨, true = 성립
             memberService.addTimeout(memberId);
             return ResponseEntity.status(HttpStatus.OK).body("timeout 증가 완료");
         }else{
             memberService.addTimeout(memberId);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("영구 정지");
+            String acessToken = request.getHeader("Authorization");
+            if (acessToken != null && acessToken.startsWith("Bearer ")) {
+                String bearerToken = acessToken.substring(7); // "Bearer " 이후의 토큰 값을 추출
+                // 추출한 bearerToken 변수를 사용하여 추가적인 작업 수행
+                System.out.println(bearerToken);
+                memberService.deleteAccess(bearerToken); //accesstoken 지움
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("영구 정지");
+            } else {
+                throw new NullPointerException("token 안넘어옴");
+            }
         }
-
     }
 
 
@@ -88,8 +98,11 @@ public class MemberController {
     @GetMapping("/health-check")
     public String checkConnection(HttpServletRequest request){
         String memberStr = request.getHeader("member");
+        String acessToken = request.getHeader("Authorization");
+        String bearerToken = acessToken.substring(7);
 
         System.out.println(memberStr);
+        System.out.println(bearerToken);
 
         return "MemberService Check Completed!";
     }

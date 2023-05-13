@@ -25,6 +25,7 @@ import com.ssafy.memberservice.vo.dto.response.TopTopicDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final TeamServiceFeignClient teamServiceFeignClient;
+    private final RedisTemplate redisTemplate;
     private final MentionServiceFeignClient mentionServiceFeignClient;
     private final TopicServiceFeignClient topicServiceFeignClient;
     @Value("${kakao.client-id}")
@@ -235,6 +237,14 @@ public class MemberServiceImpl implements MemberService{
 
 
         return null;
+    }
+
+    //timeout - 3회 되면 access도 제거
+    @Override
+    public void deleteAccess(String bearerToken) {
+
+        redisTemplate.delete(bearerToken); //기존 access token 정보 제거
+
     }
 
 

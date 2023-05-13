@@ -28,4 +28,6 @@ public interface MemberService {
     boolean isBan(Long loginMemberId);
 
     MyPageVO getMypage(Long memberid);
+
+    void deleteAccess(String bearerToken);
 }
