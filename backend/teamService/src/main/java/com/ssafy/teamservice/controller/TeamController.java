@@ -3,6 +3,7 @@ package com.ssafy.teamservice.controller;
 import com.ssafy.teamservice.vo.*;
 import com.ssafy.teamservice.vo.dto.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.dto.TeamResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,18 +25,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Tag(name="그룹 관리")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/team-service")
 public class TeamController {
     private final TeamServiceImpl teamServiceImpl;
     private final S3Uploader s3Uploader;
     private final TeamMemberServiceImpl teamMemberServiceImpl;
-
-    public TeamController(TeamServiceImpl teamServiceImpl, S3Uploader s3Uploader, TeamMemberServiceImpl teamMemberServiceImpl) {
-        this.teamServiceImpl = teamServiceImpl;
-        this.s3Uploader = s3Uploader;
-        this.teamMemberServiceImpl = teamMemberServiceImpl;
-    }
 
     /**
      * MSA 연결 확인
@@ -60,14 +56,12 @@ public class TeamController {
     public ResponseEntity createTeam(
             HttpServletRequest request,
             @RequestPart(value = "name") String name,
-            @RequestPart(value = "file", required = false) MultipartFile file
+            @RequestPart(value = "file") MultipartFile file
     ){
         TeamVO teamVO = convertRequestToVO(request);
 
          String url = "";
          if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
-
-        // String code = randomCodeGenerator.generate();
 
         TeamEntity teamEntity = teamServiceImpl.createTeam(new TeamDetailVO(name, url, teamVO.getMemberId()));
 
