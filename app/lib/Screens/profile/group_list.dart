@@ -1,9 +1,12 @@
-import 'dart:convert';
+import 'package:app/api/profile_api.dart';
+import 'package:app/api/profile_model.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/profile/profile_box/my_group.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+
+// import 'dart:convert';
+// import 'package:flutter/services.dart';
 
 class GroupList extends StatefulWidget {
   final double screenWidth, screenHeight;
@@ -19,10 +22,13 @@ class GroupList extends StatefulWidget {
 }
 
 class _GroupListState extends State<GroupList> {
-  Future<List<dynamic>> _loadGroups() async {
-    String jsonString = await rootBundle.loadString('lib/api/group_list.json');
-    final jsonData = json.decode(jsonString);
-    return jsonData['group'];
+  // Future<List<dynamic>> _loadGroups() async {
+  //   String jsonString = await rootBundle.loadString('lib/api/group_list.json');
+  //   final jsonData = json.decode(jsonString);
+  //   return jsonData['group'];
+  // }
+  Future<List<Group>> _loadGroups() async {
+    return ProfileApi.getGroups();
   }
 
   @override
@@ -77,10 +83,14 @@ class _GroupListState extends State<GroupList> {
                       MyGroup(
                         screenHeight: widget.screenHeight,
                         screenWidth: widget.screenWidth,
-                        groupId: group['group_id'],
-                        groupImage: group["group_image"],
-                        groupName: group["group_name"],
-                        groupMember: group["group_member"],
+                        // groupId: group['group_id'],
+                        // groupImage: group["group_image"],
+                        // groupName: group["group_name"],
+                        // groupMember: group["group_member"],
+                        groupId: group.groupId,
+                        groupImage: group.groupImage,
+                        groupName: group.groupName,
+                        groupMember: group.groupMember,
                       ),
                   ],
                 );

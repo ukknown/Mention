@@ -1,9 +1,12 @@
-import 'dart:convert';
+import 'package:app/api/profile_api.dart';
+import 'package:app/api/profile_model.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/profile/profile_box/mention_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
+// import 'dart:convert';
+// import 'package:flutter/services.dart';
 
 class ReceivedMentions extends StatefulWidget {
   final double screenHeight, screenWidth;
@@ -19,11 +22,14 @@ class ReceivedMentions extends StatefulWidget {
 }
 
 class _ReceivedMentionsState extends State<ReceivedMentions> {
-  Future<List<dynamic>> loadMentionsData() async {
-    final jsonString =
-        await rootBundle.loadString('lib/api/received_mentions.json');
-    final jsonData = json.decode(jsonString);
-    return jsonData['mentions'];
+  // Future<List<dynamic>> loadMentionsData() async {
+  //   final jsonString =
+  //       await rootBundle.loadString('lib/api/received_mentions.json');
+  //   final jsonData = json.decode(jsonString);
+  //   return jsonData['mentions'];
+  // }
+  Future<List<Mention>> loadMentionsData() async {
+    return ProfileApi.getMentions();
   }
 
   @override
@@ -77,10 +83,14 @@ class _ReceivedMentionsState extends State<ReceivedMentions> {
                     MentionBox(
                       screenWidth: widget.screenWidth,
                       screenHeight: widget.screenHeight,
-                      topicId: mention['topic_id'],
-                      topicTitle: mention['topic_title'],
-                      sender: mention['sender'],
-                      hint_step: mention['hint_step'],
+                      // topicId: mention['topic_id'],
+                      // topicTitle: mention['topic_title'],
+                      // sender: mention['sender'],
+                      // hint_step: mention['hint_step'],
+                      topicId: mention.topicId, // 수정됨
+                      topicTitle: mention.topicTitle, // 수정됨
+                      sender: mention.sender, // 수정됨
+                      hintStep: mention.hintStep,
                     ),
                 ],
               );

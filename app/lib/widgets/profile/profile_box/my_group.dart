@@ -39,7 +39,8 @@ class MyGroup extends StatelessWidget {
           height: screenHeight * 0.15,
           width: screenWidth * 0.9,
           decoration: BoxDecoration(
-            color: const Color(0xffA3B3F9),
+            // color: const Color(0xffA3B3F9),
+            color: const Color(0xFFFFFFFF),
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(

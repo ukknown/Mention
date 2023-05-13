@@ -5,18 +5,34 @@ import 'package:app/widgets/profile/profile_box/profile_card.dart';
 import 'package:app/widgets/profile/profile_box/rank_slot.dart';
 import 'package:flutter/material.dart';
 
-// 이건 나중에 지워야 할 것
-import 'dart:convert';
-import 'package:flutter/services.dart';
+import 'package:app/api/profile_api.dart';
+import 'package:app/api/profile_model.dart';
+// import 'dart:convert';
+// import 'package:flutter/services.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
-  Future<Map<String, dynamic>> loadProfileData() async {
-    final jsonString =
-        await rootBundle.loadString('lib/api/profile_screen.json');
-    final jsonData = json.decode(jsonString);
-    return jsonData;
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  // late Future<Map<String, dynamic>> futureProfileData;
+  late Future<Profile> futureProfileData;
+
+  // Future<Map<String, dynamic>> loadProfileData() async {
+  //   final jsonString =
+  //       await rootBundle.loadString('lib/api/profile_screen.json');
+  //   final jsonData = json.decode(jsonString);
+  //   return jsonData;
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    // futureProfileData = loadProfileData();
+    futureProfileData = ProfileApi.getProfile();
   }
 
   @override
@@ -30,17 +46,27 @@ class ProfilePage extends StatelessWidget {
       body: Container(
         decoration: bgimg(),
         child: FutureBuilder(
-          future: loadProfileData(),
+          future: futureProfileData,
           builder: (
             BuildContext context,
-            AsyncSnapshot<Map<String, dynamic>> snapshot,
+            // AsyncSnapshot<Map<String, dynamic>> snapshot,
+            AsyncSnapshot<Profile> snapshot,
           ) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
+              // 에러 메시지를 표시합니다.
+              print('Error: ${snapshot.error}');
+              return const Center(
+                child: Text(
+                  'An error occurred. Please try again later.',
+                  style: TextStyle(color: Colors.red),
+                ),
+              );
             } else {
-              final profileData = snapshot.data!;
+              // final profileData = snapshot.data!;
+              final profile = snapshot.data!;
+
               return SingleChildScrollView(
                 child: Center(
                   child: Column(
@@ -49,11 +75,16 @@ class ProfilePage extends StatelessWidget {
                         height: screenHeight * 0.1,
                       ),
                       ProfileCard(
-                        profileImage: profileData['profile_image'],
-                        name: profileData['name'],
-                        coin: profileData['coin'],
-                        groupCount: profileData['group_count'],
-                        mentionCount: profileData['mention_count'],
+                        // profileImage: profileData['profile_image'],
+                        // name: profileData['name'],
+                        // coin: profileData['coin'],
+                        // groupCount: profileData['group_count'],
+                        // mentionCount: profileData['mention_count'],
+                        profileImage: profile.profileImage,
+                        name: profile.name,
+                        coin: profile.coin,
+                        groupCount: profile.groupCount,
+                        mentionCount: profile.mentionCount,
                         screenHeight: screenHeight,
                         screenWidth: screenWidth,
                       ),
@@ -115,14 +146,24 @@ class ProfilePage extends StatelessWidget {
                             SizedBox(
                               height: screenHeight * 0.02,
                             ),
+                            // for (var entry
+                            //     in profileData['most_mentioned_topic']
+                            //         .asMap()
+                            //         .entries)
+                            //   RankSlot(
+                            //     screenWidth: screenWidth,
+                            //     screenHeight: screenHeight,
+                            //     topic: entry.value,
+                            //     rank: entry.key + 1,
+                            //   ),
+
                             for (var entry
-                                in profileData['most_mentioned_topic']
-                                    .asMap()
-                                    .entries)
+                                in profile.mostMentionedTopic.asMap().entries)
                               RankSlot(
                                 screenWidth: screenWidth,
                                 screenHeight: screenHeight,
-                                topic: entry.value,
+                                topic: entry.value.title,
+                                mentionedCount: entry.value.mentionedCount,
                                 rank: entry.key + 1,
                               ),
                           ],
