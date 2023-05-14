@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
+import 'Screens/group_screen.dart';
+import 'Screens/mainPage.dart';
+
 void main() async {
   KakaoSdk.init(nativeAppKey: 'fdb226da9bdf3e5030a432d9f509a01a');
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +34,8 @@ class Mention extends StatelessWidget {
           ),
           cardColor: const Color(0xFFF4EDDB),
         ),
-        // home: const MainPage());
-        home: const HomeScreen());
+        home: const GroupScreen());
+    // home: const MainPage());
+    // home: const HomeScreen());
   }
 }
