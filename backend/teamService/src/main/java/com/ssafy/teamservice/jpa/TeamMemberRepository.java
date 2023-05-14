@@ -13,8 +13,8 @@ public interface TeamMemberRepository extends JpaRepository<TeamMemberEntity, Lo
     TeamMemberEntity findByMemberIdAndTeamEntity(Long memberId, TeamEntity teamEntity);
     List<TeamMemberEntity> findTeamMemberEntityByMemberId(Long memberId);
     void deleteById(Long teamMemberId);
-    @Query("SELECT memberId FROM TeamMemberEntity WHERE isKickOut = 0")
-    List<Long> getMemberByTeamEntity(TeamEntity teamEntity);
+    @Query("SELECT tm.memberId FROM TeamMemberEntity tm WHERE tm.isKickOut = 0 and tm.teamEntity = :teamEntity")
+    List<Long> getMemberByTeamEntity(@Param("teamEntity") TeamEntity teamEntity);
     @Query("SELECT COUNT(tm.id) FROM TeamMemberEntity tm WHERE tm.memberId = :memberId and tm.isKickOut = 0 and tm.teamEntity.isDeleted = 0")
     int getTeamCount(@Param("memberId") Long memberId);
 }

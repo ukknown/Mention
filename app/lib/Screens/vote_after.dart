@@ -1,9 +1,11 @@
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
-import 'package:app/widgets/push_alarm.dart';
+// import 'package:app/widgets/push_alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
+
+import 'group_screen.dart';
 
 class VotePick extends StatefulWidget {
   const VotePick({super.key});
@@ -72,7 +74,7 @@ class _VotePickState extends State<VotePick> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const TestNotificationPage()));
+                                                const GroupScreen()));
                                   },
                                   child: const CircleAvatar(
                                     radius: 80,
