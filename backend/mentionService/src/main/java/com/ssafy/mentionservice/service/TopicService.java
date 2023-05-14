@@ -1,8 +1,8 @@
-package com.ssafy.topicservice.service;
+package com.ssafy.mentionservice.service;
 
-import com.ssafy.topicservice.elastic.TopicDocument;
-import com.ssafy.topicservice.vo.TopicResoponseDto;
-import com.ssafy.topicservice.vo.TopicTitleRequestDto;
+import com.ssafy.mentionservice.elastic.TopicDocument;
+import com.ssafy.mentionservice.vo.TopTopicVo;
+import com.ssafy.mentionservice.vo.TopicResoponseDto;
 
 import java.util.List;
 
@@ -12,10 +12,6 @@ public interface TopicService {
 
     void deleteElastic();
 
-    List<String> getDailyTopic();
-
-    void setDailyTopic();
-
     String goToNaver(String topicCandidate, Long memberId);
 
     List<TopicDocument> searchByTitle(String title);
@@ -23,6 +19,8 @@ public interface TopicService {
     String checkSimilarity(String inputTopic);
 
     void saveTopic();
+
+    List<TopTopicVo> getTopTopic(Long memberId);
 
     List<TopicResoponseDto> getPendingTopic();
 

@@ -1,4 +1,4 @@
-package com.ssafy.topicservice.jpa;
+package com.ssafy.mentionservice.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
