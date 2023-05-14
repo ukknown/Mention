@@ -13,7 +13,6 @@ import com.ssafy.memberservice.jpa.MemberRepository;
 import com.ssafy.memberservice.jwt.JwtTokenProvider;
 import com.ssafy.memberservice.service.FeignClient.MentionServiceFeignClient;
 import com.ssafy.memberservice.service.FeignClient.TeamServiceFeignClient;
-import com.ssafy.memberservice.service.FeignClient.TopicServiceFeignClient;
 import com.ssafy.memberservice.vo.Gender;
 import com.ssafy.memberservice.vo.MemberVO;
 import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
@@ -48,7 +47,6 @@ public class MemberServiceImpl implements MemberService{
     private final TeamServiceFeignClient teamServiceFeignClient;
     private final RedisTemplate redisTemplate;
     private final MentionServiceFeignClient mentionServiceFeignClient;
-    private final TopicServiceFeignClient topicServiceFeignClient;
     @Value("${kakao.client-id}")
     private String API_KEY;
 
@@ -250,18 +248,21 @@ public class MemberServiceImpl implements MemberService{
         Optional<MemberEntity> Member = memberRepository.findById(memberid);
 
         int group = 0;
+        int mentionCount = 0;
         List<TopTopicDto> topTopic;
         if(Member.isPresent()){
             MemberEntity member = Member.get();
             group = teamServiceFeignClient.getGroupCount(memberid);
-//            topTopic = topicServiceFeignClient.getTopTopic(memberid);
+            topTopic = mentionServiceFeignClient.getTopTopic(memberid);
+            mentionCount =  mentionServiceFeignClient.getMentionCount(memberid);
             System.out.println("group : " + group);
             return MyPageVO.builder()
                     .profileImage(member.getProfileImage())
                     .nickname(member.getNickname())
                     .bangAmount(member.getBangAmount())
                     .GroupCount(group)
-//                    .topTopic(topTopic)
+                    .mentionCount(mentionCount)
+                    .topTopic(topTopic)
                     .build();
 
         }
