@@ -1,4 +1,3 @@
-import 'package:app/api/notice_model.dart';
 import 'package:app/screens/Hint.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +16,8 @@ class MentionBox extends StatelessWidget {
   final double screenHeight;
   final int topicId;
   final String topicTitle;
-  // final dynamic sender;
-  final Sender sender;
+  final dynamic sender;
+  // final Sender sender;
   final int hintStep;
 
   @override
@@ -53,6 +52,9 @@ class MentionBox extends StatelessWidget {
                   hintCounter(),
                 ],
               ),
+              SizedBox(
+                height: screenHeight * 0.01,
+              ),
               Text(
                 topicTitle,
                 style: TextStyle(fontSize: screenWidth * 0.05),
@@ -68,11 +70,11 @@ class MentionBox extends StatelessWidget {
   }
 
   Color genderColor() {
-    // if (sender["gender"] == "male") {
-    if (sender.gender == "male") {
+    if (sender["gender"] == "male") {
+      // if (sender.gender == "male") {
       return const Color(0xFFA3B3F9);
-      // } else if (sender["gender"] == "female") {
-    } else if (sender.gender == "female") {
+    } else if (sender["gender"] == "female") {
+      // } else if (sender.gender == "female") {
       return const Color(0xFFFEB6C4);
     } else {
       return const Color(0xFFFFFFFF);

@@ -69,7 +69,9 @@ class _NoticePageState extends State<NoticePage> {
                       ),
                       Expanded(
                         child: ListView.separated(
-                          shrinkWrap: true,
+                          padding: EdgeInsets.symmetric(
+                            vertical: screenHeight * 0.01,
+                          ),
                           itemCount: snapshot.data!.notices.length,
                           separatorBuilder: (context, index) =>
                               SizedBox(height: screenHeight * 0.01),
