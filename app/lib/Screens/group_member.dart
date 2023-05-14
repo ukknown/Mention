@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
+// 가져오는 코드
 Future<List<dynamic>> loadJson() async {
   final String jsonString = await rootBundle.loadString('lib/api/member.json');
   return json.decode(jsonString);

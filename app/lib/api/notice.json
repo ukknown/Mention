@@ -1,0 +1,107 @@
+{
+    "explain" : [
+        "explain이라고 된 건 설명하려고 써놓은 거야", 
+        "보내줄 필요가 없는 데이터",
+        "정렬순서 : isRead = false 가 앞에, 그 다음 data 속 created_date가 큰 순으로"
+    ],
+
+    "name" : "김싸피",
+    "alarm" : [
+        {
+            "type" : "mention",
+            "data" : {
+                "id" : 1, 
+                "title" : "mention title example 1",
+                "created_date" : "2023-05-12 13:00:00",
+                "explain" : [
+                    "type이 mention일 경우 id와 title은 topic_id와 topic_title로 보내줘",
+                    "created_date는 나에게 멘션을 보낸 시간"
+                ],
+                "sender" : {
+                    "id" : 1,
+                    "gender" : "female",
+                    "explain" : "sender의 id는 user_id로 보내줘"
+                }
+            },
+            "isRead" : false
+        },
+        {
+            "type" : "mention",
+            "data" : {
+                "id" : 2, 
+                "title" : "mention title example 2",
+                "created_date" : "2023-05-08 11:00:00",
+                "sender" : {
+                    "id" : 2,
+                    "gender" : "male"
+                }
+            },
+            "isRead" : false
+        },
+        {
+            "type" : "mention",
+            "data" : {
+                "id" : 3, 
+                "title" : "mention title example 3",
+                "created_date" : "2023-05-08 10:00:00",
+                "sender" : {
+                    "id" : 3,
+                    "gender" : "unknown"
+                }
+            },
+            "isRead" : false
+        },
+        {
+            "type" : "mention",
+            "data" : {
+                "id" : 4, 
+                "title" : "mention title example 4",
+                "created_date" : "2023-05-08 09:00:00",
+                "sender" : {
+                    "id" : 4,
+                    "gender" : "female"
+                }
+            },
+            "isRead" : true
+        },
+        {
+            "type" : "mention",
+            "data" : {
+                "id" : 5, 
+                "title" : "mention title example 5",
+                "created_date" : "2023-05-08 08:00:00",
+                "sender" : {
+                    "id" : 5,
+                    "gender" : "male"
+                }
+            },
+            "isRead" : true
+        },
+        {
+            "type" : "mention",
+            "data" : {
+                "id" : 6, 
+                "title" : "mention title example 6",
+                "created_date" : "2023-05-08 07:00:00",
+                "sender" : {
+                    "id" : 6,
+                    "gender" : "unknown"
+                }
+            },
+            "isRead" : true
+        },
+        {
+            "type" : "notice",
+            "data" : {
+                "id" : 7, 
+                "title" : "notice title example 7",
+                "created_date" : "2023-05-08 07:00:00",
+                "explain" : [
+                    "type이 notice일 경우 id와 title은 notice_id와 notice_title로 보내줘",
+                    "created_date는 나에게 공지가 뜬 시간"
+                ]
+            },
+            "isRead" : true
+        }
+      ]
+}
