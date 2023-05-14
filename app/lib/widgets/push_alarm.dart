@@ -48,7 +48,7 @@ class _TestNotificationPageState extends State<TestNotificationPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text('테스트 알림을 표시하려면 아래 버튼을 누르세요.'),
-            const SizedBox(height: 16),
+            const SizedBox(height: 16), 
             ElevatedButton(
               onPressed: showTestNotification,
               child: const Text('알림 표시'),
