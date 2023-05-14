@@ -68,8 +68,7 @@ public class MemberController {
 
 
     @PostMapping ("/bangs")
-    public ResponseEntity calBang(@RequestBody Map<String, Object> bangCount, HttpServletRequest request){
-        int bang =  (int) bangCount.get("bang");
+    public ResponseEntity calBang(@RequestBody int bang, HttpServletRequest request){
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long loginMemberId = loginMember.getLong("id");
         memberService.calBang(bang, loginMemberId);
