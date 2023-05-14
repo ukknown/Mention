@@ -4,16 +4,18 @@ import 'dart:convert';
 
 class ProfileApi {
   static const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
+  final token =
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuamgzMzIxQG5hdmVyLmNvbSIsImVtYWlsIjoibmpoMzMyMUBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuuFuOykgO2YuCIsImlhdCI6MTY4NDA2MjYwNywiZXhwIjoxNjg0MDYzNjA3fQ.BsYRDgdxFhfgPx8Tp7IEL9MM6kIY2iUe_4B3rgy5pj7NjInEwm7IjuoUJAbAEjZxZwavCNObbxNvilmQAcjVCA";
   static Future<Profile> getProfile() async {
     final url = Uri.parse('$baseUrl/member-service/me');
     try {
       final response = await http.get(url, headers: <String, String>{
-        'Authorization':
-            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzd2FuQGdtYWlsLmNvbSIsImVtYWlsIjoic3dhbkBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyImOyZhOuPmSIsImlhdCI6MTY4Mzk4MjQ0MywiZXhwIjoxNjgzOTgzNDQzfQ.x058IUp_tPlvj2AY1EwT-3wLS-s6trBkrd4kMfaadeiPnmqqH5b08Wn_ddjINRAAPhT2DpUy5pCDXXtA7713AQ",
+        'Authorization': "Bearer $token",
       });
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> profileJson = jsonDecode(response.body);
+        print(profileJson);
         return Profile.fromJson(profileJson);
       } else {
         print('Server responded with status code: ${response.statusCode}');
