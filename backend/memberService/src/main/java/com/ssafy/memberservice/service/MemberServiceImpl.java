@@ -123,7 +123,7 @@ public class MemberServiceImpl implements MemberService{
                     .builder()
                     .email(requestJoin.getEmail())
                     .nickname(requestJoin.getNickname())
-                    .gender(Gender.FEMALE)
+                    .gender(Gender.female)
                     .profileImage("https://mention-bucket.s3.ap-northeast-2.amazonaws.com/static/team-image/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-03-17_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_11.14.48-removebg-preview.png")
                     .role(Role.ROLE_USER)
                     .build();
