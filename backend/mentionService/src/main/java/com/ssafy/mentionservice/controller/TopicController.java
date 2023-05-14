@@ -2,10 +2,7 @@ package com.ssafy.mentionservice.controller;
 
 import com.ssafy.mentionservice.elastic.TopicDocument;
 import com.ssafy.mentionservice.service.TopicService;
-import com.ssafy.mentionservice.vo.MemberVo;
-import com.ssafy.mentionservice.vo.TopicIdRequestDto;
-import com.ssafy.mentionservice.vo.TopicResoponseDto;
-import com.ssafy.mentionservice.vo.TopicTitleRequestDto;
+import com.ssafy.mentionservice.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -88,6 +85,11 @@ public class TopicController {
     public ResponseEntity<?> rejectTopic(@RequestBody TopicIdRequestDto topicIdRequestDto) {
         topicService.rejectTopic(topicIdRequestDto.getTopicId());
         return ResponseEntity.ok().body("거절 완료");
+    }
+
+    @GetMapping("/top-topic/{memberId}")
+    public List<TopTopicVo> getTopTopic(@PathVariable Long memberId) {
+        return topicService.getTopTopic(memberId);
     }
 
     private MemberVo loadMember(HttpServletRequest request) {

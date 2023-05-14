@@ -1,6 +1,7 @@
 package com.ssafy.mentionservice.service;
 
 import com.ssafy.mentionservice.elastic.TopicDocument;
+import com.ssafy.mentionservice.vo.TopTopicVo;
 import com.ssafy.mentionservice.vo.TopicResoponseDto;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface TopicService {
     String checkSimilarity(String inputTopic);
 
     void saveTopic();
+
+    List<TopTopicVo> getTopTopic(Long memberId);
 
     List<TopicResoponseDto> getPendingTopic();
 

@@ -5,9 +5,8 @@ import com.ssafy.mentionservice.elastic.TopicDocument;
 import com.ssafy.mentionservice.elastic.TopicSearchRepository;
 import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
-import com.ssafy.mentionservice.jpa.ApproveStatus;
-import com.ssafy.mentionservice.jpa.TopicEntity;
-import com.ssafy.mentionservice.jpa.TopicRepository;
+import com.ssafy.mentionservice.jpa.*;
+import com.ssafy.mentionservice.vo.TopTopicVo;
 import com.ssafy.mentionservice.vo.TopicResoponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.similarity.CosineSimilarity;
@@ -30,8 +29,10 @@ import java.util.stream.Collectors;
 public class TopicServiceImpl implements TopicService{
 
     private final TopicSearchRepository topicSearchRepository;
+    private final MentionRepository mentionRepository;
     private final TopicRepository topicRepository;
     private final MemberServiceFeignClient memberServiceFeignClient;
+    private final VoteRepository voteRepository;
 
     @Value("${naver.app.key}")
     private String NAVER_KEY;
@@ -112,6 +113,34 @@ public class TopicServiceImpl implements TopicService{
         } catch (MentionServiceRuntimeException e) {
             throw new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NAVER_EXCEPTION);
         }
+    }
+
+    public List<TopTopicVo> getTopTopic(Long memberId) {
+        List<MentionEntity> mentions = mentionRepository.findAllByPickerIdOrderByVoteIdAsc(memberId);
+
+        Map<Long, Long> voteIdCounts = mentions.stream()
+                .collect(Collectors.groupingBy(MentionEntity::getVoteId, Collectors.counting()));
+
+        List<Long> topVoteIds = voteIdCounts.entrySet().stream()
+                .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
+                .limit(3)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        List<TopTopicVo> topTopics = new ArrayList<>();
+        for (Long voteId : topVoteIds) {
+            VoteEntity vote = voteRepository.findById(voteId)
+                    .orElse(null);
+            TopicEntity topic = vote.getTopic();
+            TopTopicVo vo = TopTopicVo
+                    .builder()
+                    .topicId(topic.getId())
+                    .topicTitle(topic.getTitle())
+                    .mentionCount(voteIdCounts.get(voteId))
+                    .build();
+            topTopics.add(vo);
+        }
+        return topTopics;
     }
 
     @Override
