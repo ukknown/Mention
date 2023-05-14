@@ -71,17 +71,16 @@ public class JwtTokenProvider {
 
         System.out.println("createToken / refreshtoken 발급 : " + refreshToken);
         // Redis key 이름과 값 설정
-//        String redisKey = memberEntity.getEmail();
-//        String redisValue = refreshToken;
+
         String redisKey = accessToken;
         MemberDto redisValue = new MemberDto(memberEntity.getId(),memberEntity.getEmail(), memberEntity.getNickname(), memberEntity.getRole(),refreshToken);
 
         // Redis에 refreshToken 저장
         redisTemplate.opsForValue().set(redisKey, redisValue);
         redisTemplate.expireAt(redisKey, expiresIn); // refresh만료날에 맞춰 redis key-value삭제
-//        stringRedisTemplate.opsForValue().set(redisKey, redisValue);
 
-        return new TokenResponseDto(accessToken, refreshToken);
+
+        return new TokenResponseDto(accessToken);
     }
 
 

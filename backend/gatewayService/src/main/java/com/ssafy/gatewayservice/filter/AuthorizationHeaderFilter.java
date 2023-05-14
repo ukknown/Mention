@@ -139,17 +139,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 //        if(subject == null || subject.isEmpty()){
 //            returnValue = false;
 //        }
-//        //토큰 만료 확인
-//        Claims claims = Jwts.parser().setSigningKey(env.getProperty("jwt.secret")).parseClaimsJws(jwt).getBody();
-//
-//        Date expriration = claims.getExpiration();
-//        log.info("",expriration);
-//
-//        if(expriration.before(new Date())){ //access 토큰 유효 시간이 현재 시간 이전이면
-//            if(!isRefreshVaild(jwt)) { //refresh 유효시간이 끝났으면
-//                returnValue = false;
-//            }
-//        }
+
 
         return returnValue;
     }
@@ -157,8 +147,12 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     private boolean isRefreshVaild(String jwt) {
 
         jwt = jwt.trim();
-//        String json = (String) redisTemplate.opsForValue().get(jwt);
         Map<String, Object> result = (Map<String, Object>) redisTemplate.opsForValue().get(jwt);
+
+        if(result == null){
+            System.out.println("redis null값");
+            throw new NullPointerException("redis에 access token과 일치하는 값 없음");
+        }
         Integer id = (Integer) result.get("id");
         String email = (String) result.get("email");
         String nickname = (String) result.get("nickname");
@@ -200,7 +194,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
         System.out.println("새로 발급 된 access token : " + accessToken);
 
-        //redisTemplate.delete(jwt); //기존 access token 정보 제거
+        redisTemplate.delete(jwt); //기존 access token 정보 제거
 
         redisTemplate.opsForValue().set(accessToken, memberDto); //새로 발급된 access token을 키 값으로 추가
         redisTemplate.expireAt(accessToken, refreshExpriration); //이 키의 값이 정해진 날짜에 삭제

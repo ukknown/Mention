@@ -1,22 +1,21 @@
 package com.ssafy.teamservice.service;
 
-import com.ssafy.teamservice.config.MapperConfig;
+import com.ssafy.teamservice.client.MentionServiceClient;
 import com.ssafy.teamservice.jpa.TeamMemberEntity;
 import com.ssafy.teamservice.jpa.TeamMemberRepository;
 import com.ssafy.teamservice.vo.TeamMemberVO;
 import com.ssafy.teamservice.vo.dto.TeamResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TeamMemberServiceImpl implements TeamMemberService{
     private final TeamMemberRepository teamMemberRepository;
-
-    public TeamMemberServiceImpl(TeamMemberRepository teamMemberRepository) {
-        this.teamMemberRepository = teamMemberRepository;
-    }
+    private final MentionServiceClient mentionServiceClient;
 
     /**
      * team_member(그룹)에 이미 가입한 적이 있는지 확인
@@ -61,9 +60,10 @@ public class TeamMemberServiceImpl implements TeamMemberService{
         List<TeamMemberEntity> teamMemberEntityList = teamMemberRepository.findTeamMemberEntityByMemberId(memberId);
 
         return teamMemberEntityList.stream()
-                .filter(teamMember -> teamMember.getTeamEntity().getIsDeleted() == 0)
-                .map(teamMember -> new TeamResponseDto(teamMember.getTeamEntity())
-                // , 투표 리스트 추가
+                .filter(teamMember -> teamMember.getTeamEntity().getIsDeleted() == 0 && teamMember.getIsKickOut() == 0)
+                .map(teamMember ->
+                        new TeamResponseDto(teamMember.getTeamEntity(),
+                                mentionServiceClient.getVoteList(teamMember.getTeamEntity().getId(), memberId, "TWO"))
                 )
                 .collect(Collectors.toList());
     }
@@ -72,6 +72,11 @@ public class TeamMemberServiceImpl implements TeamMemberService{
     public void updateIsKickOut(TeamMemberVO teamMemberVO) {
         TeamMemberEntity teamMemberEntity = findByMemberIdAndTeamEntity(teamMemberVO);
         teamMemberEntity.updateIsKickOut();
+    }
+
+    @Override
+    public int getTeamCount(Long memberId) {
+        return teamMemberRepository.getTeamCount(memberId);
     }
 
     /**

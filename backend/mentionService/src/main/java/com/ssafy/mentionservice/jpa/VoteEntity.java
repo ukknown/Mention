@@ -1,9 +1,6 @@
 package com.ssafy.mentionservice.jpa;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Builder
+@Table(name = "vote")
 public class VoteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +18,9 @@ public class VoteEntity {
 
     private Long teamId;
 
-    private String topicTitle;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id")
+    private TopicEntity topic;
 
     private Boolean isCompleted;
 
@@ -28,11 +28,7 @@ public class VoteEntity {
 
     private LocalDateTime dueDate;
 
-    @PostLoad
     public void updateIsCompleted() {
-        if (!isCompleted && LocalDateTime.now().isAfter(dueDate)) {
-            isCompleted = true;
-        }
+        this.isCompleted = true;
     }
-
 }

@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "member-service")
 public interface MemberServiceClient {
-    @GetMapping("/member-service/{memberid}")
-    MemberVO getOrders(@PathVariable Long memberid);
+    @GetMapping("/member-service/feign/{memberid}")
+    MemberVO getMembers(@PathVariable Long memberid);
 }
