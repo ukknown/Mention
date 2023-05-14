@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class CreateVoteRequestDto {
     private Long teamId;
-    private String topicTitle;
+    private Long topicId;
 }

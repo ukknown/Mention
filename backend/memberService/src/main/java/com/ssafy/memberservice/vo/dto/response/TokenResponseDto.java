@@ -6,11 +6,10 @@ import lombok.Getter;
 public class TokenResponseDto {
     private String type;
     private String accessToken;
-    private String refreshToken;
 
-    public TokenResponseDto(String accessToken, String refreshToken) {
+
+    public TokenResponseDto(String accessToken) {
         this.type = "Bearer";
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
     }
 }
