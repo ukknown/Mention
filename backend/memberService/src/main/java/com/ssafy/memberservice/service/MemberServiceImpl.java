@@ -254,19 +254,17 @@ public class MemberServiceImpl implements MemberService{
         if(Member.isPresent()){
             MemberEntity member = Member.get();
             group = teamServiceFeignClient.getGroupCount(memberid);
-            topTopic = topicServiceFeignClient.getTopTopic(memberid);
-            System.out.println(group);
+//            topTopic = topicServiceFeignClient.getTopTopic(memberid);
+            System.out.println("group : " + group);
             return MyPageVO.builder()
                     .profileImage(member.getProfileImage())
                     .nickname(member.getNickname())
                     .bangAmount(member.getBangAmount())
                     .GroupCount(group)
-                    .topTopic(topTopic)
+//                    .topTopic(topTopic)
                     .build();
 
         }
-
-
 
         return null;
     }

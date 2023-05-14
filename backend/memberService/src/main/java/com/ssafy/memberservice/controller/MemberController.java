@@ -67,8 +67,8 @@ public class MemberController {
     }
 
 
-    @PatchMapping ("/bang/{bang}")
-    public ResponseEntity calBang(@PathVariable int bang, HttpServletRequest request){
+    @PostMapping ("/bangs")
+    public ResponseEntity calBang(@RequestBody int bang, HttpServletRequest request){
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long loginMemberId = loginMember.getLong("id");
         memberService.calBang(bang, loginMemberId);
@@ -76,7 +76,7 @@ public class MemberController {
     }
 
     //타임아웃 횟수 추가
-    @GetMapping("/time-out")
+    @GetMapping("/fegin/time-out")
     public ResponseEntity addTimeout(HttpServletRequest request){
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long memberId = loginMember.getLong("id");
@@ -115,8 +115,8 @@ public class MemberController {
         String acessToken = request.getHeader("Authorization");
         String bearerToken = acessToken.substring(7);
 
-        System.out.println(memberStr);
-        System.out.println(bearerToken);
+        System.out.println("health-check : " + memberStr);
+        System.out.println("health-check : " + bearerToken);
 
         return "MemberService Check Completed!";
     }
