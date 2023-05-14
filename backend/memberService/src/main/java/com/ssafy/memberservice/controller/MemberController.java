@@ -77,7 +77,7 @@ public class MemberController {
     }
 
     //타임아웃 횟수 추가
-    @GetMapping("/fegin/time-out")
+    @GetMapping("/feign/time-out")
     public ResponseEntity addTimeout(HttpServletRequest request){
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long memberId = loginMember.getLong("id");
