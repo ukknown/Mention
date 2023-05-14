@@ -83,15 +83,15 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                         .build();
             }
 
-            exchange.getRequest().mutate()
-                    .headers(httpHeaders -> {
-                        // remove existing access token header if present
-                        httpHeaders.remove(HttpHeaders.AUTHORIZATION);
-
-                        // add new access token header
-                        httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-                    })
-                    .build();
+//            exchange.getRequest().mutate()
+//                    .headers(httpHeaders -> {
+//                        // remove existing access token header if present
+//                        httpHeaders.remove(HttpHeaders.AUTHORIZATION);
+//
+//                        // add new access token header
+//                        httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+//                    })
+//                    .build();
 
             //여기서 redis접근 후 exchange에 담아서 보내줌
             Map<String, Object> result = (Map<String, Object>) redisTemplate.opsForValue().get(accessToken);
