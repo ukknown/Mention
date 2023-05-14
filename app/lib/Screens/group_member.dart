@@ -1,3 +1,4 @@
+import 'package:app/Screens/group_screen.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class _GroupMemberState extends State<GroupMember> {
   void initState() {
     super.initState();
     loadJson().then((value) {
-      setState(() { 
+      setState(() {
         memberData = value;
       });
     });
@@ -49,9 +50,14 @@ class _GroupMemberState extends State<GroupMember> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            '멤버',
-                            style: TextStyle(fontSize: 30),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const GroupScreen()));
+                            },
+                            child: const Text(
+                              '멤버',
+                              style: TextStyle(fontSize: 30),
+                            ),
                           ),
                           GestureDetector(
                             onTap: () {

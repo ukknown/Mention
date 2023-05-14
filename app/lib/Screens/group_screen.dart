@@ -6,11 +6,39 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:app/widgets/bottom_nav.dart';
 
-class GroupScreen extends StatelessWidget {
+import '../api/group_api.dart';
+
+class GroupScreen extends StatefulWidget {
   const GroupScreen({Key? key}) : super(key: key);
 
-  // 질문생성 모달
+  @override
+  State<GroupScreen> createState() => _GroupScreenState();
+}
 
+class _GroupScreenState extends State<GroupScreen> {
+  late dynamic groupData;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+    print('여기니?1번');
+  }
+
+  Future<dynamic> _fetchData() async {
+    try {
+      final data = await fetchData();
+      setState(() {
+        print('2번??');
+        groupData = data;
+        print('groupData: ${groupData ?? "null"}');
+      });
+    } catch (error) {
+      // 에러 처리
+    }
+  }
+
+  // 질문생성 모달
   @override
   Widget build(BuildContext context) {
     return Scaffold(
