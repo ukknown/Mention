@@ -5,10 +5,10 @@ import 'package:app/widgets/profile/profile_box/profile_card.dart';
 import 'package:app/widgets/profile/profile_box/rank_slot.dart';
 import 'package:flutter/material.dart';
 
-// import 'package:app/api/profile_api.dart';
-// import 'package:app/api/profile_model.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
+import 'package:app/api/profile_api.dart';
+import 'package:app/api/profile_model.dart';
+// import 'dart:convert';
+// import 'package:flutter/services.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -18,21 +18,21 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late Future<Map<String, dynamic>> futureProfileData;
-  // late Future<Profile> futureProfileData;
+  // late Future<Map<String, dynamic>> futureProfileData;
+  late Future<Profile> futureProfileData;
 
-  Future<Map<String, dynamic>> loadProfileData() async {
-    final jsonString =
-        await rootBundle.loadString('lib/api/profile_screen.json');
-    final jsonData = json.decode(jsonString);
-    return jsonData;
-  }
+  // Future<Map<String, dynamic>> loadProfileData() async {
+  //   final jsonString =
+  //       await rootBundle.loadString('lib/api/profile_screen.json');
+  //   final jsonData = json.decode(jsonString);
+  //   return jsonData;
+  // }
 
   @override
   void initState() {
     super.initState();
-    futureProfileData = loadProfileData();
-    // futureProfileData = ProfileApi.getProfile();
+    // futureProfileData = loadProfileData();
+    futureProfileData = ProfileApi.getProfile();
   }
 
   @override
@@ -49,8 +49,8 @@ class _ProfilePageState extends State<ProfilePage> {
           future: futureProfileData,
           builder: (
             BuildContext context,
-            AsyncSnapshot<Map<String, dynamic>> snapshot,
-            // AsyncSnapshot<Profile> snapshot,
+            // AsyncSnapshot<Map<String, dynamic>> snapshot,
+            AsyncSnapshot<Profile> snapshot,
           ) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -64,8 +64,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               );
             } else {
-              final profileData = snapshot.data!;
-              // final profile = snapshot.data!;
+              // final profileData = snapshot.data!;
+              final profile = snapshot.data!;
 
               return SingleChildScrollView(
                 child: Center(
@@ -75,16 +75,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: screenHeight * 0.1,
                       ),
                       ProfileCard(
-                        profileImage: profileData['profile_image'],
-                        name: profileData['name'],
-                        coin: profileData['coin'],
-                        groupCount: profileData['group_count'],
-                        mentionCount: profileData['mention_count'],
-                        // profileImage: profile.profileImage,
-                        // name: profile.name,
-                        // coin: profile.coin,
-                        // groupCount: profile.groupCount,
-                        // mentionCount: profile.mentionCount,
+                        // profileImage: profileData['profile_image'],
+                        // name: profileData['name'],
+                        // coin: profileData['coin'],
+                        // groupCount: profileData['group_count'],
+                        // mentionCount: profileData['mention_count'],
+                        profileImage: profile.profileImage,
+                        name: profile.name,
+                        coin: profile.coin,
+                        groupCount: profile.groupCount,
+                        mentionCount: profile.mentionCount,
                         screenHeight: screenHeight,
                         screenWidth: screenWidth,
                       ),
@@ -146,26 +146,26 @@ class _ProfilePageState extends State<ProfilePage> {
                             SizedBox(
                               height: screenHeight * 0.02,
                             ),
-                            for (var entry
-                                in profileData['most_mentioned_topic']
-                                    .asMap()
-                                    .entries)
-                              RankSlot(
-                                screenWidth: screenWidth,
-                                screenHeight: screenHeight,
-                                topic: entry.value,
-                                rank: entry.key + 1,
-                              ),
-
                             // for (var entry
-                            //     in profile.mostMentionedTopic.asMap().entries)
+                            //     in profileData['most_mentioned_topic']
+                            //         .asMap()
+                            //         .entries)
                             //   RankSlot(
                             //     screenWidth: screenWidth,
                             //     screenHeight: screenHeight,
-                            //     topic: entry.value.title,
-                            //     mentionedCount: entry.value.mentionedCount,
+                            //     topic: entry.value,
                             //     rank: entry.key + 1,
                             //   ),
+
+                            for (var entry
+                                in profile.mostMentionedTopic.asMap().entries)
+                              RankSlot(
+                                screenWidth: screenWidth,
+                                screenHeight: screenHeight,
+                                topic: entry.value.title,
+                                mentionedCount: entry.value.mentionedCount,
+                                rank: entry.key + 1,
+                              ),
                           ],
                         ),
                       ),
