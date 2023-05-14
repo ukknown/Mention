@@ -10,13 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.ssafy.teamservice.service.TeamServiceImpl;
 import com.ssafy.teamservice.utils.S3Uploader;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.teamservice.jpa.TeamEntity;
-import com.ssafy.teamservice.service.TeamMemberServiceImpl;
 import com.ssafy.teamservice.utils.error.ErrorCode;
 import com.ssafy.teamservice.utils.exception.CustomException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,7 +62,7 @@ public class TeamController {
     ){
          TeamVO teamVO = convertRequestToVO(request);
 
-         String url = "";
+         String url = "https://mention-bucket.s3.ap-northeast-2.amazonaws.com/static/team-image/clover.jpeg";
          if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
 
          TeamEntity teamEntity = teamService.createTeam(new TeamDetailVO(name, url, (long) teamVO.getMemberId()));
