@@ -1,12 +1,10 @@
-package com.ssafy.topicservice.controller;
-import com.ssafy.topicservice.vo.MemberVo;
-import com.ssafy.topicservice.vo.TopicIdRequestDto;
-import com.ssafy.topicservice.vo.TopicTitleRequestDto;
+package com.ssafy.mentionservice.controller;
+
+import com.ssafy.mentionservice.elastic.TopicDocument;
+import com.ssafy.mentionservice.service.TopicService;
+import com.ssafy.mentionservice.vo.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import com.ssafy.topicservice.elastic.TopicDocument;
-import com.ssafy.topicservice.service.TopicService;
-import com.ssafy.topicservice.vo.TopicResoponseDto;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -48,11 +46,6 @@ public class TopicController {
         return ResponseEntity.ok().body(documents);
     }
 
-    @GetMapping("/daily")
-    public ResponseEntity<List<String>> getDailyTopic() {
-        return ResponseEntity.ok().body(topicService.getDailyTopic());
-    }
-
     @Operation(summary = "네이버 감정 분석 요청", description = "새로운 토픽일 경우 응모하시겠습니까? 이후 검증")
     @PostMapping("/call/naver")
     public ResponseEntity<String> goToNaver(HttpServletRequest request,
@@ -92,6 +85,11 @@ public class TopicController {
     public ResponseEntity<?> rejectTopic(@RequestBody TopicIdRequestDto topicIdRequestDto) {
         topicService.rejectTopic(topicIdRequestDto.getTopicId());
         return ResponseEntity.ok().body("거절 완료");
+    }
+
+    @GetMapping("/top-topic/{memberId}")
+    public List<TopTopicVo> getTopTopic(@PathVariable Long memberId) {
+        return topicService.getTopTopic(memberId);
     }
 
     private MemberVo loadMember(HttpServletRequest request) {
