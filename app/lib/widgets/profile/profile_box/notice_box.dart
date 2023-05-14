@@ -1,3 +1,6 @@
+import 'package:app/api/notice_model.dart';
+import 'package:app/widgets/profile/profile_box/notice_mention.dart';
+import 'package:app/widgets/profile/profile_box/notice_notice.dart';
 import 'package:flutter/material.dart';
 
 class NoticeBox extends StatelessWidget {
@@ -5,96 +8,40 @@ class NoticeBox extends StatelessWidget {
     super.key,
     required this.screenWidth,
     required this.screenHeight,
+    required this.name,
+    required this.notice,
   });
 
   final double screenWidth;
   final double screenHeight;
+  final String name;
+  final Notice notice;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: screenHeight * 0.01,
-      ),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            width: screenWidth * 0.9,
-            decoration: BoxDecoration(
-              color: const Color(0xffa3b3f9),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.04,
-                vertical: screenHeight * 0.01,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("누군가 00님에게 @를 보냈어요."),
-                  const Text("10분 전"),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: screenHeight * 0.01,
-                    ),
-                    child: Container(
-                      width: screenWidth * 0.8,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffd1d9fc),
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: const Offset(2, 5),
-                            blurRadius: 5,
-                            color: Colors.black.withOpacity(0.3),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text("icon"),
-                              SizedBox(
-                                width: screenWidth * 0.02,
-                              ),
-                              const Text("토픽제목"),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: -screenWidth * 0.02,
-            right: -screenWidth * 0.02,
-            child: Container(
-              width: screenWidth * 0.05,
-              height: screenWidth * 0.05,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(2, 5),
-                    blurRadius: 5,
-                    color: Colors.black.withOpacity(0.3),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    if (notice.type == "mention") {
+      return NoticeMention(
+        screenWidth: screenWidth,
+        screenHeight: screenHeight,
+        name: name,
+        isRead: notice.isRead,
+        title: notice.data.title,
+        created: notice.data.createdDate,
+        id: notice.data.id,
+        sender: notice.data.sender,
+      );
+    } else if (notice.type == "notice") {
+      return NoticeNotice(
+        screenWidth: screenWidth,
+        screenHeight: screenHeight,
+        name: name,
+        isRead: notice.isRead,
+        title: notice.data.title,
+        created: notice.data.createdDate,
+        id: notice.data.id,
+      );
+    } else {
+      return Container();
+    }
   }
 }

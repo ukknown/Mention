@@ -17,6 +17,42 @@
             "group_image" : "ssafy.png",
             "group_name" : "C105",
             "group_member" : 5
+        },
+        {
+            "group_id" : 2,
+            "group_image" : "ssafy.png",
+            "group_name" : "광주캠퍼스",
+            "group_member" : 245
+        },
+        {
+            "group_id" : 3,
+            "group_image" : "ssafy.png",
+            "group_name" : "C105",
+            "group_member" : 5
+        },
+        {
+            "group_id" : 2,
+            "group_image" : "ssafy.png",
+            "group_name" : "광주캠퍼스",
+            "group_member" : 245
+        },
+        {
+            "group_id" : 3,
+            "group_image" : "ssafy.png",
+            "group_name" : "C105",
+            "group_member" : 5
+        },
+        {
+            "group_id" : 2,
+            "group_image" : "ssafy.png",
+            "group_name" : "광주캠퍼스",
+            "group_member" : 245
+        },
+        {
+            "group_id" : 3,
+            "group_image" : "ssafy.png",
+            "group_name" : "C105",
+            "group_member" : 5
         }
     ]
 }

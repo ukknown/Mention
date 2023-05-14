@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Builder
+@Table(name = "vote")
 public class VoteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +18,9 @@ public class VoteEntity {
 
     private Long teamId;
 
-    private String topicTitle;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id")
+    private TopicEntity topic;
 
     private Boolean isCompleted;
 

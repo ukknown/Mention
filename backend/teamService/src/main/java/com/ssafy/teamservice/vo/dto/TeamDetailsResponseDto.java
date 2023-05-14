@@ -2,8 +2,8 @@ package com.ssafy.teamservice.vo.dto;
 
 import com.ssafy.teamservice.jpa.TeamEntity;
 import com.ssafy.teamservice.vo.MemberVO;
-import lombok.Getter;
-import lombok.Setter;
+import com.ssafy.teamservice.vo.VoteVO;
+import lombok.*;
 
 import java.util.List;
 
@@ -19,13 +19,14 @@ public class TeamDetailsResponseDto {
     private int capacity;
     private List<MemberVO> memberList;
 
-    // private List<VoteVO> voteList;
+     private List<VoteVO> voteList;
 
-    public TeamDetailsResponseDto(TeamEntity teamEntity, List<MemberVO> memberList) {
+    public TeamDetailsResponseDto(TeamEntity teamEntity, List<MemberVO> memberList, List<VoteVO> voteList) {
         this.id = teamEntity.getId();
         this.name = teamEntity.getName();
         this.image = teamEntity.getImage();
         this.capacity = teamEntity.getCapacity();
         this.memberList = memberList;
+        this.voteList = voteList;
     }
 }
