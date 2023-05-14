@@ -7,6 +7,7 @@ import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.TopTopicVo;
+import com.ssafy.mentionservice.vo.TopicNaverRequestDto;
 import com.ssafy.mentionservice.vo.TopicResoponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.similarity.CosineSimilarity;
@@ -79,7 +80,7 @@ public class TopicServiceImpl implements TopicService{
 
     @Override
     @Transactional
-    public String goToNaver(String topicCandidate, Long memberId) {
+    public String goToNaver(TopicNaverRequestDto topicNaverRequestDto, Long memberId) {
         try {
             WebClient webClient = WebClient.builder()
                 .baseUrl("https://naveropenapi.apigw.ntruss.com/sentiment-analysis/v1/analyze")
@@ -87,6 +88,7 @@ public class TopicServiceImpl implements TopicService{
                 .defaultHeader("X-NCP-APIGW-API-KEY", NAVER_SECRET)
                 .build();
 
+            String topicCandidate = topicNaverRequestDto.getTitle();
             Map<String, String> content = Map.of("content", topicCandidate);
             Mono<Map<String, Object>> responseMono = webClient.post()
                     .contentType(MediaType.APPLICATION_JSON)
