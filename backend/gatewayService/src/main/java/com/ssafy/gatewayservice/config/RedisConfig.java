@@ -24,7 +24,7 @@ public class RedisConfig {
     /*
      * Redis 서버와의 통신을 위한 low-level 추상화를 제공
      * 설정에 따라서 새로운 RedisConnection 또는 이미 존재하는 RedisConnection을 리턴
-     * [테스트용 ~]
+     * [테스트용 ~]ㅓㅏㅓㅓ
      * */
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
