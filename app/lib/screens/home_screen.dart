@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print, unused_import, unnecessary_string_interpolations
 // import 'dart:convert';
 import 'dart:convert';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:app/Screens/mainPage.dart';
@@ -19,6 +19,12 @@ class HomeScreen extends StatefulWidget {
 // 94B8EB
 class _HomeScreenState extends State<HomeScreen> {
   // ignore: unused_field
+  Future<String> loadtoken() async {
+    final prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("token"));
+    return prefs.getString('token') ?? '';
+  }
+
   LoginPlatform _loginPlatform = LoginPlatform.none;
   void signInWithKakao() async {
     try {
@@ -28,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ? await UserApi.instance.loginWithKakaoTalk()
           : await UserApi.instance.loginWithKakaoAccount();
 
-      print(token.accessToken);
+      print("보내는 토큰 : ${token.accessToken}");
 
       final loginUrl =
           Uri.parse("http://k8c105.p.ssafy.io:8000/member-service/login");
@@ -41,13 +47,19 @@ class _HomeScreenState extends State<HomeScreen> {
         headers: <String, String>{"Content-Type": "application/json"},
         body: jsonData,
       );
-      print(jsonData);
+
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         setState(() {
           _loginPlatform = LoginPlatform.kakao;
         });
-        print(responseData);
+
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', responseData["accessToken"]);
+
+        // final prefs = await SharedPreferences.getInstance();
+        print(prefs.getString("token"));
+        // print(responseData["accessToken"]);
       } else {
         print('에러 : ${response.statusCode}');
       }
@@ -107,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: GestureDetector(
                 onTap: () {
                   signInWithKakao();
+                  // loadtoken();
                   _loginPlatform == LoginPlatform.kakao
                       ? Navigator.push(
                           context,
