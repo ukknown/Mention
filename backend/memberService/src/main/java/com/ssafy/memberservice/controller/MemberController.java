@@ -67,7 +67,7 @@ public class MemberController {
     }
 
 
-    @PatchMapping ("/bang/{bang}")
+    @PostMapping ("/bang/{bang}")
     public ResponseEntity calBang(@PathVariable int bang, HttpServletRequest request){
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long loginMemberId = loginMember.getLong("id");
@@ -76,7 +76,7 @@ public class MemberController {
     }
 
     //타임아웃 횟수 추가
-    @GetMapping("/time-out")
+    @GetMapping("/fegin/time-out")
     public ResponseEntity addTimeout(HttpServletRequest request){
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long memberId = loginMember.getLong("id");
