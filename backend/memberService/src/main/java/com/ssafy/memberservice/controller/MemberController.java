@@ -115,8 +115,8 @@ public class MemberController {
         String acessToken = request.getHeader("Authorization");
         String bearerToken = acessToken.substring(7);
 
-        System.out.println(memberStr);
-        System.out.println(bearerToken);
+        System.out.println("health-check : " + memberStr);
+        System.out.println("health-check : " + bearerToken);
 
         return "MemberService Check Completed!";
     }
