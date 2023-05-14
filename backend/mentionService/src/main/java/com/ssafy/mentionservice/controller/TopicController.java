@@ -56,8 +56,8 @@ public class TopicController {
 
     @Operation(summary = "새로운 토픽인지 아닌지 검증", description = "새로운 토픽인지 아닌지 검증")
     @PostMapping("/check/similarity")
-    public ResponseEntity<String> checkSimilarity(@RequestBody TopicNaverRequestDto topicNaverRequestDto) {
-        return ResponseEntity.ok().body(topicService.checkSimilarity(topicNaverRequestDto.getTitle()));
+    public ResponseEntity<String> checkSimilarity(@RequestBody TopicTitleRequestDto topicTitleRequestDto) {
+        return ResponseEntity.ok().body(topicService.checkSimilarity(topicTitleRequestDto.getTitle()));
     }
 
     @Operation(summary = "토픽 저장", description = "추후 데이터 쌓이면 메서드로 변환 예정")
