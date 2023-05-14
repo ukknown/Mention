@@ -1,21 +1,18 @@
-package com.ssafy.topicservice.service;
+package com.ssafy.mentionservice.service;
 
-import com.ssafy.topicservice.Feignclient.MemberServiceFeignClient;
-import com.ssafy.topicservice.exception.TopicExceptionEnum;
-import com.ssafy.topicservice.exception.TopicRuntimeException;
-import com.ssafy.topicservice.jpa.ApproveStatus;
-import com.ssafy.topicservice.elastic.TopicDocument;
-import com.ssafy.topicservice.jpa.TopicEntity;
-import com.ssafy.topicservice.jpa.TopicRepository;
-import com.ssafy.topicservice.elastic.TopicSearchRepository;
-import com.ssafy.topicservice.vo.TopicResoponseDto;
-import com.ssafy.topicservice.vo.TopicTitleRequestDto;
+import com.ssafy.mentionservice.feignclient.MemberServiceFeignClient;
+import com.ssafy.mentionservice.elastic.TopicDocument;
+import com.ssafy.mentionservice.elastic.TopicSearchRepository;
+import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
+import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
+import com.ssafy.mentionservice.jpa.*;
+import com.ssafy.mentionservice.vo.TopTopicVo;
+import com.ssafy.mentionservice.vo.TopicResoponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.text.similarity.CosineSimilarity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -32,8 +29,10 @@ import java.util.stream.Collectors;
 public class TopicServiceImpl implements TopicService{
 
     private final TopicSearchRepository topicSearchRepository;
+    private final MentionRepository mentionRepository;
     private final TopicRepository topicRepository;
     private final MemberServiceFeignClient memberServiceFeignClient;
+    private final VoteRepository voteRepository;
 
     @Value("${naver.app.key}")
     private String NAVER_KEY;
@@ -67,23 +66,6 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public List<String> getDailyTopic() {
-        return dailyTopics;
-    }
-
-    private List<String> dailyTopics = new ArrayList<>();
-    @Override
-    @Scheduled(cron = "0 51 18 * * ?")
-    public void setDailyTopic() {
-        List<TopicEntity> allTopics = topicRepository.findAll();
-        Collections.shuffle(allTopics);
-        dailyTopics.clear();
-        for(int i = 0; i < 5; i++) {
-            dailyTopics.add(allTopics.get(i).getTitle());
-        }
-    }
-
-    @Override
     @Transactional
     public void deleteElastic() {
         topicSearchRepository.deleteAll();
@@ -96,6 +78,7 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
+    @Transactional
     public String goToNaver(String topicCandidate, Long memberId) {
         try {
             WebClient webClient = WebClient.builder()
@@ -122,13 +105,42 @@ public class TopicServiceImpl implements TopicService{
                 TopicEntity topic = TopicEntity.builder()
                         .title(topicCandidate)
                         .approveStatus(ApproveStatus.PENDING)
+                        .emoji("사용자가 넣은 이미지")
                         .build();
                 topicRepository.save(topic);
                 return "응모가 완료되었습니다.";
             }
-        } catch (TopicRuntimeException e) {
-            throw new TopicRuntimeException(TopicExceptionEnum.TOPIC_NAVER_EXCEPTION);
+        } catch (MentionServiceRuntimeException e) {
+            throw new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NAVER_EXCEPTION);
         }
+    }
+
+    public List<TopTopicVo> getTopTopic(Long memberId) {
+        List<MentionEntity> mentions = mentionRepository.findAllByPickerIdOrderByVoteIdAsc(memberId);
+
+        Map<Long, Long> voteIdCounts = mentions.stream()
+                .collect(Collectors.groupingBy(MentionEntity::getVoteId, Collectors.counting()));
+
+        List<Long> topVoteIds = voteIdCounts.entrySet().stream()
+                .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
+                .limit(3)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        List<TopTopicVo> topTopics = new ArrayList<>();
+        for (Long voteId : topVoteIds) {
+            VoteEntity vote = voteRepository.findById(voteId)
+                    .orElse(null);
+            TopicEntity topic = vote.getTopic();
+            TopTopicVo vo = TopTopicVo
+                    .builder()
+                    .topicId(topic.getId())
+                    .topicTitle(topic.getTitle())
+                    .mentionCount(voteIdCounts.get(voteId))
+                    .build();
+            topTopics.add(vo);
+        }
+        return topTopics;
     }
 
     @Override
@@ -138,6 +150,7 @@ public class TopicServiceImpl implements TopicService{
             TopicEntity topic = TopicEntity.builder()
                     .title(title)
                     .approveStatus(ApproveStatus.APPROVE)
+                    .emoji("이모지 아직 없다")
                     .build();
             topicRepository.save(topic);
         }
@@ -180,7 +193,7 @@ public class TopicServiceImpl implements TopicService{
     @Transactional
     public void approveTopic(Long topicId) {
         TopicEntity topic = topicRepository.findById(topicId)
-                .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
+                .orElseThrow(()-> new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NOT_EXIST));
         topic.approveTopic();
         TopicDocument topicDocument = TopicDocument.builder()
                 .id(topicSearchRepository.count()+1)
@@ -194,7 +207,7 @@ public class TopicServiceImpl implements TopicService{
     @Transactional
     public void rejectTopic(Long topicId) {
         TopicEntity topic = topicRepository.findById(topicId)
-                        .orElseThrow(()-> new TopicRuntimeException(TopicExceptionEnum.TOPIC_NOT_EXIST));
+                        .orElseThrow(()-> new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NOT_EXIST));
         topic.rejectTopic();
     }
 

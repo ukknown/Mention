@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class VoteResponseDto {
+public class VoteVo {
 
-    private Long id;
-
-    private Long teamId;
+    private Long voteId;
 
     private String topicTitle;
+
+    private String emoji;
 
     private Boolean isCompleted;
 
