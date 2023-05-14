@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  kakao_flutter_sdk: ^1.4.2
   carousel_slider: ^4.0.0
   confetti: ^0.7.0
   flutter_local_notifications: ^9.1.5
@@ -43,7 +44,7 @@ dependencies:
   pedometer: ^3.0.0
   android_alarm_manager_plus: ^2.1.4
   permission_handler: ^10.2.0
-  shared_preferences: ^2.1.0
+  shared_preferences: ^2.1.1
   lottie: ^2.3.2
   intl: ^0.17.0
   http: ^0.13.6

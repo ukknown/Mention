@@ -38,7 +38,7 @@ class BottomNav extends StatelessWidget {
             },
             color: Colors.black),
         IconButton(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
               // print("favorite");
             },
@@ -69,7 +69,7 @@ class BottomNav extends StatelessWidget {
             },
             color: Colors.black),
         IconButton(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
               Navigator.push(
                 context,
