@@ -6,15 +6,15 @@ class RankSlot extends StatelessWidget {
     required this.screenWidth,
     required this.screenHeight,
     required this.topic,
-    // required this.mentionedCount,
+    required this.mentionedCount,
     required this.rank,
   });
 
   final double screenWidth;
   final double screenHeight;
-  final Map<String, dynamic> topic;
-  // final String topic;
-  // final int mentionedCount;
+  // final Map<String, dynamic> topic;
+  final String topic;
+  final int mentionedCount;
   final int rank;
 
   @override
@@ -61,8 +61,8 @@ class RankSlot extends StatelessWidget {
                         width: screenWidth * 0.01,
                       ),
                       Text(
-                        topic['title'],
-                        // topic,
+                        // topic['title'],
+                        topic,
                         style: TextStyle(
                             fontSize: screenWidth * 0.04,
                             fontWeight: FontWeight.w600),
@@ -83,8 +83,8 @@ class RankSlot extends StatelessWidget {
                         width: screenWidth * 0.01,
                       ),
                       Text(
-                        topic['mentioned_count'].toString(),
-                        // mentionedCount.toString(),
+                        // topic['mentioned_count'].toString(),
+                        mentionedCount.toString(),
                         style: TextStyle(
                           fontSize: screenWidth * 0.055,
                           fontWeight: FontWeight.w500,
