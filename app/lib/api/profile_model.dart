@@ -1,5 +1,4 @@
 class Profile {
-  final int userId;
   final String profileImage;
   final String name;
   final int coin;
@@ -8,14 +7,14 @@ class Profile {
   final int mentionCount;
 
   Profile.fromJson(Map<String, dynamic> json)
-      : userId = json['user_id'],
-        profileImage = json['profile_image'],
-        name = json['name'],
-        coin = json['coin'],
-        mostMentionedTopic = (json['most_mentioned_topic'] as List)
-            .map((i) => MentionedTopic.fromJson(i))
-            .toList(),
-        groupCount = json['group_count'],
+      : profileImage = json['profileImage'],
+        name = json['nickname'],
+        coin = json['bangAmount'],
+        mostMentionedTopic = (json['topTopic'] as List<dynamic>?)
+                ?.map((i) => MentionedTopic.fromJson(i))
+                .toList() ??
+            [],
+        groupCount = json['groupCount'],
         mentionCount = json['mention_count'];
 }
 

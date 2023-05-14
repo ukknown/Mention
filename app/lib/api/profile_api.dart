@@ -4,8 +4,8 @@ import 'dart:convert';
 
 class ProfileApi {
   static const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
-  final token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuamgzMzIxQG5hdmVyLmNvbSIsImVtYWlsIjoibmpoMzMyMUBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuuFuOykgO2YuCIsImlhdCI6MTY4NDA2MjYwNywiZXhwIjoxNjg0MDYzNjA3fQ.BsYRDgdxFhfgPx8Tp7IEL9MM6kIY2iUe_4B3rgy5pj7NjInEwm7IjuoUJAbAEjZxZwavCNObbxNvilmQAcjVCA";
+  static final token =
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuamgzMzIxQG5hdmVyLmNvbSIsImVtYWlsIjoibmpoMzMyMUBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuuFuOykgO2YuCIsImlhdCI6MTY4NDA2Njk1NCwiZXhwIjoxNjg2NjU4OTU0fQ.HCwqWAat8tsT3GYsWLXb3YKznWP-Pdk7c-0GMvRn3wgMwNQeZbp6j2KpVBqyulVRiA7aa3fx6bqAyRPHxYhAJw";
   static Future<Profile> getProfile() async {
     final url = Uri.parse('$baseUrl/member-service/me');
     try {
@@ -14,7 +14,9 @@ class ProfileApi {
       });
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> profileJson = jsonDecode(response.body);
+        final List<int> bytes = response.bodyBytes;
+        final String responseBody = utf8.decode(bytes);
+        final Map<String, dynamic> profileJson = jsonDecode(responseBody);
         print(profileJson);
         return Profile.fromJson(profileJson);
       } else {
