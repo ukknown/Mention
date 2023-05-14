@@ -1,0 +1,27 @@
+{
+    "MENTION" : [
+        {
+            "id" : 1,
+            "type" : "MENTION",
+            "data" : {
+                "id" : 6, 
+                "title" : "mention title example 6",
+                "created_date" : "2023-05-08 07:00:00",
+                "sender" : {
+                    "id" : 6,
+                    "gender" : "unknown"
+                }
+            },
+            "isRead" : true
+        }
+    ],
+    "GROUP_VOTE" : {
+
+    },
+    "TOPIC_OPEN" : {
+
+    },
+    "TOPIC_WINNER" : {
+
+    }
+}
