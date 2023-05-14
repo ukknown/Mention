@@ -1,6 +1,5 @@
 package com.ssafy.mentionservice.vo;
 
-import com.ssafy.mentionservice.jpa.TopicEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class VoteResponseDto {
+public class VoteVo {
 
     private Long voteId;
 

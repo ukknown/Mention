@@ -38,10 +38,10 @@ public class MentionController {
 
     @Operation(summary = "그룹에서 진행중인 투표 조회", description = "TODO 토큰 받아서 본인이 진행한 것 빼고 보여줘야함.")
     @GetMapping("/teams/{teamId}/votes/{memberId}/{type}")
-    public ResponseEntity<List<VoteResponseDto>> getVoteList(@PathVariable Long teamId,
-                                                             @PathVariable Long memberId,
-                                                             @PathVariable String type) {
-        return ResponseEntity.ok().body(voteService.getVoteList(teamId, memberId, type));
+    public List<VoteVo> getVoteList(@PathVariable Long teamId,
+                                    @PathVariable Long memberId,
+                                    @PathVariable String type) {
+        return voteService.getVoteList(teamId, memberId, type);
     }
 
     @Operation(summary = "멘션 생성", description = "상대방을 멘션!하다~")

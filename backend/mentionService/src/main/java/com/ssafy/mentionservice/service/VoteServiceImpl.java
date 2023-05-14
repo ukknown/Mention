@@ -4,7 +4,7 @@ import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
-import com.ssafy.mentionservice.vo.VoteResponseDto;
+import com.ssafy.mentionservice.vo.VoteVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public List<VoteResponseDto> getVoteList(Long teamId, Long memberId, String type) {
+    public List<VoteVo> getVoteList(Long teamId, Long memberId, String type) {
         updateExpiredVotes();
         List<Long> voteIdList = mentionRepository.findAllByVoterId(memberId)
                 .stream()
@@ -91,8 +91,8 @@ public class VoteServiceImpl implements VoteService{
         }
     }
 
-    private VoteResponseDto mapToDto(VoteEntity vote) {
-        return VoteResponseDto.builder()
+    private VoteVo mapToDto(VoteEntity vote) {
+        return VoteVo.builder()
                 .voteId(vote.getId())
                 .topicTitle(vote.getTopic().getTitle())
                 .emoji(vote.getTopic().getEmoji())
