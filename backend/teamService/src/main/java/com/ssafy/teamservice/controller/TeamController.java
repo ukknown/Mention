@@ -80,7 +80,6 @@ public class TeamController {
     @GetMapping("/teams")
     public ResponseEntity<List<TeamResponseDto>> getTeam(HttpServletRequest request){
         TeamVO teamVO = convertRequestToVO(request);
-        System.out.println("회원이 속한 그룹 목록 조회임 ");
         List<TeamResponseDto> result = teamMemberService.getTeamList((long) teamVO.getMemberId());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
