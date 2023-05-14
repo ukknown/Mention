@@ -4,7 +4,6 @@
 import 'package:app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() async {
