@@ -1,5 +1,5 @@
 package com.ssafy.memberservice.vo;
 
 public enum Gender {
-    MALE, FEMAIL, UNKNOWN
+    MALE, FEMALE, UNKNOWN
 }
