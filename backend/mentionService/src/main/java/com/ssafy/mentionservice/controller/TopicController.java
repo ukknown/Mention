@@ -49,15 +49,15 @@ public class TopicController {
     @Operation(summary = "네이버 감정 분석 요청", description = "새로운 토픽일 경우 응모하시겠습니까? 이후 검증")
     @PostMapping("/call/naver")
     public ResponseEntity<String> goToNaver(HttpServletRequest request,
-                                            @RequestBody TopicTitleRequestDto topicTitleRequestDto) {
+                                            @RequestBody TopicNaverRequestDto topicNaverRequestDto) {
         Long memberId = loadMember(request).getMemberId();
-        return ResponseEntity.ok().body(topicService.goToNaver(topicTitleRequestDto.getTitle(), memberId));
+        return ResponseEntity.ok().body(topicService.goToNaver(topicNaverRequestDto, memberId));
     }
 
     @Operation(summary = "새로운 토픽인지 아닌지 검증", description = "새로운 토픽인지 아닌지 검증")
     @PostMapping("/check/similarity")
-    public ResponseEntity<String> checkSimilarity(@RequestBody TopicTitleRequestDto topicTitleRequestDto) {
-        return ResponseEntity.ok().body(topicService.checkSimilarity(topicTitleRequestDto.getTitle()));
+    public ResponseEntity<String> checkSimilarity(@RequestBody TopicNaverRequestDto topicNaverRequestDto) {
+        return ResponseEntity.ok().body(topicService.checkSimilarity(topicNaverRequestDto.getTitle()));
     }
 
     @Operation(summary = "토픽 저장", description = "추후 데이터 쌓이면 메서드로 변환 예정")

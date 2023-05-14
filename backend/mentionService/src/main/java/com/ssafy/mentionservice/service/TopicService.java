@@ -2,6 +2,7 @@ package com.ssafy.mentionservice.service;
 
 import com.ssafy.mentionservice.elastic.TopicDocument;
 import com.ssafy.mentionservice.vo.TopTopicVo;
+import com.ssafy.mentionservice.vo.TopicNaverRequestDto;
 import com.ssafy.mentionservice.vo.TopicResoponseDto;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface TopicService {
 
     void deleteElastic();
 
-    String goToNaver(String topicCandidate, Long memberId);
+    String goToNaver(TopicNaverRequestDto topicNaverRequestDto, Long memberId);
 
     List<TopicDocument> searchByTitle(String title);
 

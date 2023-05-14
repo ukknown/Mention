@@ -3,6 +3,7 @@ package com.ssafy.mentionservice.vo;
 import lombok.Getter;
 
 @Getter
-public class TopicTitleRequestDto {
+public class TopicNaverRequestDto {
     private String title;
+    private String emoji;
 }
