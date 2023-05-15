@@ -36,6 +36,11 @@ public class MentionController {
         return ResponseEntity.ok().body("투표 생성 완료");
     }
 
+    @GetMapping("/mention-count/{memberid}")
+    public ResponseEntity<Integer> getMentionCount(@PathVariable Long memberid) {
+        return ResponseEntity.ok().body(mentionService.getMentionCount(memberid));
+    }
+
     @Operation(summary = "그룹에서 진행중인 투표 조회", description = "TODO 토큰 받아서 본인이 진행한 것 빼고 보여줘야함.")
     @GetMapping("/teams/{teamId}/votes/{memberId}/{type}")
     public List<VoteVo> getVoteList(@PathVariable Long teamId,

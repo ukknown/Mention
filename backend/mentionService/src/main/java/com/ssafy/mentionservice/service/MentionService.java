@@ -8,6 +8,6 @@ import java.util.List;
 public interface MentionService {
 
     void createMention(CreateMentionRequestDto createMentionRequestDto, Long memberId);
-
+    Integer getMentionCount(Long memberid);
     List<MentionResponseDto> getMention(Long memberId);
 }

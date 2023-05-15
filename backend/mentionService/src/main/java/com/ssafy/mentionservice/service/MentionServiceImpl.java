@@ -38,6 +38,12 @@ public class MentionServiceImpl implements MentionService{
     }
 
     @Override
+    public Integer getMentionCount(Long memberid) {
+        Integer mentionCount = mentionRepository.countByPickerId(memberid);
+        return mentionCount;
+    }
+
+    @Override
     public List<MentionResponseDto> getMention(Long memberId) {
         List<MentionEntity> mentionList = mentionRepository.findAllByPickerIdOrderByRegDateDesc(memberId);
 
