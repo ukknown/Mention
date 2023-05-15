@@ -44,6 +44,12 @@ public class MentionController {
         return voteService.getVoteList(teamId, memberId, type);
     }
 
+    @GetMapping("/mention")
+    public ResponseEntity<List<MentionResponseDto>> getMention(HttpServletRequest request) {
+        Long memberId = loadMember(request).getMemberId();
+        return ResponseEntity.ok().body(mentionService.getMention(memberId));
+    }
+
     @Operation(summary = "멘션 생성", description = "상대방을 멘션!하다~")
     @PostMapping("/mention/create")
     public ResponseEntity<?> createMention(HttpServletRequest request,
