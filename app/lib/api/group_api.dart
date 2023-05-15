@@ -1,22 +1,43 @@
+import 'package:app/api/profile_model.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-Future<dynamic> fetchData() async {
-  final url = Uri.parse('http://k8c105.p.ssafy.io:8000/team-service/teams/1');
-  final token =
-      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoZWxsb0BnbWFpbC5jb20iLCJlbWFpbCI6ImhlbGxvQGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoi6rmA7LC97JiBIiwiaWF0IjoxNjg0MDY5NDQyLCJleHAiOjE2ODY2NjE0NDJ9.BZv6dnLYKLA1qkcPSnrGYsXjb3kdUIMSyPUSp0SYzWmt2GESc51SinHqeyaVMRGO0usPiPBX8ZJRfTCRhjCdkA';
+class GroupApi {
+  static const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
+  static final token =
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoZWxsb0BnbWFpbC5jb20iLCJlbWFpbCI6ImhlbGxvQGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoi6rmA7LC97JiBIiwiaWF0IjoxNjg0MDY5NDQyLCJleHAiOjE2ODY2NjE0NDJ9.BZv6dnLYKLA1qkcPSnrGYsXjb3kdUIMSyPUSp0SYzWmt2GESc51SinHqeyaVMRGO0usPiPBX8ZJRfTCRhjCdkA";
+  static Future<Group> getGroup() async {
+    final url = Uri.parse('$baseUrl/team-service/teams/1');
+    try {
+      final response = await http.get(url, headers: <String, String>{
+        'Authorization': "Bearer $token",
+      });
 
-  final response = await http.get(
-    url,
-    headers: {'Authorization': 'Bearer $token'},
-  );
+      if (response.statusCode == 200) {
+        final List<int> bytes = response.bodyBytes;
+        final String responseBody = utf8.decode(bytes);
+        final Map<String, dynamic> groupJson = jsonDecode(responseBody);
+        print(groupJson);
+        return Group.fromJson(groupJson);
+      } else {
+        print('Server responded with status code: ${response.statusCode}');
+        throw Exception('Failed to load group');
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      throw Exception('Failed to load group');
+    }
+  }
 
-  if (response.statusCode == 200) {
-    // 요청이 성공한 경우
-    final jsonData = response.body;
-    // 데이터 처리
-    print(jsonData);
-  } else {
-    // 요청이 실패한 경우
-    print('Error: ${response.statusCode}');
+  static Future<List<Group>> getGroups() async {
+    final url = Uri.parse('$baseUrl/groups');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> groupsJson = jsonDecode(response.body)['group'];
+      return groupsJson.map((group) => Group.fromJson(group)).toList();
+    } else {
+      throw Exception('Failed to load groups');
+    }
   }
 }
