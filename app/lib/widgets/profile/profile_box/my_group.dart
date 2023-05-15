@@ -30,7 +30,9 @@ class MyGroup extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const GroupScreen(),
+              builder: (context) => const GroupScreen(
+                  // groupId: groupId,
+                  ),
               fullscreenDialog: true,
             ),
           );
@@ -64,8 +66,8 @@ class MyGroup extends StatelessWidget {
                     width: screenHeight * 0.15,
                     height: screenHeight * 0.15,
                     child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/$groupImage',
+                      child: Image.network(
+                        groupImage,
                         fit: BoxFit.cover,
                       ),
                     ),

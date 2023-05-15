@@ -15,7 +15,7 @@ class Profile {
                 .toList() ??
             [],
         groupCount = json['groupCount'],
-        mentionCount = json['mention_count'];
+        mentionCount = json['mentionCount'];
 }
 
 class MentionedTopic {
@@ -34,10 +34,10 @@ class Group {
   final int groupMember;
 
   Group.fromJson(Map<String, dynamic> json)
-      : groupId = json['group_id'],
-        groupImage = json['group_image'],
-        groupName = json['group_name'],
-        groupMember = json['group_member'];
+      : groupId = json['id'],
+        groupImage = json['image'],
+        groupName = json['name'],
+        groupMember = json['capacity'];
 }
 
 class Mention {
