@@ -185,7 +185,7 @@ public class TopicServiceImpl implements TopicService{
                 .map(topic -> TopicResoponseDto.builder()
                         .id(topic.getId())
                         .title(topic.getTitle())
-                        .approveStatus(topic.getApproveStatus())
+                        .emoji(topic.getEmoji())
                         .build())
                 .collect(Collectors.toList());
     }
