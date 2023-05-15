@@ -36,4 +36,8 @@ public class VoteEntity {
     public void updateIsCompleted() {
         this.isCompleted = true;
     }
+
+    public void updateParticipant() {
+        this.participant += 1;
+    }
 }

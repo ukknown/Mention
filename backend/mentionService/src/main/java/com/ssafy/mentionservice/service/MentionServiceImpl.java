@@ -36,6 +36,7 @@ public class MentionServiceImpl implements MentionService{
                 .regDate(LocalDateTime.now())
                 .build();
         mentionRepository.save(mentionEntity);
+        vote.updateParticipant();
     }
 
     @Override
