@@ -49,6 +49,9 @@ dependencies {
 
 	// JSON 파싱
 	implementation 'org.json:json:20211205'
+
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.0'
 }
 
 dependencyManagement {
