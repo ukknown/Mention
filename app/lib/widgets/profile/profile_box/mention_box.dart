@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:app/screens/Hint.dart';
 import 'package:flutter/material.dart';
 
@@ -6,19 +8,20 @@ class MentionBox extends StatelessWidget {
     Key? key,
     required this.screenWidth,
     required this.screenHeight,
-    required this.topicId,
+    required this.mentionId,
     required this.topicTitle,
-    required this.sender,
     required this.hintStep,
+    required this.gender,
+    required this.emoji,
   }) : super(key: key);
 
   final double screenWidth;
   final double screenHeight;
-  final int topicId;
+  final Long mentionId;
   final String topicTitle;
-  final dynamic sender;
-  // final Sender sender;
   final int hintStep;
+  final String gender;
+  final int emoji;
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +59,10 @@ class MentionBox extends StatelessWidget {
                 height: screenHeight * 0.01,
               ),
               Text(
-                topicTitle,
-                style: TextStyle(fontSize: screenWidth * 0.05),
+                '${String.fromCharCode(emoji)} $topicTitle',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.05,
+                ),
               ),
               SizedBox(
                 height: screenHeight * 0.025,
@@ -70,11 +75,9 @@ class MentionBox extends StatelessWidget {
   }
 
   Color genderColor() {
-    if (sender["gender"] == "male") {
-      // if (sender.gender == "male") {
+    if (gender == "male") {
       return const Color(0xFFA3B3F9);
-    } else if (sender["gender"] == "female") {
-      // } else if (sender.gender == "female") {
+    } else if (gender == "female") {
       return const Color(0xFFFEB6C4);
     } else {
       return const Color(0xFFFFFFFF);

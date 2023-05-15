@@ -7,7 +7,6 @@ import 'package:app/widgets/profile/profile_box/profile_card.dart';
 import 'package:app/widgets/profile/profile_box/rank_slot.dart';
 import 'package:flutter/material.dart';
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -44,27 +43,27 @@ class _ProfilePageState extends State<ProfilePage> {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/warning_h.png',
-                        width: screenWidth * 0.50,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/warning_h.png',
+                      width: screenWidth * 0.50,
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.005,
+                    ),
+                    Text(
+                      "프로필을 불러오는데 실패했어요!\n잠시 후에 다시 시도해주세요!",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05,
+                        fontWeight: FontWeight.w600,
                       ),
-                      SizedBox(
-                        height: screenHeight * 0.005,
-                      ),
-                      Text(
-                        "프로필을 불러오는데 실패했어요!\n잠시 후에 다시 시도해주세요!",
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.05,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                );
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              );
             } else {
               final profile = snapshot.data!;
 

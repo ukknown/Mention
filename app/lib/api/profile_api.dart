@@ -7,12 +7,12 @@ class ProfileApi {
   static const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
   static final token =
       "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyXrOuPhO2YhCIsImlhdCI6MTY4NDE0OTk1NSwiZXhwIjoxNjg2NzQxOTU1fQ.fyYuU6TH7HBIT_5qj1oqeo4Cu1fiJDFPb9Ep3m-O3rdPuNo3qJBGLhXipUKv-ya8KPB_XRLIRLmJq5xkx6sZgQ";
+
   static Future<Profile> getProfile() async {
     final url = Uri.parse('$baseUrl/member-service/me');
     final response = await http.get(url, headers: <String, String>{
       'Authorization': "Bearer $token",
     });
-
     if (response.statusCode == 200) {
       final List<int> bytes = response.bodyBytes;
       final String responseBody = utf8.decode(bytes);
@@ -30,7 +30,6 @@ class ProfileApi {
     final response = await http.get(url, headers: <String, String>{
       'Authorization': "Bearer $token",
     });
-
     if (response.statusCode == 200) {
       final List<int> bytes = response.bodyBytes;
       final String responseBody = utf8.decode(bytes);
@@ -43,11 +42,15 @@ class ProfileApi {
   }
 
   static Future<List<Mention>> getMentions() async {
-    final url = Uri.parse('$baseUrl/mentions');
-    final response = await http.get(url);
-
+    final url = Uri.parse('$baseUrl/mention-service/mention');
+    final response = await http.get(url, headers: <String, String>{
+      'Authorization': "Bearer $token",
+    });
     if (response.statusCode == 200) {
-      final List<dynamic> mentionsJson = jsonDecode(response.body)['mentions'];
+      final List<int> bytes = response.bodyBytes;
+      final String responseBody = utf8.decode(bytes);
+      final List<dynamic> mentionsJson = jsonDecode(responseBody);
+      print(mentionsJson);
       return mentionsJson.map((mention) => Mention.fromJson(mention)).toList();
     } else {
       throw Exception('Failed to load mentions');

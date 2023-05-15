@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class Profile {
   final String? profileImage;
   final String name;
@@ -65,25 +67,16 @@ class Group {
 }
 
 class Mention {
-  final int? topicId;
+  final Long? mentionId;
   final String? topicTitle;
-  final Sender sender;
-  final DateTime? regdate;
   final int hintStep;
+  final String gender;
+  final int emoji;
 
   Mention.fromJson(Map<String, dynamic> json)
-      : topicId = json['topic_id'] as int?,
-        topicTitle = json['topic_title'] as String?,
-        sender = Sender.fromJson(json['sender']),
-        regdate = json['regdate'] as DateTime?,
-        hintStep = json['hint_step'] ?? 0;
-}
-
-class Sender {
-  final int? userId;
-  final String gender;
-
-  Sender.fromJson(Map<String, dynamic> json)
-      : userId = json['user_id'] as int?,
-        gender = json['gender'] ?? 'unknown';
+      : mentionId = json['mentionId'] as Long?,
+        topicTitle = json['topicTitle'] as String?,
+        hintStep = json['hintStatus'] ?? 0,
+        gender = json['voterGender'] ?? 'unknown',
+        emoji = int.tryParse(json['emoji'] ?? '', radix: 16) ?? int.parse('1F60B', radix: 16);
 }
