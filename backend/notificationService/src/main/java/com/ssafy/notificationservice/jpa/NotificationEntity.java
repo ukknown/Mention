@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 public class NotificationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,14 @@ public class NotificationEntity {
     public NotificationEntity(Long memberId, Type type, String title, Gender gender) {
         this.memberId = memberId;
         this.type = type;
+        this.title = title;
+        this.gender = gender;
+    }
+    @Builder
+    public NotificationEntity(Long memberId, Type type, Long routingId, String title, Gender gender) {
+        this.memberId = memberId;
+        this.type = type;
+        this.routingId = routingId;
         this.title = title;
         this.gender = gender;
     }
