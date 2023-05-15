@@ -23,9 +23,6 @@ public class TopicEntity {
 
     private String title;
 
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
-    private List<VoteEntity> vote = new ArrayList<>();
-
     @Column(columnDefinition = "bigint default 0")
     @Builder.Default
     private Long popularity = 0L;
