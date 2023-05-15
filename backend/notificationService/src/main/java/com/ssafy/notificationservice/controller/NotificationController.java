@@ -59,6 +59,9 @@ public class NotificationController {
     public ResponseEntity createTopicWinnerNotification(
             @PathVariable("memberid") Long memberId
     ){
+        NotificationVO notificationVO = new NotificationVO();
+        notificationVO.setMemberId(memberId);
+        notificationService.createMentionNotification(notificationVO);
 
         return ResponseEntity.status(HttpStatus.OK).body("[토픽 응모] 토픽 응모 당첨 전송 완료 ~ 🔥");
     }
@@ -66,15 +69,17 @@ public class NotificationController {
     /**
      * 그룹 투표 오픈 알림
      * @param memberId
-     * @param voteid
      * @return
      */
     @GetMapping("/notifications/vote-open/{memberid}/{voteid}")
     public ResponseEntity createVoteOpenNotification(
             @PathVariable("memberid") Long memberId,
-            @PathVariable("mentionid") Long voteid
+            @PathVariable("voteid") Long voteId
     ){
-
+        NotificationVO notificationVO = new NotificationVO();
+        notificationVO.setMemberId(memberId);
+        notificationVO.setRoutingId(voteId);
+        notificationService.createMentionNotification(notificationVO);
         return ResponseEntity.status(HttpStatus.OK).body("[그룹 투표] 그룹 투표 전송 완료 ~ 🔥");
     }
 
