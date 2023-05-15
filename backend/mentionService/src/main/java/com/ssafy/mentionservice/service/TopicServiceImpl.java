@@ -65,7 +65,6 @@ public class TopicServiceImpl implements TopicService{
             topicSearchRepository.save(topicDocument);
         }
     }
-
     @Override
     @Transactional
     public void deleteElastic() {
@@ -121,7 +120,7 @@ public class TopicServiceImpl implements TopicService{
         List<MentionEntity> mentions = mentionRepository.findAllByPickerIdOrderByVoteIdAsc(memberId);
 
         Map<Long, Long> voteIdCounts = mentions.stream()
-                .collect(Collectors.groupingBy(MentionEntity::getVoteId, Collectors.counting()));
+                .collect(Collectors.groupingBy(m -> m.getVote().getId(), Collectors.counting()));
 
         List<Long> topVoteIds = voteIdCounts.entrySet().stream()
                 .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
