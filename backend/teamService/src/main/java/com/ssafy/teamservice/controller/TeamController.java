@@ -178,7 +178,7 @@ public class TeamController {
                 teamMemberService.updateIsKickOut(teamMemberVO);
             }
         } else {
-            throw new CustomException(ErrorCode.UNATHORIZED);
+            throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
         }
 
         // team.capacity 업데이트
@@ -196,6 +196,11 @@ public class TeamController {
     public ResponseEntity<Integer> getTeamCount(@PathVariable("memberid") Long memberid){
         System.out.println("im here ");
         return ResponseEntity.status(HttpStatus.OK).body(teamMemberService.getTeamCount(memberid));
+    }
+
+    @GetMapping("/teams/info/{teamid}")
+    public String getTeamName(@PathVariable("teamid") Long teamId){
+        return teamService.getTeamName(new TeamVO(teamId, -1));
     }
 
 
