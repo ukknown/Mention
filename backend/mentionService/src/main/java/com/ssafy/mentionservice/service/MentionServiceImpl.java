@@ -50,10 +50,10 @@ public class MentionServiceImpl implements MentionService{
     @Override
     public List<MentionResponseDto> getMention(Long memberId) {
         List<MentionEntity> mentionList = mentionRepository.findAllByPickerIdOrderByRegDateDesc(memberId);
-        String gender = memberServiceFeignClient.getMemberInfo(memberId).getGender();
 
         return mentionList.stream()
                 .map(mention -> {
+                    String gender = memberServiceFeignClient.getMemberInfo(mention.getVoterId()).getGender();
                     TopicEntity topic = mention.getVote().getTopic();
                     return MentionResponseDto.builder()
                             .mentionId(mention.getId())
