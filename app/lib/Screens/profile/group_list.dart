@@ -116,7 +116,6 @@ class _GroupListState extends State<GroupList> {
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(
                             vertical: widget.screenHeight * 0.01,
-                            horizontal: widget.screenWidth * 0.05,
                           ),
                           itemCount: groups.length,
                           separatorBuilder: (BuildContext context, int index) =>
@@ -126,7 +125,7 @@ class _GroupListState extends State<GroupList> {
                           itemBuilder: (BuildContext context, index) {
                             return Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal: widget.screenWidth * 0.05,
+                                horizontal: widget.screenWidth * 0.1,
                               ),
                               child: MyGroup(
                                 screenHeight: widget.screenHeight,

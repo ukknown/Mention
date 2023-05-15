@@ -88,6 +88,7 @@ class MyGroup extends StatelessWidget {
                           color: const Color(0xff2E2E2E),
                           fontSize: screenWidth * 0.075,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(
                         height: screenHeight * 0.01,
