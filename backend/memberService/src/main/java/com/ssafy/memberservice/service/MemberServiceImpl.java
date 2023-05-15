@@ -261,7 +261,7 @@ public class MemberServiceImpl implements MemberService{
                     .nickname(member.getNickname())
                     .bangAmount(member.getBangAmount())
                     .GroupCount(group)
-                    .mentionCount(0)
+                    .mentionCount(mentionCount)
                     .topTopic(topTopic)
                     .build();
 
