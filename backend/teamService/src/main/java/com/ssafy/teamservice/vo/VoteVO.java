@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public class VoteVO {
     private Long voteId;
-    private String topic;
+    private String topicTitle;
     private String emoji;
 }
