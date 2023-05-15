@@ -9,4 +9,6 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Long> {
 
     List<TopicEntity> findAllByApproveStatus(ApproveStatus approveStatus);
 
+    List<TopicEntity> findByIdNotIn(List<Long> topicIds);
+
 }

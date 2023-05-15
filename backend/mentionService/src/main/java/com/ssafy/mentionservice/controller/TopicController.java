@@ -92,6 +92,11 @@ public class TopicController {
         return topicService.getTopTopic(memberId);
     }
 
+    @GetMapping("/topic/random/{teamId}")
+    public ResponseEntity<TopicResoponseDto> getRandomTopic(@PathVariable Long teamId) {
+        return ResponseEntity.ok().body(topicService.getRandomTopic(teamId));
+    }
+
     private MemberVo loadMember(HttpServletRequest request) {
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long id = loginMember.getLong("id");
