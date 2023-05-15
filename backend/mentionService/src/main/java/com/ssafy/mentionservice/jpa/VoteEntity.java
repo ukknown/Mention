@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -21,6 +23,9 @@ public class VoteEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id")
     private TopicEntity topic;
+
+    @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
+    private List<MentionEntity> mention = new ArrayList<>();
 
     private Boolean isCompleted;
 

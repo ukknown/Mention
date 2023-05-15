@@ -20,7 +20,9 @@ public class MentionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long voteId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vote_id")
+    private VoteEntity vote;
 
     private Long voterId;
 
