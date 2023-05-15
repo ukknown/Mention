@@ -178,7 +178,7 @@ public class TeamController {
                 teamMemberService.updateIsKickOut(teamMemberVO);
             }
         } else {
-            throw new CustomException(ErrorCode.UNATHORIZED);
+            throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
         }
 
         // team.capacity 업데이트
