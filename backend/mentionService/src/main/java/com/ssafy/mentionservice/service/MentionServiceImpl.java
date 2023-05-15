@@ -70,6 +70,8 @@ public class MentionServiceImpl implements MentionService{
 
     private MentionDetailResponseDto createMentionDetailResponseDto(MentionEntity mention) {
         int hintStatus = mention.getHintStatus();
+        //TODO 뱅 받아와서 넣기
+        int bang = 0;
         String hintOne = "yet";
         String hintTwo = "yet";
         String hintThree = "yet";
@@ -89,7 +91,7 @@ public class MentionServiceImpl implements MentionService{
             hintThree = nickname;
             //TODO memberId를 기반으로 프사를 받아와야 합니다.
         }
-        return new MentionDetailResponseDto(hintStatus, hintOne, hintTwo, hintThree, profileImg);
+        return new MentionDetailResponseDto(hintStatus, hintOne, hintTwo, hintThree, profileImg, bang);
     }
 
 }

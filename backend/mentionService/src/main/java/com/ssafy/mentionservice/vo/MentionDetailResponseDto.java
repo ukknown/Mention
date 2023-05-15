@@ -12,4 +12,5 @@ public class MentionDetailResponseDto {
     private String hintTwo;
     private String hintThree;
     private String profileImg;
+    private int bang;
 }
