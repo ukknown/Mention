@@ -255,7 +255,6 @@ public class MemberServiceImpl implements MemberService{
             group = teamServiceFeignClient.getGroupCount(memberid);
             topTopic = mentionServiceFeignClient.getTopTopic(memberid);
             mentionCount =  mentionServiceFeignClient.getMentionCount(memberid);
-            System.out.println("group : " + group);
             return MyPageVO.builder()
                     .profileImage(member.getProfileImage())
                     .nickname(member.getNickname())
