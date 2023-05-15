@@ -53,6 +53,7 @@ public class MentionServiceImpl implements MentionService{
                     return MentionResponseDto.builder()
                             .mentionId(mention.getId())
                             .topicTitle(topic.getTitle())
+                            .hintStatus(mention.getHintStatus())
                             .emoji(topic.getEmoji())
                             .build();
                 })
