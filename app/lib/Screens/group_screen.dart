@@ -6,8 +6,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:app/widgets/bottom_nav.dart';
 
-import '../api/group_api.dart';
-
 class GroupScreen extends StatefulWidget {
   const GroupScreen({Key? key}) : super(key: key);
 
@@ -16,28 +14,6 @@ class GroupScreen extends StatefulWidget {
 }
 
 class _GroupScreenState extends State<GroupScreen> {
-  late dynamic groupData;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchData();
-    print('여기니?1번');
-  }
-
-  Future<dynamic> _fetchData() async {
-    try {
-      final data = await fetchData();
-      setState(() {
-        print('2번??');
-        groupData = data;
-        print('groupData: ${groupData ?? "null"}');
-      });
-    } catch (error) {
-      // 에러 처리
-    }
-  }
-
   // 질문생성 모달
   @override
   Widget build(BuildContext context) {
@@ -109,7 +85,7 @@ class _GroupScreenState extends State<GroupScreen> {
               Flexible(
                   flex: 4,
                   child: CarouselSlider(
-                      items: const [GroupDetail(), GroupDetail(), Groupbox()],
+                      items: const [GroupDetail(), Groupbox()],
                       options: CarouselOptions(
                         autoPlayCurve: Curves.fastOutSlowIn,
                         height: 420,
