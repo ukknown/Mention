@@ -12,8 +12,7 @@ class RankSlot extends StatelessWidget {
 
   final double screenWidth;
   final double screenHeight;
-  // final Map<String, dynamic> topic;
-  final String topic;
+  final String? topic;
   final int mentionedCount;
   final int rank;
 
@@ -39,60 +38,64 @@ class RankSlot extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Transform.translate(
-                offset: Offset(-screenWidth * 0.055, 0),
-                child: Image.asset(
-                  rank == 1
-                      ? 'assets/images/medal1.png'
-                      : rank == 2
-                          ? 'assets/images/medal2.png'
-                          : 'assets/images/medal3.png',
-                  height: screenWidth * 0.125,
+              Expanded(
+                flex: 1,
+                child: Transform.translate(
+                  offset: Offset(-screenWidth * 0.055, 0),
+                  child: Image.asset(
+                    rank == 1
+                        ? 'assets/images/medal1.png'
+                        : rank == 2
+                            ? 'assets/images/medal2.png'
+                            : 'assets/images/medal3.png',
+                    height: screenWidth * 0.125,
+                  ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      const Text("imoji"),
-                      SizedBox(
-                        width: screenWidth * 0.01,
-                      ),
-                      Text(
-                        // topic['title'],
-                        topic,
-                        style: TextStyle(
-                            fontSize: screenWidth * 0.04,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: screenHeight * 0.0075,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/logo.png',
-                        height: screenWidth * 0.08,
-                        width: screenWidth * 0.08,
-                      ),
-                      SizedBox(
-                        width: screenWidth * 0.01,
-                      ),
-                      Text(
-                        // topic['mentioned_count'].toString(),
-                        mentionedCount.toString(),
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.055,
-                          fontWeight: FontWeight.w500,
+              Expanded(
+                flex: 5,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Transform.translate(
+                          offset: Offset(0, screenHeight * 0.005),
+                          child: Text(
+                            topic ?? '토픽을 불러오는데 실패했어요!',
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.04,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.0075,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Image.asset(
+                          'assets/images/logo.png',
+                          height: screenWidth * 0.08,
+                          width: screenWidth * 0.08,
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.01,
+                        ),
+                        Text(
+                          mentionedCount.toString(),
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.055,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               )
             ],
           ),
