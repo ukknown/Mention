@@ -10,7 +10,7 @@ import java.util.List;
 @FeignClient(name = "mention-service")
 public interface MentionServiceFeignClient {
     @GetMapping("/mention-service/mention-count{memberid}")
-    int getMentionCount(Long memberid);
+    Integer getMentionCount(Long memberid);
     //나를 가장 많이 멘션한 토픽
     @GetMapping("/topic-service/top-topic/{memberid}")
     List<TopTopicDto> getTopTopic(@PathVariable Long memberid);
