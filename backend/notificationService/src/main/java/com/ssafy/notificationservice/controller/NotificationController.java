@@ -1,5 +1,6 @@
 package com.ssafy.notificationservice.controller;
 
+import com.ssafy.notificationservice.jpa.Gender;
 import com.ssafy.notificationservice.service.NotificationService;
 import com.ssafy.notificationservice.utils.error.ErrorCode;
 import com.ssafy.notificationservice.utils.exception.CustomException;
@@ -8,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -35,14 +33,52 @@ public class NotificationController {
     }
 
     /**
-     * MSA 에서 요청한 알림 등록
+     * 멘션 알림 등록
      * @return
      */
-    @GetMapping("/notifications/{memberid}/{type}/{routingId}/{gender}")
-    public ResponseEntity createMSANotifications(){
-
-        return ResponseEntity.status(HttpStatus.OK).body("[질문 공모] 알림 전송 완료 ~ 🔥");
+    @GetMapping("/notifications/mention/{memberid}/{mentionid}/{gender}")
+    public ResponseEntity createMentionNotification(
+            @PathVariable("memberid") Long memberId,
+            @PathVariable("mentionid") Long mentionId,
+            @PathVariable("gender") String gender
+    ){
+        NotificationVO notificationVO = new NotificationVO();
+        notificationVO.setMemberId(memberId);
+        notificationVO.setRoutingId(mentionId);
+        notificationVO.setGender(Gender.valueOf(gender));
+        notificationService.createMentionNotification(notificationVO);
+        return ResponseEntity.status(HttpStatus.OK).body("[멘션 알림] 멘션 전송 완료 ~ 🔥");
     }
+
+    /**
+     * 토픽 응모 당첨
+     * @param memberId
+     * @return
+     */
+    @GetMapping("/notifications/topid-winner/{memberid}")
+    public ResponseEntity createTopicWinnerNotification(
+            @PathVariable("memberid") Long memberId
+    ){
+
+        return ResponseEntity.status(HttpStatus.OK).body("[토픽 응모] 토픽 응모 당첨 전송 완료 ~ 🔥");
+    }
+
+    /**
+     * 그룹 투표 오픈 알림
+     * @param memberId
+     * @param voteid
+     * @return
+     */
+    @GetMapping("/notifications/vote-open/{memberid}/{voteid}")
+    public ResponseEntity createVoteOpenNotification(
+            @PathVariable("memberid") Long memberId,
+            @PathVariable("mentionid") Long voteid
+    ){
+
+        return ResponseEntity.status(HttpStatus.OK).body("[그룹 투표] 그룹 투표 전송 완료 ~ 🔥");
+    }
+
+
 
     /**
      * 회원의 알림 리스트 조회
