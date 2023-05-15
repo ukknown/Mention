@@ -198,6 +198,11 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.OK).body(teamMemberService.getTeamCount(memberid));
     }
 
+    @GetMapping("/teams/info/{teamid}")
+    public String getTeamName(@PathVariable("teamid") Long teamId){
+        return teamService.getTeamName(new TeamVO(teamId, -1));
+    }
+
 
     public TeamVO convertRequestToVO(HttpServletRequest request){
         if(request.getHeader("member") == null){

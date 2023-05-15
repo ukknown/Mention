@@ -76,6 +76,11 @@ public class TeamServiceImpl implements TeamService{
         teamEntity.updateIsDelete();
     }
 
+    @Override
+    public String getTeamName(TeamVO teamVO) {
+        return teamRepository.findNameById(teamVO.getTeamId());
+    }
+
     /**
      * 팀 상세정보 조회
      * @param teamVO
