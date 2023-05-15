@@ -3,6 +3,7 @@ package com.ssafy.memberservice.service;
 
 import com.ssafy.memberservice.vo.MemberVO;
 import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
+import com.ssafy.memberservice.vo.dto.response.MemberInfoDto;
 import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
 import com.ssafy.memberservice.vo.dto.request.RequestJoin;
@@ -29,4 +30,6 @@ public interface MemberService {
     MyPageVO getMypage(Long memberid);
 
     void deleteAccess(String bearerToken);
+
+    MemberInfoDto getMemberInfo(Long memberid);
 }

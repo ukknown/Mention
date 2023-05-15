@@ -63,8 +63,7 @@ public class TeamMemberServiceImpl implements TeamMemberService{
                 .filter(teamMember -> teamMember.getTeamEntity().getIsDeleted() == 0 && teamMember.getIsKickOut() == 0)
                 .map(teamMember ->
                         new TeamResponseDto(teamMember.getTeamEntity(),
-//                                mentionServiceClient.getVoteList(teamMember.getTeamEntity().getId(), memberId, "TWO")
-                                null
+                                mentionServiceClient.getVoteList(teamMember.getTeamEntity().getId(), memberId, "TWO")
                         )
                 )
                 .collect(Collectors.toList());

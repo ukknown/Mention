@@ -16,6 +16,7 @@ import com.ssafy.memberservice.service.FeignClient.TeamServiceFeignClient;
 import com.ssafy.memberservice.vo.Gender;
 import com.ssafy.memberservice.vo.MemberVO;
 import com.ssafy.memberservice.vo.dto.common.KakaoTokenResponseDto;
+import com.ssafy.memberservice.vo.dto.response.MemberInfoDto;
 import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.Role;
 import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
@@ -255,13 +256,12 @@ public class MemberServiceImpl implements MemberService{
             group = teamServiceFeignClient.getGroupCount(memberid);
             topTopic = mentionServiceFeignClient.getTopTopic(memberid);
             mentionCount =  mentionServiceFeignClient.getMentionCount(memberid);
-            System.out.println("group : " + group);
             return MyPageVO.builder()
                     .profileImage(member.getProfileImage())
                     .nickname(member.getNickname())
                     .bangAmount(member.getBangAmount())
                     .GroupCount(group)
-                    .mentionCount(0)
+                    .mentionCount(mentionCount)
                     .topTopic(topTopic)
                     .build();
 
@@ -276,6 +276,23 @@ public class MemberServiceImpl implements MemberService{
 
         redisTemplate.delete(bearerToken); //기존 access token 정보 제거
 
+    }
+
+    @Override
+    public MemberInfoDto getMemberInfo(Long memberid) {
+        Optional<MemberEntity> Member = memberRepository.findById(memberid);
+
+        if(Member.isPresent()){
+            MemberEntity member = Member.get();
+
+            return MemberInfoDto.builder()
+                    .nickname(member.getNickname())
+                    .profileImage(member.getProfileImage())
+                    .gender(member.getGender())
+                    .bang(member.getBangAmount())
+                    .build();
+        }
+        return null;
     }
 
 
