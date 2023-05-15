@@ -3,18 +3,20 @@
 import 'package:flutter/material.dart';
 
 class swipercontainer extends StatefulWidget {
-  const swipercontainer(
-      {Key? key,
-      required this.groupimg,
-      required this.groupname,
-      required this.membernum,
-      required this.id})
-      : super(key: key);
+  const swipercontainer({
+    Key? key,
+    required this.groupimg,
+    required this.groupname,
+    required this.membernum,
+    required this.id,
+    required this.vote,
+  }) : super(key: key);
 
   final String groupname;
   final int membernum;
   final dynamic groupimg;
   final int id;
+  final List vote;
 
   @override
   State<swipercontainer> createState() => _swipercontainerState();
@@ -96,7 +98,7 @@ class _swipercontainerState extends State<swipercontainer> {
                           bottomLeft: Radius.circular(30)),
                     ),
                     child: Image.asset(
-                      "assets/images/coin.png",
+                      "assets/images/icon1.png",
                       height: MediaQuery.of(context).size.height * 0.001,
                       width: MediaQuery.of(context).size.width * 0.001,
                     ),
@@ -115,14 +117,14 @@ class _swipercontainerState extends State<swipercontainer> {
                         topRight: Radius.circular(30),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                       ),
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
-                      "가장 행복해 보이는 사람 생략 기능 추가",
+                      "${widget.vote[0]['topicTitle']}",
                     ),
                   ),
                 ),
@@ -164,14 +166,14 @@ class _swipercontainerState extends State<swipercontainer> {
                         topRight: Radius.circular(30),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                       ),
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
-                      "가장 행복해 보이는 사람 생략 기능 추가",
+                      "${widget.vote[1]['topicTitle']}",
                     ),
                   ),
                 ),

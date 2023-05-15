@@ -5,7 +5,7 @@ import 'dart:convert';
 class ProfileApi {
   static const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
   static final token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuamgzMzIxQG5hdmVyLmNvbSIsImVtYWlsIjoibmpoMzMyMUBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuuFuOykgO2YuCIsImlhdCI6MTY4NDA2Njk1NCwiZXhwIjoxNjg2NjU4OTU0fQ.HCwqWAat8tsT3GYsWLXb3YKznWP-Pdk7c-0GMvRn3wgMwNQeZbp6j2KpVBqyulVRiA7aa3fx6bqAyRPHxYhAJw";
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyXrOuPhO2YhCIsImlhdCI6MTY4NDEzNDAxNiwiZXhwIjoxNjg2NzI2MDE2fQ.WE9_nCQUnPZ9hY12Isi6KjL8LzEgkkvn4ilKN_KBgetITHEftY4lIOHsV4NPPhhPrK52U9ldXdH4_N73QZaBfg";
   static Future<Profile> getProfile() async {
     final url = Uri.parse('$baseUrl/member-service/me');
     try {
@@ -42,8 +42,7 @@ class ProfileApi {
   }
 
   static Future<List<Mention>> getMentions() async {
-    final url =
-        Uri.parse('$baseUrl/mentions');
+    final url = Uri.parse('$baseUrl/mentions');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
