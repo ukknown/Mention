@@ -5,6 +5,7 @@ import com.ssafy.memberservice.service.MemberService;
 
 import com.ssafy.memberservice.vo.MemberVO;
 import com.ssafy.memberservice.vo.dto.request.RequestJoin;
+import com.ssafy.memberservice.vo.dto.response.MemberInfoDto;
 import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -88,6 +89,12 @@ public class MemberController {
         }
     }
 
+    //mention-service에서 오는 요청
+    @GetMapping("/feign/member-info/{memberid}")
+    public ResponseEntity<MemberInfoDto> getMemberInfo(@PathVariable Long memberid){
+        MemberInfoDto memberInfoDto = memberService.getMemberInfo(memberid);
+        return ResponseEntity.status(HttpStatus.OK).body(memberInfoDto);
+    }
 
     //타 서비스 요청
     @GetMapping("/feign/{memberid}")
