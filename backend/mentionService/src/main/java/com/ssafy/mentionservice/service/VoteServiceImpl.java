@@ -50,7 +50,7 @@ public class VoteServiceImpl implements VoteService{
         updateExpiredVotes();
         List<Long> voteIdList = mentionRepository.findAllByVoterId(memberId)
                 .stream()
-                .map(MentionEntity::getVoteId)
+                .map(mention -> mention.getVote().getId())
                 .collect(Collectors.toList());
         List<VoteEntity> voteList = voteRepository.findAllByTeamIdAndIsCompletedIsFalseOrderByDueDateAsc(teamId);
 
@@ -82,7 +82,7 @@ public class VoteServiceImpl implements VoteService{
 
     private List<TopicEntity> dailyTopics = new ArrayList<>();
     @Scheduled(cron = "0 51 18 * * ?")
-    private void setDailyTopic() {
+    public void setDailyTopic() {
         List<TopicEntity> allTopics = topicRepository.findAll();
         Collections.shuffle(allTopics);
         dailyTopics.clear();
