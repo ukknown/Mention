@@ -2,6 +2,7 @@ package com.ssafy.mentionservice.service;
 
 import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
+import com.ssafy.mentionservice.feignclient.MemberServiceFeignClient;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateMentionRequestDto;
 import com.ssafy.mentionservice.vo.MentionDetailResponseDto;
@@ -22,6 +23,7 @@ public class MentionServiceImpl implements MentionService{
 
     private final MentionRepository mentionRepository;
     private final VoteRepository voteRepository;
+    private final MemberServiceFeignClient memberServiceFeignClient;
     @Override
     @Transactional
     public void createMention(CreateMentionRequestDto createMentionRequestDto, Long memberId) {
@@ -48,6 +50,7 @@ public class MentionServiceImpl implements MentionService{
     @Override
     public List<MentionResponseDto> getMention(Long memberId) {
         List<MentionEntity> mentionList = mentionRepository.findAllByPickerIdOrderByRegDateDesc(memberId);
+        String gender = memberServiceFeignClient.getMemberInfo(memberId).getGender();
 
         return mentionList.stream()
                 .map(mention -> {
@@ -56,6 +59,7 @@ public class MentionServiceImpl implements MentionService{
                             .mentionId(mention.getId())
                             .topicTitle(topic.getTitle())
                             .hintStatus(mention.getHintStatus())
+                            .voterGender(gender)
                             .emoji(topic.getEmoji())
                             .build();
                 })
