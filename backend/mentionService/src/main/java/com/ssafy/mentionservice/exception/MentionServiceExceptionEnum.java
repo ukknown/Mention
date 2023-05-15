@@ -11,7 +11,8 @@ import java.util.Map;
 public enum MentionServiceExceptionEnum {
     TOPIC_NOT_EXIST(HttpStatus.NOT_FOUND, "T0001", "id 값에 해당하는 토픽이 없습니다."),
     TOPIC_NAVER_EXCEPTION(HttpStatus.BAD_REQUEST, "T0002", "네이버 api 오류"),
-    TYPE_NONE_EXCEPTION(HttpStatus.NOT_FOUND, "T0003", "type은 TWO or ALL");
+    TYPE_NONE_EXCEPTION(HttpStatus.NOT_FOUND, "T0003", "type은 TWO or ALL"),
+    VOTE_NOT_EXIST(HttpStatus.NOT_FOUND, "T0004", "id 값에 해당하는 투표가 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String errorCode;

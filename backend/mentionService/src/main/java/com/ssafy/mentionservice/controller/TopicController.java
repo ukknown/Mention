@@ -102,9 +102,4 @@ public class TopicController {
                 .build();
     }
 
-//    @GetMapping("/random/one/{teamId}")
-//    public ResponseEntity<TopicResoponseDto> getRandomOne() {
-//        return ResponseEntity.ok().body(topicService.getRandomOne());
-//    }
-
 }
