@@ -18,19 +18,20 @@ public class VoteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long teamId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id")
     private TopicEntity topic;
 
-    @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
-    private List<MentionEntity> mention = new ArrayList<>();
-
+    @Column(nullable = false)
     private Boolean isCompleted;
 
+    @Column(nullable = false)
     private int participant;
 
+    @Column(nullable = false)
     private LocalDateTime dueDate;
 
     public void updateIsCompleted() {

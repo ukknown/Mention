@@ -21,15 +21,18 @@ public class TopicEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
-    @Column(columnDefinition = "bigint default 0")
+    @Column(columnDefinition = "bigint default 0", nullable = false)
     @Builder.Default
     private Long popularity = 0L;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ApproveStatus approveStatus; // APPROVE, PENDING, REJECT
 
+    @Column(nullable = false)
     private String emoji;
 
     public void approveTopic() {
