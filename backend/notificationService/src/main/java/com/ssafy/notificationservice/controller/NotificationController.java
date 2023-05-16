@@ -84,15 +84,16 @@ public class NotificationController {
      * @param memberId
      * @return
      */
-    @GetMapping("/vote-open/{memberid}/{voteid}")
+    @GetMapping("/vote-open/{teamid}/{memberid}/{voteid}")
     public ResponseEntity createVoteOpenNotification(
+            @PathVariable("teamid") Long teamId,
             @PathVariable("memberid") Long memberId,
             @PathVariable("voteid") Long voteId
     ){
         NotificationVO notificationVO = new NotificationVO();
         notificationVO.setMemberId(memberId);
         notificationVO.setRoutingId(voteId);
-        notificationService.createTeamVoteNotification(notificationVO);
+        notificationService.createTeamVoteNotification(notificationVO, teamId);
         return ResponseEntity.status(HttpStatus.OK).body("[그룹 투표] 그룹 투표 전송 완료 ~ 🔥");
     }
 

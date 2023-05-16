@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface TeamRepository extends JpaRepository<TeamEntity, Long> {
     boolean existsById(Long teamId);
     Optional<TeamEntity> findById(Long teamId);
-    @Query("SELECT name FROM TeamEntity WHERE id = :teamId")
-    String findNameById(@Param("teamId") Long teamId);
+    @Query("SELECT tm.name FROM TeamEntity tm WHERE tm.id = :teamId")
+    String getTeamNameById(@Param("teamId") Long teamId);
     @Query("SELECT capacity FROM TeamEntity WHERE id = :teamId")
     int getTeamMemberById(@Param("teamId") Long teamId);
 }

@@ -48,7 +48,7 @@ public class VoteServiceImpl implements VoteService{
         voteSaveService.saveAndFlushVote(voteEntity);
         List<Long> memberIds = teamServiceFeignClient.getMemberIdList(createVoteRequestDto.getTeamId());
         for (Long memberId : memberIds) {
-            notificationServiceFeignClient.createVoteOpenNotification(memberId, voteEntity.getId());
+            notificationServiceFeignClient.createVoteOpenNotification(createVoteRequestDto.getTeamId(), memberId, voteEntity.getId());
             System.out.println("되나 보자~");
         }
     }
@@ -79,7 +79,7 @@ public class VoteServiceImpl implements VoteService{
                         .topic(topic)
                         .isCompleted(false)
                         .participant(0)
-                        .dueDate(LocalDateTime.now().plusHours(24))
+                        .dueDate(LocalDateTime.now().toLocalDate().plusDays(1).atStartOfDay())
                         .build();
                 VoteEntity savedSystemVote = voteRepository.save(systemVote);
 
@@ -91,7 +91,7 @@ public class VoteServiceImpl implements VoteService{
                             .emoji(topic.getEmoji())
                             .isCompleted(false)
                             .participant(0)
-                            .dueDate(LocalDateTime.now().plusHours(24))
+                            .dueDate(savedSystemVote.getDueDate())
                             .isSystem(true)
                             .build();
                     voteVoList.add(voteVo);
