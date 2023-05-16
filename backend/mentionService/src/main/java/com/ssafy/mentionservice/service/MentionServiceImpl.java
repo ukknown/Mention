@@ -3,6 +3,7 @@ package com.ssafy.mentionservice.service;
 import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
 import com.ssafy.mentionservice.feignclient.MemberServiceFeignClient;
+import com.ssafy.mentionservice.feignclient.TeamServiceFeignClient;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateMentionRequestDto;
 import com.ssafy.mentionservice.vo.MentionDetailResponseDto;
@@ -24,6 +25,7 @@ public class MentionServiceImpl implements MentionService{
     private final MentionRepository mentionRepository;
     private final VoteRepository voteRepository;
     private final MemberServiceFeignClient memberServiceFeignClient;
+    private final TeamServiceFeignClient teamServiceFeignClient;
     @Override
     @Transactional
     public void createMention(CreateMentionRequestDto createMentionRequestDto, Long memberId) {
@@ -39,6 +41,10 @@ public class MentionServiceImpl implements MentionService{
                 .build();
         mentionRepository.save(mentionEntity);
         vote.updateParticipant();
+        int total = teamServiceFeignClient.getTeamMemberCount(vote.getTeamId());
+        if (vote.getParticipant() + 1 == total) {
+            vote.updateIsCompleted();
+        }
     }
 
     @Override
