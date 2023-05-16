@@ -203,6 +203,11 @@ public class TeamController {
         return teamService.getTeamName(new TeamVO(teamId, -1));
     }
 
+    @GetMapping("/teams/count/members/{teamid}")
+    public int getTeamMemberCount(@PathVariable("teamid") Long teamId){
+        return teamService.getTeamMemberCount(new TeamVO(teamId, -1));
+    }
+
 
     public TeamVO convertRequestToVO(HttpServletRequest request){
         if(request.getHeader("member") == null){

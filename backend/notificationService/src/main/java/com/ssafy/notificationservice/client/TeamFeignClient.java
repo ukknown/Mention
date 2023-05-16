@@ -8,5 +8,4 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface TeamFeignClient {
     @GetMapping("/team-service/teams/info/{teamid}")
     String getTeamName(@PathVariable("teamid") Long teamId);
-
 }
