@@ -5,6 +5,8 @@ import com.ssafy.teamservice.vo.dto.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.TeamDetailVO;
 import com.ssafy.teamservice.vo.TeamVO;
 
+import java.util.List;
+
 public interface TeamService {
 
     TeamEntity createTeam(TeamDetailVO teamDetailVO);
