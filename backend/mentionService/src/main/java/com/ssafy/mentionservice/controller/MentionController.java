@@ -55,8 +55,13 @@ public class MentionController {
     }
 
     @GetMapping("/mentions/topic-title/{mentionid}")
-    public ResponseEntity<String> getTopTitleByMentionId(@PathVariable Long mentionid) {
+    public ResponseEntity<String> getTopicTitleByMentionId(@PathVariable Long mentionid) {
         return ResponseEntity.ok().body(mentionService.getTopicByMention(mentionid));
+    }
+
+    @GetMapping("/votes/topic-title/{voteid}")
+    public ResponseEntity<String> getTopicTitleByVoteId(@PathVariable Long voteid) {
+        return ResponseEntity.ok().body(mentionService.getTopicByVote(voteid));
     }
 
     @GetMapping("/mentions")

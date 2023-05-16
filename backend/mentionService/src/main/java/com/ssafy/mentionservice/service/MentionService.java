@@ -14,4 +14,6 @@ public interface MentionService {
     MentionDetailResponseDto getMentionDetail(Long mentionId, Long memberId);
     String plusHintstatus(Long mentionId);
     String getTopicByMention(Long mentionId);
+
+    String getTopicByVote(Long voteId);
 }

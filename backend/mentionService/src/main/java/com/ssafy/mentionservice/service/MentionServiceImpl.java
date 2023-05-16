@@ -106,6 +106,13 @@ public class MentionServiceImpl implements MentionService{
         return mention.getVote().getTopic().getTitle();
     }
 
+    @Override
+    public String getTopicByVote(Long voteId) {
+        VoteEntity vote = voteRepository.findById(voteId)
+                .orElseThrow(() -> new MentionServiceRuntimeException(MentionServiceExceptionEnum.VOTE_NOT_EXIST));
+        return vote.getTopic().getTitle();
+    }
+
     private String getInitialSound(String name) {
         String initialSound = "";
         String[] firstSound = {
