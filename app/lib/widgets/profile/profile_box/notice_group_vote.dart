@@ -1,4 +1,3 @@
-import 'package:app/screens/group_screen.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,15 +65,15 @@ class GroupVote extends StatelessWidget {
       onTap: () async {
         await markAsRead(noticeId);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const GroupScreen(
-                // groupId: routingId,
-                ),
-            fullscreenDialog: true,
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const GroupScreen(
+        //         // groupId: routingId,
+        //         ),
+        //     fullscreenDialog: true,
+        //   ),
+        // );
       },
       child: FutureBuilder<bool>(
         future: isRead(noticeId),

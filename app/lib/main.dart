@@ -4,6 +4,7 @@
 import 'package:app/Screens/group_member.dart';
 import 'package:app/Screens/group_screen.dart';
 import 'package:app/Screens/mainPage.dart';
+import 'package:app/screens/Hint.dart';
 import 'package:app/Screens/notice_page.dart';
 import 'package:app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class Mention extends StatelessWidget {
         ),
         cardColor: const Color(0xFFF4EDDB),
       ),
-      home: const NoticePage(),
+      home: const MainPage(),
     );
   }
 }

@@ -1,8 +1,8 @@
+import 'package:app/Screens/mainPage.dart';
 import 'package:app/Screens/notice_page.dart';
 import 'package:app/Screens/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
-import 'package:app/screens/home_screen.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({
@@ -32,7 +32,7 @@ class BottomNav extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
+                  builder: (context) => const MainPage(),
                 ),
               );
             },
@@ -63,7 +63,7 @@ class BottomNav extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
+                  builder: (context) => const MainPage(),
                 ),
               );
             },
