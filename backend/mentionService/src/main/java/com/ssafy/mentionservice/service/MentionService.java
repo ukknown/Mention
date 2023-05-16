@@ -11,5 +11,9 @@ public interface MentionService {
     void createMention(CreateMentionRequestDto createMentionRequestDto, Long memberId);
     Integer getMentionCount(Long memberid);
     List<MentionResponseDto> getMention(Long memberId);
-    MentionDetailResponseDto getMentionDetail(Long mentionId);
+    MentionDetailResponseDto getMentionDetail(Long mentionId, Long memberId);
+    String plusHintstatus(Long mentionId);
+    String getTopicByMention(Long mentionId);
+
+    String getTopicByVote(Long voteId);
 }

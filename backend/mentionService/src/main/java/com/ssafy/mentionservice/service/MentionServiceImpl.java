@@ -3,8 +3,11 @@ package com.ssafy.mentionservice.service;
 import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
 import com.ssafy.mentionservice.feignclient.MemberServiceFeignClient;
+import com.ssafy.mentionservice.feignclient.NotificationServiceFeignClient;
+import com.ssafy.mentionservice.feignclient.TeamServiceFeignClient;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateMentionRequestDto;
+import com.ssafy.mentionservice.vo.MemberInfoDto;
 import com.ssafy.mentionservice.vo.MentionDetailResponseDto;
 import com.ssafy.mentionservice.vo.MentionResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +27,13 @@ public class MentionServiceImpl implements MentionService{
     private final MentionRepository mentionRepository;
     private final VoteRepository voteRepository;
     private final MemberServiceFeignClient memberServiceFeignClient;
+    private final TeamServiceFeignClient teamServiceFeignClient;
+    private final NotificationServiceFeignClient notificationServiceFeignClient;
+
     @Override
     @Transactional
     public void createMention(CreateMentionRequestDto createMentionRequestDto, Long memberId) {
+        MemberInfoDto memberInfo = memberServiceFeignClient.getMemberInfo(memberId);
         VoteEntity vote = voteRepository.findById(createMentionRequestDto.getVoteId())
                 .orElseThrow(() -> new MentionServiceRuntimeException(MentionServiceExceptionEnum.VOTE_NOT_EXIST));
         MentionEntity mentionEntity = MentionEntity
@@ -39,6 +46,11 @@ public class MentionServiceImpl implements MentionService{
                 .build();
         mentionRepository.save(mentionEntity);
         vote.updateParticipant();
+        int total = teamServiceFeignClient.getTeamMemberCount(vote.getTeamId());
+        if (vote.getParticipant() + 1 == total) {
+            vote.updateIsCompleted();
+        }
+        notificationServiceFeignClient.createMentionNotification(memberId, mentionEntity.getId(), memberInfo.getGender());
     }
 
     @Override
@@ -67,36 +79,63 @@ public class MentionServiceImpl implements MentionService{
     }
 
     @Override
-    public MentionDetailResponseDto getMentionDetail(Long mentionId) {
+    public MentionDetailResponseDto getMentionDetail(Long mentionId, Long memberId) {
         MentionEntity mention = mentionRepository.findById(mentionId)
                 .orElseThrow(()-> new MentionServiceRuntimeException(MentionServiceExceptionEnum.MENTION_NOT_EXIST));
-        return createMentionDetailResponseDto(mention);
+        MemberInfoDto memberInfo = memberServiceFeignClient.getMemberInfo(mention.getVoterId());
+        int bang = memberServiceFeignClient.getMemberInfo(memberId).getBang();
+        return MentionDetailResponseDto
+                .builder()
+                .hintStatus(mention.getHintStatus())
+                .hintOne(mention.getHint())
+                .hintTwo(getInitialSound(memberInfo.getNickname()))
+                .hintThree(memberInfo.getNickname())
+                .profileImg(memberInfo.getProfileImage())
+                .bang(bang)
+                .build();
     }
 
-    private MentionDetailResponseDto createMentionDetailResponseDto(MentionEntity mention) {
-        int hintStatus = mention.getHintStatus();
-        //TODO 뱅 받아와서 넣기
-        int bang = 0;
-        String hintOne = "yet";
-        String hintTwo = "yet";
-        String hintThree = "yet";
-        String nickname = "";
-        String profileImg = "yet";
-        Long memberId = 0L;
+    @Override
+    @Transactional
+    public String plusHintstatus(Long mentionId) {
+        MentionEntity mention = mentionRepository.findById(mentionId)
+                .orElseThrow(()-> new MentionServiceRuntimeException(MentionServiceExceptionEnum.MENTION_NOT_EXIST));
+        mention.plusHintstatus();
+        return "힌트 단계 업!";
+    }
 
-        if (hintStatus >= 1) {
-            hintOne = mention.getHint();
+    @Override
+    public String getTopicByMention(Long mentionId) {
+        MentionEntity mention = mentionRepository.findById(mentionId)
+                .orElseThrow(()->new MentionServiceRuntimeException(MentionServiceExceptionEnum.MENTION_NOT_EXIST));
+        return mention.getVote().getTopic().getTitle();
+    }
+
+    @Override
+    public String getTopicByVote(Long voteId) {
+        VoteEntity vote = voteRepository.findById(voteId)
+                .orElseThrow(() -> new MentionServiceRuntimeException(MentionServiceExceptionEnum.VOTE_NOT_EXIST));
+        return vote.getTopic().getTitle();
+    }
+
+    private String getInitialSound(String name) {
+        String initialSound = "";
+        String[] firstSound = {
+                "ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"
+        };
+
+        for (int i = 0; i < name.length(); i++) {
+            char ch = name.charAt(i);
+
+            if (ch >= 0xAC00 && ch <= 0xD7A3) {
+                int base = (ch - 0xAC00);
+                int first = base / (21 * 28);
+                initialSound += firstSound[first];
+            } else {
+                initialSound += ch;
+            }
         }
-        if (hintStatus >= 2) {
-            memberId = mention.getVoterId();
-            //TODO memberId를 가지고 member에 요청해서 이름 받아와서 nickname에 넣기
-            //TODO 초성분리
-        }
-        if (hintStatus >= 3) {
-            hintThree = nickname;
-            //TODO memberId를 기반으로 프사를 받아와야 합니다.
-        }
-        return new MentionDetailResponseDto(hintStatus, hintOne, hintTwo, hintThree, profileImg, bang);
+        return initialSound;
     }
 
 }
