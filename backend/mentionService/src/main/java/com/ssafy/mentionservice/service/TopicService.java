@@ -28,6 +28,6 @@ public interface TopicService {
     void approveTopic(Long topicId);
 
     void rejectTopic(Long topicId);
-
+    String getTopicByTopicId(Long topicId);
     TopicResoponseDto getRandomTopic(Long teamId);
 }

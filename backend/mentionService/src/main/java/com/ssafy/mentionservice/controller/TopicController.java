@@ -80,6 +80,11 @@ public class TopicController {
         return ResponseEntity.ok().body("승인 완료");
     }
 
+    @GetMapping("/topics/topic-title/{topicid}")
+    public ResponseEntity<String> getTopicTitleByTopicId(@PathVariable Long topicid) {
+        return ResponseEntity.ok().body(topicService.getTopicByTopicId(topicid));
+    }
+
     @Operation(summary = "관리자가 응모 토픽을 거절", description = "REJECT 상태로 변환")
     @PostMapping("/topics/reject")
     public ResponseEntity<?> rejectTopic(@RequestBody TopicIdRequestDto topicIdRequestDto) {
