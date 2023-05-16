@@ -10,7 +10,11 @@ import '../api/group_api.dart';
 import '../api/group_model.dart';
 
 class GroupScreen extends StatefulWidget {
-  const GroupScreen({Key? key}) : super(key: key);
+  // const GroupScreen(int propsId, {Key? key})
+  //     : super(key: key);
+
+  final int propsId;
+  const GroupScreen(this.propsId);
 
   @override
   State<GroupScreen> createState() => _GroupScreenState();
