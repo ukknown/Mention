@@ -8,5 +8,8 @@ import java.util.List;
 public interface TopicRepository extends JpaRepository<TopicEntity, Long> {
 
     List<TopicEntity> findAllByApproveStatus(ApproveStatus approveStatus);
+    List<TopicEntity> findByIdNotIn(List<Long> topicIds);
+    List<TopicEntity> findAllByIsSystemIsTrue();
+    List<TopicEntity> findAllByIsSystemIsFalse();
 
 }

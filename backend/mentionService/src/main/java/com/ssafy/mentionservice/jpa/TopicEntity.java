@@ -21,19 +21,29 @@ public class TopicEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
-    private List<VoteEntity> vote = new ArrayList<>();
-
-    @Column(columnDefinition = "bigint default 0")
+    @Column(columnDefinition = "bigint default 0", nullable = false)
     @Builder.Default
     private Long popularity = 0L;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ApproveStatus approveStatus; // APPROVE, PENDING, REJECT
 
+    @Column(nullable = false)
     private String emoji;
+
+    @Column(nullable = false)
+    private Boolean isSystem;
+
+    public void changeIsSystemTrue() {
+        this.isSystem = true;
+    }
+    public void changeIsSystemFalse() {
+        this.isSystem = false;
+    }
 
     public void approveTopic() {
         this.approveStatus = ApproveStatus.APPROVE;
