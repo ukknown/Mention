@@ -14,4 +14,5 @@ public interface TeamService {
     int updateCapacity(TeamVO teamVO, boolean isIn);
     void updateIsDeleteTrue(TeamVO teamVO);
     String getTeamName(TeamVO teamVO);
+    int getTeamMemberCount(TeamVO teamVO);
 }
