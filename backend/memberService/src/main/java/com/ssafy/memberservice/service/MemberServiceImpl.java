@@ -295,6 +295,38 @@ public class MemberServiceImpl implements MemberService{
         return null;
     }
 
+    @Override
+    public Boolean checkBang(int step, Long loginMemberId) {
+        Optional<MemberEntity> Member = memberRepository.findById(loginMemberId);
+
+        if(Member.isPresent()){
+            MemberEntity member = Member.get();
+            int bang = member.getBangAmount(); //사용자 뱅 총 갯수
+
+            switch(step){ //힌트 단계에 따라 필요한 뱅 갯수 확인
+                case 1:
+                    if(bang >= 3){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                case 2:
+                    if(bang >= 4){
+                        return true;
+                    }else {
+                        return false;
+                    }
+                case 3:
+                    if(bang >= 5){
+                        return true;
+                    }else {
+                        return false;
+                    }
+            }
+        }
+        throw new NullPointerException();
+    }
+
 
     @Override
     public KakaoUserInfoResponseDto getKakaoUser(String accessToken) {

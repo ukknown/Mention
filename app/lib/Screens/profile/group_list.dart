@@ -1,12 +1,9 @@
+import 'package:app/api/profile_api.dart';
+import 'package:app/api/profile_model.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/profile/profile_box/my_group.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:app/api/profile_api.dart';
-// import 'package:app/api/profile_model.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
 
 class GroupList extends StatefulWidget {
   final double screenWidth, screenHeight;
@@ -22,14 +19,9 @@ class GroupList extends StatefulWidget {
 }
 
 class _GroupListState extends State<GroupList> {
-  Future<List<dynamic>> _loadGroups() async {
-    String jsonString = await rootBundle.loadString('lib/api/group_list.json');
-    final jsonData = json.decode(jsonString);
-    return jsonData['group'];
+  Future<List<Group>> _loadGroups() async {
+    return ProfileApi.getGroups();
   }
-  // Future<List<Group>> _loadGroups() async {
-  //   return ProfileApi.getGroups();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,71 +37,111 @@ class _GroupListState extends State<GroupList> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/warning_h.png',
+                        width: widget.screenWidth * 0.50,
+                      ),
+                      SizedBox(
+                        height: widget.screenHeight * 0.005,
+                      ),
+                      Text(
+                        "그룹을 불러오는데 실패했어요!\n잠시 후에 다시 시도해주세요!",
+                        style: TextStyle(
+                          fontSize: widget.screenWidth * 0.05,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                );
               } else {
                 List<dynamic> groups = snapshot.data!;
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: widget.screenHeight * 0.08,
+                if (groups.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/warning_c.png',
+                          width: widget.screenWidth * 0.50,
+                        ),
+                        SizedBox(
+                          height: widget.screenHeight * 0.005,
+                        ),
+                        Text(
+                          "아직 참여한 그룹이 없어요!",
+                          style: TextStyle(
+                            fontSize: widget.screenWidth * 0.05,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: widget.screenWidth * 0.05,
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: widget.screenHeight * 0.08,
                       ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/group.png',
-                            width: widget.screenWidth * 0.15,
-                          ),
-                          SizedBox(
-                            width: widget.screenWidth * 0.05,
-                          ),
-                          Text(
-                            "내 그룹",
-                            style: TextStyle(
-                              fontSize: widget.screenWidth * 0.1,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.separated(
+                      Padding(
                         padding: EdgeInsets.symmetric(
-                          vertical: widget.screenHeight * 0.01,
                           horizontal: widget.screenWidth * 0.05,
                         ),
-                        itemCount: groups.length,
-                        separatorBuilder: (BuildContext context, int index) =>
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/group.png',
+                              width: widget.screenWidth * 0.15,
+                            ),
                             SizedBox(
-                          height: widget.screenHeight * 0.01,
+                              width: widget.screenWidth * 0.05,
+                            ),
+                            Text(
+                              "내 그룹",
+                              style: TextStyle(
+                                fontSize: widget.screenWidth * 0.1,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
-                        itemBuilder: (BuildContext context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: widget.screenWidth * 0.05,
-                            ),
-                            child: MyGroup(
-                              screenHeight: widget.screenHeight,
-                              screenWidth: widget.screenWidth,
-                              groupId: groups[index]['group_id'],
-                              groupImage: groups[index]["group_image"],
-                              groupName: groups[index]["group_name"],
-                              groupMember: groups[index]["group_member"],
-                              // groupId: groups[index].groupId,
-                              // groupImage: groups[index].groupImage,
-                              // groupName: groups[index].groupName,
-                              // groupMember: groups[index].groupMember,
-                            ),
-                          );
-                        },
                       ),
-                    ),
-                  ],
-                );
+                      Expanded(
+                        child: ListView.separated(
+                          padding: EdgeInsets.symmetric(
+                            vertical: widget.screenHeight * 0.01,
+                          ),
+                          itemCount: groups.length,
+                          separatorBuilder: (BuildContext context, int index) =>
+                              SizedBox(
+                            height: widget.screenHeight * 0.01,
+                          ),
+                          itemBuilder: (BuildContext context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: widget.screenWidth * 0.1,
+                              ),
+                              child: MyGroup(
+                                screenHeight: widget.screenHeight,
+                                screenWidth: widget.screenWidth,
+                                groupId: groups[index].groupId,
+                                groupImage: groups[index].groupImage,
+                                groupName: groups[index].groupName,
+                                groupMember: groups[index].groupMember,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                }
               }
             },
           ),
