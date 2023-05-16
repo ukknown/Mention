@@ -15,12 +15,12 @@ class Notice {
         gender = json['gender'] ?? 'unknown',
         noticeTitle = _getNoticeTitle(json['title']),
         targetTitle = _getTargetTitle(json['title']);
-  
+
   static String _getNoticeTitle(String? inputTitle) {
     if (inputTitle == null) {
       return '';
     }
-    List<String> parts = inputTitle.split('*');
+    List<String> parts = inputTitle.split(' * ');
     return parts[0];
   }
 
@@ -28,7 +28,7 @@ class Notice {
     if (inputTitle == null) {
       return '';
     }
-    List<String> parts = inputTitle.split('*');
+    List<String> parts = inputTitle.split(' * ');
     return parts.length > 1 ? parts[1] : '';
   }
 }

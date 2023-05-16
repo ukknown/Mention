@@ -10,12 +10,12 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (!prefs.containsKey('isRead')) {
     await prefs.setStringList('isRead', []);
   }
   KakaoSdk.init(nativeAppKey: 'fdb226da9bdf3e5030a432d9f509a01a');
-  WidgetsFlutterBinding.ensureInitialized();
   await AndroidAlarmManager.initialize();
   runApp(new Mention());
 }

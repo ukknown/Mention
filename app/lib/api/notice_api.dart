@@ -5,7 +5,7 @@ import 'dart:convert';
 class NoticeApi {
   static const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
   static final token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoi7KGw7Iq57ZiEIiwiaWF0IjoxNjg0MTMzMDM1LCJleHAiOjE2ODY3MjUwMzV9.ccobgT3kXLi5L0GtxrO4DPHRbpSjMWohVWePzwvUSwCB06IC-NGdGhtNdkUX5nGw8bCWzLVFzbucWCgod5ZBhw";
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb25rdWtAZ21haWwuY29tIiwiZW1haWwiOiJqb25rdWtAZ21haWwuY29tIiwibmlja25hbWUiOiLstZzsooXsmrEiLCJpYXQiOjE2ODQyMzgwMTUsImV4cCI6MTY4NjgzMDAxNX0.9sk-d3ghnJk7C_aI7Bx-9ProSaDFV7aZ3F_t9DY8cl3stS6Aetz79UfmS2pyjW0DAu5NaLwRSgKdHIAxLn1Tbw";
 
   static Future<List<Notice>> getNoticeList() async {
     final url = Uri.parse('$baseUrl/notification-service/notifications');
