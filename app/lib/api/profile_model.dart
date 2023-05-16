@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Profile {
   final String? profileImage;
   final String name;
@@ -78,5 +76,6 @@ class Mention {
         topicTitle = json['topicTitle'] as String?,
         hintStep = json['hintStatus'] ?? 0,
         gender = json['voterGender'] ?? 'unknown',
-        emoji = int.tryParse(json['emoji'] ?? '', radix: 16) ?? int.parse('1F60B', radix: 16);
+        emoji = int.tryParse(json['emoji'] ?? '', radix: 16) ??
+            int.parse('1F60B', radix: 16);
 }
