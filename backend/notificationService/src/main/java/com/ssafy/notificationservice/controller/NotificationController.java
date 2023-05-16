@@ -66,12 +66,14 @@ public class NotificationController {
      * @param memberId
      * @return
      */
-    @GetMapping("/topic-winner/{memberid}")
+    @GetMapping("/topic-winner/{memberid}/{topicid}")
     public ResponseEntity createTopicWinnerNotification(
-            @PathVariable("memberid") Long memberId
+            @PathVariable("memberid") Long memberId,
+            @PathVariable("topicid") Long topicId
     ){
         NotificationVO notificationVO = new NotificationVO();
         notificationVO.setMemberId(memberId);
+        notificationVO.setRoutingId(topicId);
         notificationService.createTopicWinnerNotification(notificationVO);
 
         return ResponseEntity.status(HttpStatus.OK).body("[토픽 응모] 토픽 응모 당첨 전송 완료 ~ 🔥");
