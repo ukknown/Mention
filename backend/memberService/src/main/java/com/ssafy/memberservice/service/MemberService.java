@@ -32,4 +32,6 @@ public interface MemberService {
     void deleteAccess(String bearerToken);
 
     MemberInfoDto getMemberInfo(Long memberid);
+
+    Boolean checkBang(int step, Long loginMemberId);
 }
