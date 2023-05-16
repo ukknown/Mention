@@ -55,8 +55,10 @@ public class MentionController {
         return ResponseEntity.ok().body(mentionService.getMention(memberId));
     }
     @GetMapping("/mentions/{mentionId}")
-    public ResponseEntity<MentionDetailResponseDto> getMentionDetail(@PathVariable Long mentionId){
-        return ResponseEntity.ok().body(mentionService.getMentionDetail(mentionId));
+    public ResponseEntity<MentionDetailResponseDto> getMentionDetail(HttpServletRequest request,
+                                                                     @PathVariable Long mentionId){
+        Long memberId = loadMember(request).getMemberId();
+        return ResponseEntity.ok().body(mentionService.getMentionDetail(mentionId, memberId));
     }
 
     @Operation(summary = "멘션 생성", description = "상대방을 멘션!하다~")
@@ -77,6 +79,4 @@ public class MentionController {
                 .role(role)
                 .build();
     }
-
-
 }
