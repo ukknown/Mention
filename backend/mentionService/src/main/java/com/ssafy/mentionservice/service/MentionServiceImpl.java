@@ -3,6 +3,7 @@ package com.ssafy.mentionservice.service;
 import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
 import com.ssafy.mentionservice.feignclient.MemberServiceFeignClient;
+import com.ssafy.mentionservice.feignclient.NotificationServiceFeignClient;
 import com.ssafy.mentionservice.feignclient.TeamServiceFeignClient;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateMentionRequestDto;
@@ -27,9 +28,12 @@ public class MentionServiceImpl implements MentionService{
     private final VoteRepository voteRepository;
     private final MemberServiceFeignClient memberServiceFeignClient;
     private final TeamServiceFeignClient teamServiceFeignClient;
+    private final NotificationServiceFeignClient notificationServiceFeignClient;
+
     @Override
     @Transactional
     public void createMention(CreateMentionRequestDto createMentionRequestDto, Long memberId) {
+        MemberInfoDto memberInfo = memberServiceFeignClient.getMemberInfo(memberId);
         VoteEntity vote = voteRepository.findById(createMentionRequestDto.getVoteId())
                 .orElseThrow(() -> new MentionServiceRuntimeException(MentionServiceExceptionEnum.VOTE_NOT_EXIST));
         MentionEntity mentionEntity = MentionEntity
@@ -46,6 +50,7 @@ public class MentionServiceImpl implements MentionService{
         if (vote.getParticipant() + 1 == total) {
             vote.updateIsCompleted();
         }
+        notificationServiceFeignClient.createVoteOpenNotification(memberId, mentionEntity.getId(), memberInfo.getGender());
     }
 
     @Override
