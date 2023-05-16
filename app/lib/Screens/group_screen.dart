@@ -7,7 +7,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:app/widgets/bottom_nav.dart';
 
 class GroupScreen extends StatefulWidget {
-  const GroupScreen({Key? key}) : super(key: key);
+  // const GroupScreen(int propsId, {Key? key})
+  //     : super(key: key);
+
+  final int propsId;
+  const GroupScreen(this.propsId);
 
   @override
   State<GroupScreen> createState() => _GroupScreenState();

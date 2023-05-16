@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:app/Screens/group_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/dailymissonswiper.dart';
@@ -33,6 +34,7 @@ class _MainPageState extends State<MainPage> {
   TextEditingController inputController = TextEditingController();
   String inputText = '';
   File? imageFile;
+  late int propsId;
 
   void getImage({required ImageSource source}) async {
     final file = await ImagePicker().pickImage(
@@ -144,17 +146,53 @@ class _MainPageState extends State<MainPage> {
               flex: 1,
               child: ListView(
                 children: [
-                  ListTile(
-                    title: const Text("다음으로"),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Hint(),
+                  Row(children: [
+                    Flexible(
+                      flex: 6,
+                      child: Container(),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 20, 0),
+                        child: Container(
+                          child: IconButton(
+                            icon: Icon(Icons.logout, size: 36),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Hint(),
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                      flex: 1,
+                    ),
+                  ]
+                      // child: IconButton(
+
+                      //   icon: Icon(Icons.logout),
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => const Hint(),
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
+
+                      // onTap: () {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => const Hint(),
+                      //     ),
+                      //   );
+                      // },
+                      ),
                 ],
               ),
             ),
@@ -244,7 +282,17 @@ class _MainPageState extends State<MainPage> {
                             );
                           },
                         )
-                      : print(swiperList[index].id);
+                      : setState(() {
+                          propsId = swiperList[index].id;
+                        });
+                  // print(propsId);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GroupScreen(propsId),
+                    ),
+                  );
+                  // print(swiperList[index].id);
                 },
                 itemCount: swiperList.length,
                 viewportFraction: 0.8,

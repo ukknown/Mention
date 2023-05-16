@@ -1,4 +1,3 @@
-import 'package:app/Screens/group_screen.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +51,7 @@ class _GroupMemberState extends State<GroupMember> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const GroupScreen()));
+                              // Navigator.push(context, MaterialPageRoute(builder: (context) => GroupScreen()));
                             },
                             child: const Text(
                               '멤버',

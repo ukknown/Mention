@@ -1,4 +1,3 @@
-import 'package:app/screens/group_screen.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
@@ -27,13 +26,13 @@ class MyGroup extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const GroupScreen(),
-              fullscreenDialog: true,
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const GroupScreen(),
+          //     fullscreenDialog: true,
+          //   ),
+          // );
         },
         child: Container(
           height: screenHeight * 0.15,

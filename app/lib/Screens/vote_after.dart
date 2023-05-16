@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
 
-import 'group_screen.dart';
-
 class VotePick extends StatefulWidget {
   const VotePick({super.key});
 
@@ -70,11 +68,11 @@ class _VotePickState extends State<VotePick> {
                                 Image.asset('assets/images/crown.png'),
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const GroupScreen()));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //              GroupScreen()));
                                   },
                                   child: const CircleAvatar(
                                     radius: 80,
