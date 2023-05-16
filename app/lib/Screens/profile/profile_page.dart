@@ -1,14 +1,11 @@
+import 'package:app/api/profile_api.dart';
+import 'package:app/api/profile_model.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/profile/profile_box/pedometer.dart';
 import 'package:app/widgets/profile/profile_box/profile_card.dart';
 import 'package:app/widgets/profile/profile_box/rank_slot.dart';
 import 'package:flutter/material.dart';
-
-import 'package:app/api/profile_api.dart';
-import 'package:app/api/profile_model.dart';
-// import 'dart:convert';
-// import 'package:flutter/services.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -18,20 +15,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // late Future<Map<String, dynamic>> futureProfileData;
   late Future<Profile> futureProfileData;
-
-  // Future<Map<String, dynamic>> loadProfileData() async {
-  //   final jsonString =
-  //       await rootBundle.loadString('lib/api/profile_screen.json');
-  //   final jsonData = json.decode(jsonString);
-  //   return jsonData;
-  // }
 
   @override
   void initState() {
     super.initState();
-    // futureProfileData = loadProfileData();
     futureProfileData = ProfileApi.getProfile();
   }
 
@@ -49,22 +37,34 @@ class _ProfilePageState extends State<ProfilePage> {
           future: futureProfileData,
           builder: (
             BuildContext context,
-            // AsyncSnapshot<Map<String, dynamic>> snapshot,
             AsyncSnapshot<Profile> snapshot,
           ) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              // 에러 메시지를 표시합니다.
-              print('Error: ${snapshot.error}');
-              return const Center(
-                child: Text(
-                  'An error occurred. Please try again later.',
-                  style: TextStyle(color: Colors.red),
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/warning_h.png',
+                      width: screenWidth * 0.50,
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.005,
+                    ),
+                    Text(
+                      "프로필을 불러오는데 실패했어요!\n잠시 후에 다시 시도해주세요!",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
                 ),
               );
             } else {
-              // final profileData = snapshot.data!;
               final profile = snapshot.data!;
 
               return SingleChildScrollView(
@@ -75,11 +75,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: screenHeight * 0.1,
                       ),
                       ProfileCard(
-                        // profileImage: profileData['profile_image'],
-                        // name: profileData['name'],
-                        // coin: profileData['coin'],
-                        // groupCount: profileData['group_count'],
-                        // mentionCount: profileData['mention_count'],
                         profileImage: profile.profileImage,
                         name: profile.name,
                         coin: profile.coin,
@@ -146,17 +141,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             SizedBox(
                               height: screenHeight * 0.02,
                             ),
-                            // for (var entry
-                            //     in profileData['most_mentioned_topic']
-                            //         .asMap()
-                            //         .entries)
-                            //   RankSlot(
-                            //     screenWidth: screenWidth,
-                            //     screenHeight: screenHeight,
-                            //     topic: entry.value,
-                            //     rank: entry.key + 1,
-                            //   ),
-
                             for (var entry
                                 in profile.mostMentionedTopic.asMap().entries)
                               RankSlot(

@@ -3,16 +3,18 @@
 import 'package:flutter/material.dart';
 
 class swipercontainer extends StatefulWidget {
-  const swipercontainer({
-    Key? key,
-    required this.groupimg,
-    required this.groupname,
-    required this.membernum,
-  }) : super(key: key);
+  const swipercontainer(
+      {Key? key,
+      required this.groupimg,
+      required this.groupname,
+      required this.membernum,
+      required this.id})
+      : super(key: key);
 
   final String groupname;
   final int membernum;
   final dynamic groupimg;
+  final int id;
 
   @override
   State<swipercontainer> createState() => _swipercontainerState();
@@ -47,6 +49,9 @@ class _swipercontainerState extends State<swipercontainer> {
                 Flexible(
                   flex: 1,
                   child: Image.network(widget.groupimg),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.03,
                 ),
                 Flexible(
                   flex: 2,
