@@ -38,6 +38,8 @@ public class TopicEntity {
     @Column(nullable = false)
     private Boolean isSystem;
 
+    private Long winnerId;
+
     public void changeIsSystemTrue() {
         this.isSystem = true;
     }

@@ -50,7 +50,7 @@ public class MentionServiceImpl implements MentionService{
         if (vote.getParticipant() + 1 == total) {
             vote.updateIsCompleted();
         }
-        notificationServiceFeignClient.createVoteOpenNotification(memberId, mentionEntity.getId(), memberInfo.getGender());
+        notificationServiceFeignClient.createMentionNotification(memberId, mentionEntity.getId(), memberInfo.getGender());
     }
 
     @Override

@@ -8,11 +8,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "notification-service")
 public interface NotificationServiceFeignClient {
     @GetMapping("/notification-service/mention/{memberid}/{mentionid}/{gender}")
-    ResponseEntity createVoteOpenNotification(
+    ResponseEntity createMentionNotification(
             @PathVariable("memberid") Long memberId
             ,@PathVariable("mentionid") Long mentionId
             ,@PathVariable("gender") String gender
     );
+    @GetMapping("/notification-service/topic-winner/{memberid}/{topicid}")
+    ResponseEntity createTopicWinnerNotification(
+            @PathVariable("memberid") Long memberId
+            ,@PathVariable("topicid") Long topicId
+    );
+
 
 
 }
