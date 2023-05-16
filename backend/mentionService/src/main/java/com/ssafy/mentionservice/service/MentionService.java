@@ -12,4 +12,5 @@ public interface MentionService {
     Integer getMentionCount(Long memberid);
     List<MentionResponseDto> getMention(Long memberId);
     MentionDetailResponseDto getMentionDetail(Long mentionId, Long memberId);
+    String plusHintstatus(Long mentionId);
 }

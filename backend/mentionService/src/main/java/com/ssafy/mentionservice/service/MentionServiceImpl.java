@@ -90,6 +90,15 @@ public class MentionServiceImpl implements MentionService{
                 .build();
     }
 
+    @Override
+    @Transactional
+    public String plusHintstatus(Long mentionId) {
+        MentionEntity mention = mentionRepository.findById(mentionId)
+                .orElseThrow(()-> new MentionServiceRuntimeException(MentionServiceExceptionEnum.MENTION_NOT_EXIST));
+        mention.plusHintstatus();
+        return "힌트 단계 업!";
+    }
+
     private String getInitialSound(String name) {
         String initialSound = "";
         String[] firstSound = {
