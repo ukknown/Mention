@@ -99,6 +99,13 @@ public class MentionServiceImpl implements MentionService{
         return "힌트 단계 업!";
     }
 
+    @Override
+    public String getTopicByMention(Long mentionId) {
+        MentionEntity mention = mentionRepository.findById(mentionId)
+                .orElseThrow(()->new MentionServiceRuntimeException(MentionServiceExceptionEnum.MENTION_NOT_EXIST));
+        return mention.getVote().getTopic().getTitle();
+    }
+
     private String getInitialSound(String name) {
         String initialSound = "";
         String[] firstSound = {

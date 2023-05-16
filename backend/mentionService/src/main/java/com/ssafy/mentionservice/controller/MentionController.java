@@ -54,6 +54,11 @@ public class MentionController {
         return ResponseEntity.ok().body(mentionService.plusHintstatus(mentionId));
     }
 
+    @GetMapping("/mentions/topic-title/{mentionid}")
+    public ResponseEntity<String> getTopTitleByMentionId(@PathVariable Long mentionid) {
+        return ResponseEntity.ok().body(mentionService.getTopicByMention(mentionid));
+    }
+
     @GetMapping("/mentions")
     public ResponseEntity<List<MentionResponseDto>> getMention(HttpServletRequest request) {
         Long memberId = loadMember(request).getMemberId();
