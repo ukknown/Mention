@@ -7,6 +7,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### firebase ###
+mention-d41db-firebase-adminsdk-pvzht-a24518674b.json
+
 ### STS ###
 .apt_generated
 .classpath
