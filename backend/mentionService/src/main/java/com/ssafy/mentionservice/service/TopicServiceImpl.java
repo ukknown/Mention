@@ -207,7 +207,6 @@ public class TopicServiceImpl implements TopicService{
                 .build();
         topicSearchRepository.save(topicDocument);
         notificationServiceFeignClient.createTopicWinnerNotification(topic.getWinnerId(), topic.getId());
-        System.out.println("1111111");
     }
 
     @Override
