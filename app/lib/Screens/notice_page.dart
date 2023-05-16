@@ -1,10 +1,9 @@
 import 'package:app/api/notice_model.dart';
+import 'package:app/api/notice_api.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/profile/profile_box/notice_box.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
 
 class NoticePage extends StatefulWidget {
   const NoticePage({Key? key}) : super(key: key);
@@ -14,12 +13,6 @@ class NoticePage extends StatefulWidget {
 }
 
 class _NoticePageState extends State<NoticePage> {
-  Future<NoticeList> _loadNoticeList() async {
-    String jsonString = await rootBundle.loadString('lib/api/notice.json');
-    final jsonResponse = json.decode(jsonString);
-    return NoticeList.fromJson(jsonResponse);
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -34,15 +27,15 @@ class _NoticePageState extends State<NoticePage> {
             padding: EdgeInsets.symmetric(
               horizontal: screenWidth * 0.05,
             ),
-            child: FutureBuilder<NoticeList>(
-              future: _loadNoticeList(),
+            child: FutureBuilder<List<Notice>>(
+              future: NoticeApi.getNoticeList(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator(); // loading indicator
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  final String name = snapshot.data!.name;
+                  final List<Notice> notices = snapshot.data!;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -72,11 +65,11 @@ class _NoticePageState extends State<NoticePage> {
                           padding: EdgeInsets.symmetric(
                             vertical: screenHeight * 0.01,
                           ),
-                          itemCount: snapshot.data!.notices.length,
+                          itemCount: notices.length,
                           separatorBuilder: (context, index) =>
                               SizedBox(height: screenHeight * 0.01),
                           itemBuilder: (context, index) {
-                            var notice = snapshot.data!.notices[index];
+                            var notice = notices[index];
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: screenWidth * 0.05,
@@ -84,7 +77,6 @@ class _NoticePageState extends State<NoticePage> {
                               child: NoticeBox(
                                 screenWidth: screenWidth,
                                 screenHeight: screenHeight,
-                                name: name,
                                 notice: notice,
                               ),
                             );

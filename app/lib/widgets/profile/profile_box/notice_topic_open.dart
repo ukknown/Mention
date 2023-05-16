@@ -1,29 +1,23 @@
-import 'package:app/screens/Hint.dart';
+import 'package:app/Screens/mainPage.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class NoticeMention extends StatelessWidget {
-  const NoticeMention({
+class TopicOpen extends StatelessWidget {
+  const TopicOpen({
     Key? key,
     required this.screenWidth,
     required this.screenHeight,
     required this.noticeId,
-    required this.routingId,
     required this.regDate,
     required this.noticeTitle,
-    required this.targetTitle,
-    required this.gender,
   }) : super(key: key);
 
   final double screenWidth;
   final double screenHeight;
   final int noticeId;
-  final int routingId;
   final DateTime regDate;
   final String noticeTitle;
-  final String targetTitle;
-  final String gender;
 
   String timeAgo(DateTime d) {
     Duration diff = DateTime.now().difference(d);
@@ -63,11 +57,6 @@ class NoticeMention extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color boxColor = const Color(0xFFFFFFFF);
-    if (gender == 'male') {
-      boxColor = const Color(0xffa3b3f9);
-    } else if (gender == 'female') {
-      boxColor = const Color(0xFFFEB6C4);
-    }
 
     return GestureDetector(
       onTap: () async {
@@ -76,9 +65,7 @@ class NoticeMention extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const Hint(
-                // mentionId: routingId,
-                ),
+            builder: (context) => const MainPage(),
             fullscreenDialog: true,
           ),
         );
@@ -151,7 +138,7 @@ class NoticeMention extends StatelessWidget {
                                       SizedBox(
                                         width: screenWidth * 0.02,
                                       ),
-                                      Text(targetTitle),
+                                      Text("내가 직접 만드는 토픽! 지금 바로 응모하기!"),
                                     ],
                                   ),
                                 ),
