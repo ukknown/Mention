@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService{
@@ -26,6 +29,15 @@ public class NotificationServiceImpl implements NotificationService{
                 .build();
 
         notificationRepository.save(notification);
+    }
+
+    @Override
+    public List<NotificationVO> getNotificationList(Long memberId) {
+        List<NotificationEntity> notificationEntityList = notificationRepository.findByMemberIdOrderByRegDateDesc(memberId);
+
+        return notificationEntityList.stream()
+                .map(entity -> new NotificationVO(entity))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -49,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService{
                 .gender(Gender.UNSUPPORTED)
                 .routingId(notificationVO.getRoutingId())
                 .gender(notificationVO.getGender())
-                .title("누군가가 당신을 멘션했어요 📣")
+                .title("(😋 )누군가가 당신을 멘션했어요!!")
                 .build();
         notificationRepository.save(notification);
     }
@@ -57,7 +69,7 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     @Transactional
     public void createTeamVoteNotification(NotificationVO notificationVO) {
-        String message = teamFeignClient.getTeamName(notificationVO.getRoutingId()) + "에서 새로운 투표가 열렸어요! 참여해보세요~🚀";
+        String message = "[" + teamFeignClient.getTeamName(notificationVO.getRoutingId()) + "] 에서 새로운 투표가 열렸어요! 참여해보세요~🚀";
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(notificationVO.getMemberId())
                 .type(Type.GROUP_VOTE)
