@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
-class NoticeMention extends StatelessWidget {
-  const NoticeMention({
+class TopicWinner extends StatelessWidget {
+  const TopicWinner({
     Key? key,
     required this.screenWidth,
     required this.screenHeight,
     required this.noticeId,
-    required this.routingId,
     required this.regDate,
     required this.noticeTitle,
     required this.targetTitle,
-    required this.gender,
   }) : super(key: key);
 
   final double screenWidth;
   final double screenHeight;
   final int noticeId;
-  final int routingId;
   final DateTime regDate;
   final String noticeTitle;
   final String targetTitle;
-  final String gender;
 
   String timeAgo(DateTime d) {
     Duration diff = DateTime.now().difference(d);
@@ -47,11 +43,6 @@ class NoticeMention extends StatelessWidget {
     final bool isRead = true;
 
     Color boxColor = const Color(0xFFFFFFFF);
-    if (gender == 'male') {
-      boxColor = const Color(0xffa3b3f9);
-    } else if (gender == 'female') {
-      boxColor = const Color(0xFFFEB6C4);
-    }
 
     return Padding(
       padding: EdgeInsets.symmetric(

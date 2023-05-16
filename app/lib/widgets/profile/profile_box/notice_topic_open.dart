@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
-class NoticeNotice extends StatelessWidget {
-  const NoticeNotice({
+class TopicOpen extends StatelessWidget {
+  const TopicOpen({
     Key? key,
     required this.screenWidth,
     required this.screenHeight,
-    required this.name,
-    required this.isRead,
-    required this.created,
-    required this.id,
-    required this.title,
+    required this.noticeId,
+    required this.regDate,
+    required this.noticeTitle,
   }) : super(key: key);
 
   final double screenWidth;
   final double screenHeight;
-  final String name;
-  final int id;
-  final String title;
-  final bool isRead;
-  final DateTime created;
+  final int noticeId;
+  final DateTime regDate;
+  final String noticeTitle;
 
   String timeAgo(DateTime d) {
     Duration diff = DateTime.now().difference(d);
@@ -42,6 +38,8 @@ class NoticeNotice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isRead = true;
+
     Color boxColor = const Color(0xFFFFFFFF);
 
     return Padding(
@@ -76,13 +74,13 @@ class NoticeNotice extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "$name님, 새로운 소식을 확인하세요!",
+                    noticeTitle,
                     style: TextStyle(
                       fontSize: screenWidth * 0.04,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Text(timeAgo(created)),
+                  Text(timeAgo(regDate)),
                   Padding(
                     padding: EdgeInsets.only(
                       top: screenHeight * 0.01,
@@ -104,7 +102,7 @@ class NoticeNotice extends StatelessWidget {
                               SizedBox(
                                 width: screenWidth * 0.02,
                               ),
-                              Text(title),
+                              Text("내가 직접 만드는 토픽! 지금 바로 응모하기!"),
                             ],
                           ),
                         ),
@@ -115,7 +113,7 @@ class NoticeNotice extends StatelessWidget {
               ),
             ),
           ),
-          if (!isRead && DateTime.now().difference(created).inMinutes <= 10)
+          if (!isRead && DateTime.now().difference(regDate).inMinutes <= 10)
             Positioned(
               top: -screenWidth * 0.02,
               right: -screenWidth * 0.02,
