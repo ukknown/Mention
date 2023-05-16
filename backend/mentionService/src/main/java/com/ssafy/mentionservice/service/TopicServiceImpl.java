@@ -232,6 +232,14 @@ public class TopicServiceImpl implements TopicService{
         throw new MentionServiceRuntimeException(MentionServiceExceptionEnum.ALL_TOPIC_DONE);
     }
 
+    @Override
+    public String getTopicByTopicId(Long topicId) {
+        TopicEntity topic = topicRepository.findById(topicId)
+                .orElseThrow(() -> new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NOT_EXIST));
+        return topic.getTitle();
+    };
+
+
     private Map<CharSequence, Integer> getCharacterFrequencyVector(String text) {
         Map<CharSequence, Integer> vector = new HashMap<>();
         for (char c : text.toCharArray()) {
