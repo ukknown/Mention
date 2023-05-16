@@ -44,12 +44,24 @@ class TopicOpen extends StatelessWidget {
     return readNotices.contains(noticeId.toString());
   }
 
+  Future<void> markAsRead(int noticeId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> readNotices = prefs.getStringList('isRead') ?? [];
+
+    if (!readNotices.contains(noticeId.toString())) {
+      readNotices.add(noticeId.toString());
+      await prefs.setStringList('isRead', readNotices);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Color boxColor = const Color(0xFFFFFFFF);
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        await markAsRead(noticeId);
+
         Navigator.push(
           context,
           MaterialPageRoute(
