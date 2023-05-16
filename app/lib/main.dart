@@ -1,6 +1,8 @@
 // ignore: duplicate_ignore
 // ignore_for_file: prefer_const_constructors, unused_import
 
+import 'package:app/Screens/group_member.dart';
+import 'package:app/Screens/group_screen.dart';
 import 'package:app/Screens/mainPage.dart';
 import 'package:app/Screens/notice_page.dart';
 import 'package:app/screens/home_screen.dart';
