@@ -8,7 +8,13 @@ import 'dart:math';
 import 'group_screen.dart';
 
 class VotePick extends StatefulWidget {
-  const VotePick({super.key});
+  final String nickname;
+  final String avatarUrl;
+  const VotePick({
+    required this.nickname,
+    required this.avatarUrl,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<VotePick> createState() => _VotePickState();
@@ -38,12 +44,12 @@ class _VotePickState extends State<VotePick> {
       body: Container(
         decoration: bgimg(),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Stack(
             children: [
               Column(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     height: 40,
                   ),
                   Expanded(
@@ -57,7 +63,7 @@ class _VotePickState extends State<VotePick> {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 3,
                             blurRadius: 7,
-                            offset: const Offset(0, 3),
+                            offset: Offset(0, 3),
                           ),
                         ],
                       ),
@@ -74,17 +80,18 @@ class _VotePickState extends State<VotePick> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const GroupScreen()));
+                                                GroupScreen()));
                                   },
-                                  child: const CircleAvatar(
-                                    radius: 80,
-                                  ),
+                                  child: CircleAvatar(
+                                      radius: 80,
+                                      backgroundImage:
+                                          NetworkImage(widget.avatarUrl)),
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   height: 20,
                                 ),
-                                const Text(
-                                  '김창영',
+                                Text(
+                                  widget.nickname,
                                   style: TextStyle(fontSize: 40),
                                 ),
                               ],
@@ -94,7 +101,7 @@ class _VotePickState extends State<VotePick> {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 40,
                   ),
                 ],
