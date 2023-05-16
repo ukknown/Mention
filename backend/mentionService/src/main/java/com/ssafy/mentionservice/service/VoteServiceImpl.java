@@ -2,12 +2,15 @@ package com.ssafy.mentionservice.service;
 
 import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
+import com.ssafy.mentionservice.feignclient.NotificationServiceFeignClient;
+import com.ssafy.mentionservice.feignclient.TeamServiceFeignClient;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
 import com.ssafy.mentionservice.vo.VoteVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -23,13 +26,12 @@ import java.util.stream.Collectors;
 public class VoteServiceImpl implements VoteService{
 
     private final VoteRepository voteRepository;
-
     private final MentionRepository mentionRepository;
-
     private final TopicRepository topicRepository;
+    private final TeamServiceFeignClient teamServiceFeignClient;
+    private final NotificationServiceFeignClient notificationServiceFeignClient;
+    private final VoteSaveService voteSaveService;
 
-
-    //TODO 알람 전송
     @Override
     @Transactional
     public void createVote(CreateVoteRequestDto createVoteRequestDto) {
@@ -43,8 +45,14 @@ public class VoteServiceImpl implements VoteService{
                 .isCompleted(false)
                 .dueDate(dueDate)
                 .build();
-        voteRepository.save(voteEntity);
+        voteSaveService.saveAndFlushVote(voteEntity);
+        List<Long> memberIds = teamServiceFeignClient.getMemberIdList(createVoteRequestDto.getTeamId());
+        for (Long memberId : memberIds) {
+            notificationServiceFeignClient.createVoteOpenNotification(memberId, voteEntity.getId());
+            System.out.println("되나 보자~");
+        }
     }
+
 
     @Override
     @Transactional
