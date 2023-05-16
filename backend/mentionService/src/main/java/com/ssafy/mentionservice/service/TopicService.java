@@ -29,5 +29,5 @@ public interface TopicService {
 
     void rejectTopic(Long topicId);
 
-//    TopicResoponseDto getRandomOne();
+    TopicResoponseDto getRandomTopic(Long teamId);
 }

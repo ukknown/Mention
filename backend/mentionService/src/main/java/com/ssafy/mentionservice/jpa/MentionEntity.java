@@ -24,13 +24,18 @@ public class MentionEntity {
     @JoinColumn(name = "vote_id")
     private VoteEntity vote;
 
+    @Column(nullable = false)
     private Long voterId;
 
+    @Column(nullable = false)
     private Long pickerId;
 
+    @Column(nullable = false)
     private String hint;
 
+    @Column(nullable = false)
     private LocalDateTime regDate;
 
+    @Column(nullable = false)
     private int hintStatus;
 }
