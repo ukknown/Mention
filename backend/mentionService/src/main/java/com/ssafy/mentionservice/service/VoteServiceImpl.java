@@ -48,7 +48,7 @@ public class VoteServiceImpl implements VoteService{
         voteSaveService.saveAndFlushVote(voteEntity);
         List<Long> memberIds = teamServiceFeignClient.getMemberIdList(createVoteRequestDto.getTeamId());
         for (Long memberId : memberIds) {
-            notificationServiceFeignClient.createVoteOpenNotification(memberId, voteEntity.getId());
+            notificationServiceFeignClient.createVoteOpenNotification(createVoteRequestDto.getTeamId(), memberId, voteEntity.getId());
             System.out.println("되나 보자~");
         }
     }
