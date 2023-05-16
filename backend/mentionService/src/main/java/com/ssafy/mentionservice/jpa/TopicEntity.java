@@ -35,6 +35,16 @@ public class TopicEntity {
     @Column(nullable = false)
     private String emoji;
 
+    @Column(nullable = false)
+    private Boolean isSystem;
+
+    public void changeIsSystemTrue() {
+        this.isSystem = true;
+    }
+    public void changeIsSystemFalse() {
+        this.isSystem = false;
+    }
+
     public void approveTopic() {
         this.approveStatus = ApproveStatus.APPROVE;
     }
