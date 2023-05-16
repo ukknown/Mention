@@ -18,7 +18,6 @@ public interface NotificationServiceFeignClient {
             @PathVariable("memberid") Long memberId
             ,@PathVariable("topicid") Long topicId
     );
-
-
-
+    @GetMapping("/notification-service/vote-open/{memberid}/{voteid}")
+    ResponseEntity createVoteOpenNotification(@PathVariable("memberid") Long memberId, @PathVariable("voteid") Long voteId);
 }
