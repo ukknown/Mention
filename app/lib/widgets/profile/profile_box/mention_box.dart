@@ -96,7 +96,8 @@ class MentionBox extends StatelessWidget {
           width: screenWidth * 0.025,
           height: screenWidth * 0.025,
           decoration: BoxDecoration(
-            color: hintStep > 0 ? Colors.green : Colors.grey,
+            color:
+                hintStep > 0 ? Color.fromARGB(255, 204, 255, 0) : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
@@ -107,7 +108,8 @@ class MentionBox extends StatelessWidget {
           width: screenWidth * 0.025,
           height: screenWidth * 0.025,
           decoration: BoxDecoration(
-            color: hintStep > 1 ? Colors.green : Colors.grey,
+            color:
+                hintStep > 1 ? Color.fromARGB(255, 204, 255, 0) : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
@@ -118,7 +120,8 @@ class MentionBox extends StatelessWidget {
           width: screenWidth * 0.025,
           height: screenWidth * 0.025,
           decoration: BoxDecoration(
-            color: hintStep > 2 ? Colors.green : Colors.grey,
+            color:
+                hintStep > 2 ? Color.fromARGB(255, 204, 255, 0) : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),

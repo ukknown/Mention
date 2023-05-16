@@ -2,9 +2,6 @@
 // ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:app/Screens/mainPage.dart';
-import 'package:app/Screens/profile/group_list.dart';
-import 'package:app/Screens/profile/profile_page.dart';
-import 'package:app/Screens/profile/received_mentions.dart';
 import 'package:app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
@@ -22,8 +19,6 @@ class Mention extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -37,8 +32,7 @@ class Mention extends StatelessWidget {
         ),
         cardColor: const Color(0xFFF4EDDB),
       ),
-      // home: const MainPage());
-      home: ProfilePage(),
+      home: const MainPage(),
     );
   }
 }
