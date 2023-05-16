@@ -2,6 +2,7 @@ package com.ssafy.teamservice.service;
 
 import com.ssafy.teamservice.jpa.TeamMemberEntity;
 import com.ssafy.teamservice.vo.TeamMemberVO;
+import com.ssafy.teamservice.vo.TeamVO;
 import com.ssafy.teamservice.vo.dto.TeamResponseDto;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface TeamMemberService {
     List<TeamResponseDto> getTeamList(Long memberId);
     void updateIsKickOut(TeamMemberVO teamMemberVO);
     int getTeamCount(Long memberId);
+    List<Long> getTeamMembers(TeamVO teamVO);
 }

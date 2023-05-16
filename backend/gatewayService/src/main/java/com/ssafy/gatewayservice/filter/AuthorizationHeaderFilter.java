@@ -17,6 +17,7 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -72,26 +73,15 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
             if(!accessToken.equals(jwt)){
                 System.out.println("access token 수정");
-                exchange.getRequest().mutate()
-                        .headers(httpHeaders -> {
-                            // remove existing access token header if present
-                            httpHeaders.remove(HttpHeaders.AUTHORIZATION);
+                ServerHttpResponse response = exchange.getResponse();
+                response.getHeaders().set(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+                response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+                String responseJson = "{\"accessToken\": \"" + accessToken + "\"}";
+                byte[] responseBytes = responseJson.getBytes();
+                return response.writeWith(Mono.just(response.bufferFactory().wrap(responseBytes)));
 
-                            // add new access token header
-                            httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-                        })
-                        .build();
             }
-
-//            exchange.getRequest().mutate()
-//                    .headers(httpHeaders -> {
-//                        // remove existing access token header if present
-//                        httpHeaders.remove(HttpHeaders.AUTHORIZATION);
-//
-//                        // add new access token header
-//                        httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-//                    })
-//                    .build();
 
             //여기서 redis접근 후 exchange에 담아서 보내줌
             Map<String, Object> result = (Map<String, Object>) redisTemplate.opsForValue().get(accessToken);

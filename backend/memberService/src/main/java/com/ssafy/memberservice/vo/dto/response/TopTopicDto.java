@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 @Builder
 public class TopTopicDto {
-    private String topic;
+    private Long topicId;
+    private String topicTitle;
     private int mentionCount;
 
 }

@@ -76,6 +76,16 @@ public class TeamServiceImpl implements TeamService{
         teamEntity.updateIsDelete();
     }
 
+    @Override
+    public String getTeamName(TeamVO teamVO) {
+        return teamRepository.getTeamNameById(teamVO.getTeamId());
+    }
+
+    @Override
+    public int getTeamMemberCount(TeamVO teamVO) {
+        return teamRepository.getTeamMemberById(teamVO.getTeamId());
+    }
+
     /**
      * 팀 상세정보 조회
      * @param teamVO
@@ -97,9 +107,9 @@ public class TeamServiceImpl implements TeamService{
                 .collect(Collectors.toList());
 
         // 투표 리스트 조회
-//        List<VoteVO> voteList = mentionServiceClient.getVoteList(teamVO.getTeamId(), (long) teamVO.getMemberId(), "ALL");
+        List<VoteVO> voteList = mentionServiceClient.getVoteList(teamVO.getTeamId(), (long) teamVO.getMemberId(), "ALL");
 
-        return new TeamDetailsResponseDto(teamEntity, memberResultList, null);
+        return new TeamDetailsResponseDto(teamEntity, memberResultList, voteList);
     }
 
     /**

@@ -30,10 +30,15 @@ public class MentionController {
     }
 
     @Operation(summary = "투표 생성", description = "사용자가 투표를 생성합니다.")
-    @PostMapping("/vote/create")
+    @PostMapping("/votes")
     public ResponseEntity<?> createVote(@RequestBody CreateVoteRequestDto createVoteRequestDto) {
         voteService.createVote(createVoteRequestDto);
         return ResponseEntity.ok().body("투표 생성 완료");
+    }
+
+    @GetMapping("/mention-count/{memberid}")
+    public ResponseEntity<Integer> getMentionCount(@PathVariable Long memberid) {
+        return ResponseEntity.ok().body(mentionService.getMentionCount(memberid));
     }
 
     @Operation(summary = "그룹에서 진행중인 투표 조회", description = "TODO 토큰 받아서 본인이 진행한 것 빼고 보여줘야함.")
@@ -44,8 +49,35 @@ public class MentionController {
         return voteService.getVoteList(teamId, memberId, type);
     }
 
+    @PutMapping("/mentions/{mentionId}")
+    public ResponseEntity<?> plusHintstatus(@PathVariable Long mentionId) {
+        return ResponseEntity.ok().body(mentionService.plusHintstatus(mentionId));
+    }
+
+    @GetMapping("/mentions/topic-title/{mentionid}")
+    public ResponseEntity<String> getTopicTitleByMentionId(@PathVariable Long mentionid) {
+        return ResponseEntity.ok().body(mentionService.getTopicByMention(mentionid));
+    }
+
+    @GetMapping("/votes/topic-title/{voteid}")
+    public ResponseEntity<String> getTopicTitleByVoteId(@PathVariable Long voteid) {
+        return ResponseEntity.ok().body(mentionService.getTopicByVote(voteid));
+    }
+
+    @GetMapping("/mentions")
+    public ResponseEntity<List<MentionResponseDto>> getMention(HttpServletRequest request) {
+        Long memberId = loadMember(request).getMemberId();
+        return ResponseEntity.ok().body(mentionService.getMention(memberId));
+    }
+    @GetMapping("/mentions/{mentionId}")
+    public ResponseEntity<MentionDetailResponseDto> getMentionDetail(HttpServletRequest request,
+                                                                     @PathVariable Long mentionId){
+        Long memberId = loadMember(request).getMemberId();
+        return ResponseEntity.ok().body(mentionService.getMentionDetail(mentionId, memberId));
+    }
+
     @Operation(summary = "멘션 생성", description = "상대방을 멘션!하다~")
-    @PostMapping("/mention/create")
+    @PostMapping("/mentions")
     public ResponseEntity<?> createMention(HttpServletRequest request,
                                            @RequestBody CreateMentionRequestDto createMentionRequestDto) {
         Long memberId = loadMember(request).getMemberId();
@@ -62,6 +94,4 @@ public class MentionController {
                 .role(role)
                 .build();
     }
-
-
 }

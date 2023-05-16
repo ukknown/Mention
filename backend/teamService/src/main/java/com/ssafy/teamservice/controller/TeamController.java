@@ -178,7 +178,7 @@ public class TeamController {
                 teamMemberService.updateIsKickOut(teamMemberVO);
             }
         } else {
-            throw new CustomException(ErrorCode.UNATHORIZED);
+            throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
         }
 
         // team.capacity 업데이트
@@ -198,6 +198,20 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.OK).body(teamMemberService.getTeamCount(memberid));
     }
 
+    @GetMapping("/teams/info/{teamid}")
+    public String getTeamName(@PathVariable("teamid") Long teamId){
+        return teamService.getTeamName(new TeamVO(teamId, -1));
+    }
+
+    @GetMapping("/teams/count/members/{teamid}")
+    public int getTeamMemberCount(@PathVariable("teamid") Long teamId){
+        return teamService.getTeamMemberCount(new TeamVO(teamId, -1));
+    }
+
+    @GetMapping("/teams/members/{teamid}")
+    public List<Long> getTeamMembers(@PathVariable("teamid") Long teamId){
+        return teamMemberService.getTeamMembers(new TeamVO(teamId, -1));
+    }
 
     public TeamVO convertRequestToVO(HttpServletRequest request){
         if(request.getHeader("member") == null){

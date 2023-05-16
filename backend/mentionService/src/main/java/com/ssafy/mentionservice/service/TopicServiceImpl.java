@@ -5,6 +5,7 @@ import com.ssafy.mentionservice.elastic.TopicDocument;
 import com.ssafy.mentionservice.elastic.TopicSearchRepository;
 import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
+import com.ssafy.mentionservice.feignclient.NotificationServiceFeignClient;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.TopTopicVo;
 import com.ssafy.mentionservice.vo.TopicNaverRequestDto;
@@ -34,6 +35,7 @@ public class TopicServiceImpl implements TopicService{
     private final TopicRepository topicRepository;
     private final MemberServiceFeignClient memberServiceFeignClient;
     private final VoteRepository voteRepository;
+    private final NotificationServiceFeignClient notificationServiceFeignClient;
 
     @Value("${naver.app.key}")
     private String NAVER_KEY;
@@ -65,7 +67,6 @@ public class TopicServiceImpl implements TopicService{
             topicSearchRepository.save(topicDocument);
         }
     }
-
     @Override
     @Transactional
     public void deleteElastic() {
@@ -107,6 +108,8 @@ public class TopicServiceImpl implements TopicService{
                 TopicEntity topic = TopicEntity.builder()
                         .title(topicCandidate)
                         .approveStatus(ApproveStatus.PENDING)
+                        .isSystem(false)
+                        .winnerId(memberId)
                         .emoji("사용자가 넣은 이미지")
                         .build();
                 topicRepository.save(topic);
@@ -121,7 +124,7 @@ public class TopicServiceImpl implements TopicService{
         List<MentionEntity> mentions = mentionRepository.findAllByPickerIdOrderByVoteIdAsc(memberId);
 
         Map<Long, Long> voteIdCounts = mentions.stream()
-                .collect(Collectors.groupingBy(MentionEntity::getVoteId, Collectors.counting()));
+                .collect(Collectors.groupingBy(m -> m.getVote().getId(), Collectors.counting()));
 
         List<Long> topVoteIds = voteIdCounts.entrySet().stream()
                 .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
@@ -132,7 +135,7 @@ public class TopicServiceImpl implements TopicService{
         List<TopTopicVo> topTopics = new ArrayList<>();
         for (Long voteId : topVoteIds) {
             VoteEntity vote = voteRepository.findById(voteId)
-                    .orElse(null);
+                    .orElseThrow(()-> new MentionServiceRuntimeException(MentionServiceExceptionEnum.VOTE_NOT_EXIST));
             TopicEntity topic = vote.getTopic();
             TopTopicVo vo = TopTopicVo
                     .builder()
@@ -186,10 +189,11 @@ public class TopicServiceImpl implements TopicService{
                 .map(topic -> TopicResoponseDto.builder()
                         .id(topic.getId())
                         .title(topic.getTitle())
-                        .approveStatus(topic.getApproveStatus())
+                        .emoji(topic.getEmoji())
                         .build())
                 .collect(Collectors.toList());
     }
+
 
     @Override
     @Transactional
@@ -202,7 +206,7 @@ public class TopicServiceImpl implements TopicService{
                 .title(topic.getTitle())
                 .build();
         topicSearchRepository.save(topicDocument);
-
+        notificationServiceFeignClient.createTopicWinnerNotification(topic.getWinnerId(), topic.getId());
     }
 
     @Override
@@ -213,11 +217,33 @@ public class TopicServiceImpl implements TopicService{
         topic.rejectTopic();
     }
 
-//    @Override
-//    public TopicResoponseDto getRandomOne() {
-//        Topic topic = topicRepository.findTopByOrderByRandom();
-//
-//    }
+    @Override
+    public TopicResoponseDto getRandomTopic(Long teamId) {
+        List<VoteEntity> votes = voteRepository.findAllByTeamIdAndIsCompletedIsFalse(teamId);
+        List<Long> topicIds = votes.stream()
+                .map(vote -> vote.getTopic().getId())
+                .collect(Collectors.toList());
+        List<TopicEntity> topics = topicRepository.findByIdNotIn(topicIds);
+        if (!topics.isEmpty()) {
+            Random random = new Random();
+            TopicEntity randomTopic = topics.get(random.nextInt(topics.size()));
+            return TopicResoponseDto.builder()
+                    .id(randomTopic.getId())
+                    .title(randomTopic.getTitle())
+                    .emoji(randomTopic.getEmoji())
+                    .build();
+        }
+        throw new MentionServiceRuntimeException(MentionServiceExceptionEnum.ALL_TOPIC_DONE);
+    }
+
+    @Override
+    public String getTopicByTopicId(Long topicId) {
+        TopicEntity topic = topicRepository.findById(topicId)
+                .orElseThrow(() -> new MentionServiceRuntimeException(MentionServiceExceptionEnum.TOPIC_NOT_EXIST));
+        return topic.getTitle();
+    };
+
+
     private Map<CharSequence, Integer> getCharacterFrequencyVector(String text) {
         Map<CharSequence, Integer> vector = new HashMap<>();
         for (char c : text.toCharArray()) {
