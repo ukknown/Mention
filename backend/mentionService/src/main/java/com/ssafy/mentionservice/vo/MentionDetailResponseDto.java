@@ -1,10 +1,10 @@
 package com.ssafy.mentionservice.vo;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class MentionDetailResponseDto {
 
     private int hintStatus;

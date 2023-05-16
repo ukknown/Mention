@@ -78,7 +78,7 @@ public class TeamServiceImpl implements TeamService{
 
     @Override
     public String getTeamName(TeamVO teamVO) {
-        return teamRepository.findNameById(teamVO.getTeamId());
+        return teamRepository.getTeamNameById(teamVO.getTeamId());
     }
 
     @Override
