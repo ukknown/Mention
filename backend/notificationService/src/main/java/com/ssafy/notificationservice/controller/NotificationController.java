@@ -22,7 +22,6 @@ public class NotificationController {
 
     /**
      * 클라이언트에서 질문 공모 알림
-     * @param request
      * @return
      */
     @PostMapping("/notifications")
@@ -33,10 +32,22 @@ public class NotificationController {
     }
 
     /**
+     * 회원의 알림 리스트 조회
+     * @param request
+     * @return
+     */
+    @GetMapping("/notifications")
+    public ResponseEntity<List<NotificationVO>> getNotifications(HttpServletRequest request){
+        Long loginMemberId = Long.valueOf(convertRequestToVO(request));
+        List<NotificationVO> result = notificationService.getNotificationList(loginMemberId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    /**
      * 멘션 알림 등록
      * @return
      */
-    @GetMapping("/notifications/mention/{memberid}/{mentionid}/{gender}")
+    @GetMapping("/mention/{memberid}/{mentionid}/{gender}")
     public ResponseEntity createMentionNotification(
             @PathVariable("memberid") Long memberId,
             @PathVariable("mentionid") Long mentionId,
@@ -55,13 +66,13 @@ public class NotificationController {
      * @param memberId
      * @return
      */
-    @GetMapping("/notifications/topid-winner/{memberid}")
+    @GetMapping("/topic-winner/{memberid}")
     public ResponseEntity createTopicWinnerNotification(
             @PathVariable("memberid") Long memberId
     ){
         NotificationVO notificationVO = new NotificationVO();
         notificationVO.setMemberId(memberId);
-        notificationService.createMentionNotification(notificationVO);
+        notificationService.createTopicWinnerNotification(notificationVO);
 
         return ResponseEntity.status(HttpStatus.OK).body("[토픽 응모] 토픽 응모 당첨 전송 완료 ~ 🔥");
     }
@@ -71,7 +82,7 @@ public class NotificationController {
      * @param memberId
      * @return
      */
-    @GetMapping("/notifications/vote-open/{memberid}/{voteid}")
+    @GetMapping("/vote-open/{memberid}/{voteid}")
     public ResponseEntity createVoteOpenNotification(
             @PathVariable("memberid") Long memberId,
             @PathVariable("voteid") Long voteId
@@ -79,24 +90,9 @@ public class NotificationController {
         NotificationVO notificationVO = new NotificationVO();
         notificationVO.setMemberId(memberId);
         notificationVO.setRoutingId(voteId);
-        notificationService.createMentionNotification(notificationVO);
+        notificationService.createTeamVoteNotification(notificationVO);
         return ResponseEntity.status(HttpStatus.OK).body("[그룹 투표] 그룹 투표 전송 완료 ~ 🔥");
     }
-
-
-
-    /**
-     * 회원의 알림 리스트 조회
-     * @param request
-     * @return
-     */
-    @GetMapping("/notifications")
-    public ResponseEntity<List<NotificationVO>> getNotifications(HttpServletRequest request){
-        Long loginMemberId = Long.valueOf(convertRequestToVO(request));
-
-        return ResponseEntity.status(HttpStatus.OK).body(null);
-    }
-
 
 
     public int convertRequestToVO(HttpServletRequest request){

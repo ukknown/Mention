@@ -27,6 +27,7 @@ public class NotificationEntity {
     @Column(nullable = false)
     private Long memberId;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Type type;
     @Column(nullable = true)
     private Long routingId;
@@ -36,6 +37,7 @@ public class NotificationEntity {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @Builder
     public NotificationEntity(Long memberId, Type type, String title, Gender gender) {
