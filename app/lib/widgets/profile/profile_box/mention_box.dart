@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:app/screens/Hint.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +15,7 @@ class MentionBox extends StatelessWidget {
 
   final double screenWidth;
   final double screenHeight;
-  final Long mentionId;
+  final int? mentionId;
   final String topicTitle;
   final int hintStep;
   final String gender;
@@ -43,6 +41,7 @@ class MentionBox extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
@@ -58,10 +57,16 @@ class MentionBox extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.01,
               ),
-              Text(
-                '${String.fromCharCode(emoji)} $topicTitle',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.05,
+              Padding(
+                padding: EdgeInsets.only(
+                  left: screenWidth * 0.06,
+                ),
+                child: Text(
+                  '${String.fromCharCode(emoji)} $topicTitle',
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.05,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               SizedBox(

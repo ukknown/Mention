@@ -67,14 +67,14 @@ class Group {
 }
 
 class Mention {
-  final Long? mentionId;
+  final int? mentionId;
   final String? topicTitle;
   final int hintStep;
   final String gender;
   final int emoji;
 
   Mention.fromJson(Map<String, dynamic> json)
-      : mentionId = json['mentionId'] as Long?,
+      : mentionId = json['mentionId'] as int?,
         topicTitle = json['topicTitle'] as String?,
         hintStep = json['hintStatus'] ?? 0,
         gender = json['voterGender'] ?? 'unknown',

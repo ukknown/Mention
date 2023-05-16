@@ -4,6 +4,7 @@
 import 'package:app/Screens/mainPage.dart';
 import 'package:app/Screens/profile/group_list.dart';
 import 'package:app/Screens/profile/profile_page.dart';
+import 'package:app/Screens/profile/received_mentions.dart';
 import 'package:app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';

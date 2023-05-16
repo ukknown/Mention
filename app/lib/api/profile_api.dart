@@ -6,7 +6,7 @@ class ProfileApi {
   // static const String baseUrl = 'http://localhost:8000';
   static const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
   static final token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyXrOuPhO2YhCIsImlhdCI6MTY4NDE0OTk1NSwiZXhwIjoxNjg2NzQxOTU1fQ.fyYuU6TH7HBIT_5qj1oqeo4Cu1fiJDFPb9Ep3m-O3rdPuNo3qJBGLhXipUKv-ya8KPB_XRLIRLmJq5xkx6sZgQ";
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoi7KGw7Iq57ZiEIiwiaWF0IjoxNjg0MTMzMDM1LCJleHAiOjE2ODY3MjUwMzV9.ccobgT3kXLi5L0GtxrO4DPHRbpSjMWohVWePzwvUSwCB06IC-NGdGhtNdkUX5nGw8bCWzLVFzbucWCgod5ZBhw";
 
   static Future<Profile> getProfile() async {
     final url = Uri.parse('$baseUrl/member-service/me');
@@ -42,7 +42,7 @@ class ProfileApi {
   }
 
   static Future<List<Mention>> getMentions() async {
-    final url = Uri.parse('$baseUrl/mention-service/mention');
+    final url = Uri.parse('$baseUrl/mention-service/mentions');
     final response = await http.get(url, headers: <String, String>{
       'Authorization': "Bearer $token",
     });
