@@ -11,5 +11,5 @@ public class TopicResoponseDto {
 
     private String title;
 
-    private ApproveStatus approveStatus;
+    private String emoji;
 }

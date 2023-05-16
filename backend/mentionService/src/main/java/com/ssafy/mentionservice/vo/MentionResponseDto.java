@@ -9,4 +9,6 @@ public class MentionResponseDto {
     private Long mentionId;
     private String topicTitle;
     private String emoji;
+    private int hintStatus;
+    private String voterGender;
 }

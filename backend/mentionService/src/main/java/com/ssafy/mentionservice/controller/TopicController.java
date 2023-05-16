@@ -40,14 +40,14 @@ public class TopicController {
     }
 
     @Operation(summary = "토픽 검색", description = "초성단위로는 안됨")
-    @GetMapping("/elastic-search")
+    @GetMapping("/search")
     public ResponseEntity<List<TopicDocument>> searchByTitle(@RequestParam String title) {
         List<TopicDocument> documents = topicService.searchByTitle(title);
         return ResponseEntity.ok().body(documents);
     }
 
     @Operation(summary = "네이버 감정 분석 요청", description = "새로운 토픽일 경우 응모하시겠습니까? 이후 검증")
-    @PostMapping("/call/naver")
+    @PostMapping("/check/naver-api")
     public ResponseEntity<String> goToNaver(HttpServletRequest request,
                                             @RequestBody TopicNaverRequestDto topicNaverRequestDto) {
         Long memberId = loadMember(request).getMemberId();
@@ -67,21 +67,21 @@ public class TopicController {
     }
 
     @Operation(summary = "관리자가 응모리스트를 조회", description = "PENDING 상태인것만 반환")
-    @GetMapping("/admin/pendingList")
+    @GetMapping("/topics")
     public ResponseEntity<List<TopicResoponseDto>> getPendingTopic() {
         return ResponseEntity.ok().body(topicService.getPendingTopic());
     }
 
 
     @Operation(summary = "관리자가 응모 토픽을 승인", description = "APPROVE 상태로 변환")
-    @PostMapping("/admin/changeStatus/approve")
+    @PostMapping("/topics/approve")
     public ResponseEntity<?> approveTopic(@RequestBody TopicIdRequestDto topicIdRequestDto) {
         topicService.approveTopic(topicIdRequestDto.getTopicId());
         return ResponseEntity.ok().body("승인 완료");
     }
 
     @Operation(summary = "관리자가 응모 토픽을 거절", description = "REJECT 상태로 변환")
-    @PostMapping("/admin/changeStatus/reject")
+    @PostMapping("/topics/reject")
     public ResponseEntity<?> rejectTopic(@RequestBody TopicIdRequestDto topicIdRequestDto) {
         topicService.rejectTopic(topicIdRequestDto.getTopicId());
         return ResponseEntity.ok().body("거절 완료");
@@ -90,6 +90,11 @@ public class TopicController {
     @GetMapping("/top-topic/{memberId}")
     public List<TopTopicVo> getTopTopic(@PathVariable Long memberId) {
         return topicService.getTopTopic(memberId);
+    }
+
+    @GetMapping("/topics/random/{teamId}")
+    public ResponseEntity<TopicResoponseDto> getRandomTopic(@PathVariable Long teamId) {
+        return ResponseEntity.ok().body(topicService.getRandomTopic(teamId));
     }
 
     private MemberVo loadMember(HttpServletRequest request) {
