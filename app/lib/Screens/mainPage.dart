@@ -64,7 +64,7 @@ class _MainPageState extends State<MainPage> {
     final response = await http.post(url, headers: <String, String>{
       'Content-Type': 'application/json', // Content-Type 설정
       'Authorization':
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyXrOuPhO2YhCIsImlhdCI6MTY4NDEzNDAxNiwiZXhwIjoxNjg2NzI2MDE2fQ.WE9_nCQUnPZ9hY12Isi6KjL8LzEgkkvn4ilKN_KBgetITHEftY4lIOHsV4NPPhhPrK52U9ldXdH4_N73QZaBfg",
+          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb25rdWtAZ21haWwuY29tIiwiZW1haWwiOiJqb25rdWtAZ21haWwuY29tIiwibmlja25hbWUiOiLstZzsooXsmrEiLCJpYXQiOjE2ODQyMzgwMTUsImV4cCI6MTY4NjgzMDAxNX0.9sk-d3ghnJk7C_aI7Bx-9ProSaDFV7aZ3F_t9DY8cl3stS6Aetz79UfmS2pyjW0DAu5NaLwRSgKdHIAxLn1Tbw",
     }, body: {
       "name": jsonBody,
       "file": imageFile,
@@ -91,7 +91,7 @@ class _MainPageState extends State<MainPage> {
       final response = await http.get(url, headers: <String, String>{
         // 'Authorization': "Bearer $accessToken",
         'Authorization':
-            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyXrOuPhO2YhCIsImlhdCI6MTY4NDEzNDAxNiwiZXhwIjoxNjg2NzI2MDE2fQ.WE9_nCQUnPZ9hY12Isi6KjL8LzEgkkvn4ilKN_KBgetITHEftY4lIOHsV4NPPhhPrK52U9ldXdH4_N73QZaBfg",
+            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb25rdWtAZ21haWwuY29tIiwiZW1haWwiOiJqb25rdWtAZ21haWwuY29tIiwibmlja25hbWUiOiLstZzsooXsmrEiLCJpYXQiOjE2ODQyMzgwMTUsImV4cCI6MTY4NjgzMDAxNX0.9sk-d3ghnJk7C_aI7Bx-9ProSaDFV7aZ3F_t9DY8cl3stS6Aetz79UfmS2pyjW0DAu5NaLwRSgKdHIAxLn1Tbw",
       });
 // eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuamgzMzIxQG5hdmVyLmNvbSIsImVtYWlsIjoibmpoMzMyMUBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuuFuOykgO2YuCIsImlhdCI6MTY4NDA2Njk1NCwiZXhwIjoxNjg2NjU4OTU0fQ.HCwqWAat8tsT3GYsWLXb3YKznWP-Pdk7c-0GMvRn3wgMwNQeZbp6j2KpVBqyulVRiA7aa3fx6bqAyRPHxYhAJw
       if (response.statusCode == 200) {
@@ -170,29 +170,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                       flex: 1,
                     ),
-                  ]
-                      // child: IconButton(
-
-                      //   icon: Icon(Icons.logout),
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (context) => const Hint(),
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
-
-                      // onTap: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => const Hint(),
-                      //     ),
-                      //   );
-                      // },
-                      ),
+                  ]),
                 ],
               ),
             ),
@@ -282,10 +260,11 @@ class _MainPageState extends State<MainPage> {
                             );
                           },
                         )
-                      : setState(() {
-                          propsId = swiperList[index].id;
-                        });
-                  // print(propsId);
+                      : setState(
+                          () {
+                            propsId = swiperList[index].id;
+                          },
+                        );
                   Navigator.push(
                     context,
                     MaterialPageRoute(

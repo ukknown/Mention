@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:async';
 import 'package:app/Screens/vote_before.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,8 @@ class GroupDetail extends StatefulWidget {
   final int capacity;
   final List<MemberModel> memberList;
   final int index;
+  final int participant;
+  final int voteId;
 
   GroupDetail(
       {required this.topicTitle,
@@ -17,6 +21,8 @@ class GroupDetail extends StatefulWidget {
       required this.dueDate,
       required this.capacity,
       required this.index,
+      required this.participant,
+      required this.voteId,
       Key? key})
       : super(key: key);
 
@@ -69,12 +75,14 @@ class _GroupDetailState extends State<GroupDetail> {
       ),
       child: GestureDetector(
         onTap: () {
+          // print(widget.memberList);
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => (VoteMember(
                       memberList: widget.memberList,
-                      topicTitle: widget.topicTitle))));
+                      topicTitle: widget.topicTitle,
+                      voteId: widget.voteId))));
         },
         child: Column(
           children: [
@@ -93,6 +101,7 @@ class _GroupDetailState extends State<GroupDetail> {
             Expanded(
                 flex: 1,
                 child: Text(
+                  overflow: TextOverflow.ellipsis,
                   widget.topicTitle,
                   style: TextStyle(fontSize: 20),
                 )),
@@ -103,7 +112,7 @@ class _GroupDetailState extends State<GroupDetail> {
                 children: [
                   Icon(Icons.person_rounded),
                   Text(
-                    '1/ ${widget.capacity}',
+                    '${widget.participant} / ${widget.capacity}',
                     style: TextStyle(fontSize: 20),
                   )
                 ],
@@ -130,10 +139,10 @@ class _GroupDetailState extends State<GroupDetail> {
             const SizedBox(
               height: 10,
             ),
-            Text(
-              '${widget.index + 1} of maxindex}',
-              style: TextStyle(fontSize: 20),
-            ),
+            // Text(
+            //   '${widget.index + 1} of maxindex}',
+            //   style: TextStyle(fontSize: 20),
+            // ),
           ],
         ),
       ),

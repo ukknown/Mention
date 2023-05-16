@@ -1,16 +1,27 @@
+// ignore_for_file: unused_import
+
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 // import 'package:app/widgets/push_alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 
 class VotePick extends StatefulWidget {
   final String nickname;
   final String avatarUrl;
+  final int id;
+  final String hint;
+  final int voteId;
   const VotePick({
     required this.nickname,
     required this.avatarUrl,
+    required this.id,
+    required this.hint,
+    required this.voteId,
     Key? key,
   }) : super(key: key);
 
@@ -34,6 +45,32 @@ class _VotePickState extends State<VotePick> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> postRequest() async {
+    final url =
+        Uri.parse('http://k8c105.p.ssafy.io:8000/mention-service/mentions');
+
+    // final jsonBody = jsonEncode(inputText);
+
+    final response = await http.post(url, headers: <String, String>{
+      'Authorization':
+          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb25rdWtAZ21haWwuY29tIiwiZW1haWwiOiJqb25rdWtAZ21haWwuY29tIiwibmlja25hbWUiOiLstZzsooXsmrEiLCJpYXQiOjE2ODQyMzgwMTUsImV4cCI6MTY4NjgzMDAxNX0.9sk-d3ghnJk7C_aI7Bx-9ProSaDFV7aZ3F_t9DY8cl3stS6Aetz79UfmS2pyjW0DAu5NaLwRSgKdHIAxLn1Tbw",
+    }, body: {
+      "voteId": widget.voteId,
+      "pickerId": widget.id,
+      "hint": widget.hint
+    });
+
+    // 응답 처리
+    if (response.statusCode == 200) {
+      // 성공적으로 요청을 보냈을 경우
+      print('요청이 성공적으로 완료되었습니다.');
+      print(response.body);
+    } else {
+      // 요청이 실패했을 경우
+      print('요청이 실패하였습니다. 에러 코드: ${response.statusCode}');
+    }
   }
 
   @override
