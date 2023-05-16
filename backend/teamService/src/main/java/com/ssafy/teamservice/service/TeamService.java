@@ -13,4 +13,5 @@ public interface TeamService {
     TeamEntity findById(TeamVO teamVO);
     int updateCapacity(TeamVO teamVO, boolean isIn);
     void updateIsDeleteTrue(TeamVO teamVO);
+    String getTeamName(TeamVO teamVO);
 }
