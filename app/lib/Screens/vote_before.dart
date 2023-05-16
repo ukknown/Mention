@@ -3,8 +3,19 @@ import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
 
-class VoteMember extends StatelessWidget {
-  const VoteMember({super.key});
+import '../api/group_model.dart';
+
+class VoteMember extends StatefulWidget {
+  final List<MemberModel> memberList;
+  final String topicTitle;
+  const VoteMember({required this.memberList,required this.topicTitle, Key? key}) : super(key: key);
+
+  @override
+  State<VoteMember> createState() => _VoteMemberState();
+}
+
+class _VoteMemberState extends State<VoteMember> {
+  // 여기서 멤버리스트에 접근가능
 
   @override
   Widget build(BuildContext context) {
@@ -12,19 +23,19 @@ class VoteMember extends StatelessWidget {
       body: Container(
         decoration: bgimg(),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.0),
           child: Column(
             children: [
-              const Expanded(
+              Expanded(
                   flex: 1,
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Text(
-                      '오늘 행복해 보이는 사람',
+                      widget.topicTitle,
                       style: TextStyle(fontSize: 30),
                     ),
                   )),
-              const SizedBox(
+              SizedBox(
                 height: 40,
               ),
               Expanded(
@@ -38,11 +49,11 @@ class VoteMember extends StatelessWidget {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 3,
                         blurRadius: 7,
-                        offset: const Offset(0, 3),
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
@@ -57,12 +68,11 @@ class VoteMember extends StatelessWidget {
                       ),
                       SingleChildScrollView(
                         child: Column(
-                          children: [
-                            Member(),
-                            Member(),
-                            Member(),
-                            Member(),
-                          ],
+                          children: widget.memberList
+                              .map((member) => Member(
+                                  nickname: member.nickname,
+                                  avatarUrl: member.profileImage))
+                              .toList(),
                         ),
                       ),
                     ],
@@ -82,15 +92,20 @@ class VoteMember extends StatelessWidget {
 }
 
 class Member extends StatelessWidget {
+  final String nickname;
+  final String avatarUrl;
+
   const Member({
-    super.key,
-  });
+    required this.nickname,
+    required this.avatarUrl,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showMentionModal(context),
-      child: const Center(
+      onTap: () => _showMentionModal(context, nickname, avatarUrl),
+      child: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 5),
           child: Row(
@@ -99,15 +114,15 @@ class Member extends StatelessWidget {
                 flex: 4,
                 child: CircleAvatar(
                   radius: 40,
+                  backgroundImage: NetworkImage(avatarUrl),
                 ),
               ),
               Expanded(
                   flex: 4,
                   child: Text(
-                    '김창영',
+                    nickname,
                     style: TextStyle(fontSize: 25),
                   )),
-              // Expanded(flex: 1, child: Icon(Icons.person))
             ],
           ),
         ),
@@ -116,12 +131,13 @@ class Member extends StatelessWidget {
   }
 }
 
-void _showMentionModal(BuildContext context) {
+void _showMentionModal(
+    BuildContext context, String nickname, String avatarUrl) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('김창영님을 멘션할까요?'),
+        title: Text('$nickname님을 멘션할까요?'),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -129,7 +145,9 @@ void _showMentionModal(BuildContext context) {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const VotePick()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          VotePick(nickname: nickname, avatarUrl: avatarUrl)),
                 );
               },
               style: TextButton.styleFrom(
