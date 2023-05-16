@@ -1,5 +1,6 @@
 package com.ssafy.notificationservice.service;
 
+import com.ssafy.notificationservice.client.MentionFeignClient;
 import com.ssafy.notificationservice.client.TeamFeignClient;
 import com.ssafy.notificationservice.jpa.Gender;
 import com.ssafy.notificationservice.jpa.NotificationEntity;
@@ -18,13 +19,15 @@ import java.util.stream.Collectors;
 public class NotificationServiceImpl implements NotificationService{
     private final NotificationRepository notificationRepository;
     private final TeamFeignClient teamFeignClient;
+    private final MentionFeignClient mentionFeignClient;
     @Override
     @Transactional
     public void createTopicOpenNotification(Long memberId) {
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(memberId)
                 .type(Type.TOPIC_OPEN)
-                .gender(Gender.UNSUPPORTED)
+                .gender(Gender.UNKNOWN)
+                .routingId(-1L)
                 .title("토픽 응모가 시작되었습니다~☘️")
                 .build();
 
@@ -43,40 +46,57 @@ public class NotificationServiceImpl implements NotificationService{
     @Override
     @Transactional
     public void createTopicWinnerNotification(NotificationVO notificationVO) {
+        // 응모 당첨된 토픽
+        StringBuilder sb = new StringBuilder();
+        sb.append("축하합니다🎉 작성해주신 토픽이 응모에 당첨되었습니다!");
+        sb.append(" * ");
+        sb.append(mentionFeignClient.getTopicTitleByTopicId(notificationVO.getRoutingId()));
+
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(notificationVO.getMemberId())
-                .gender(Gender.UNSUPPORTED)
+                .routingId(notificationVO.getRoutingId())
+                .gender(Gender.UNKNOWN)
                 .type(Type.TOPIC_WINNER)
-                .title("축하합니다🎉 작성해주신 토픽이 응모에 당첨되었습니다!")
+                .title(sb.toString())
                 .build();
+
         notificationRepository.save(notification);
     }
 
     @Override
     @Transactional
     public void createMentionNotification(NotificationVO notificationVO) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(😋)누군가가 당신을 멘션했어요!!");
+        sb.append(" * ");
+        sb.append(mentionFeignClient.getTopicTitleByMentionId(notificationVO.getRoutingId()));
+
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(notificationVO.getMemberId())
                 .type(Type.MENTION)
-                .gender(Gender.UNSUPPORTED)
+                .gender(Gender.UNKNOWN)
                 .routingId(notificationVO.getRoutingId())
                 .gender(notificationVO.getGender())
-                .title("(😋 )누군가가 당신을 멘션했어요!!")
+                .title(sb.toString())
                 .build();
+
         notificationRepository.save(notification);
     }
 
     @Override
     @Transactional
     public void createTeamVoteNotification(NotificationVO notificationVO) {
-        String message = "[" + teamFeignClient.getTeamName(notificationVO.getRoutingId()) + "] 에서 새로운 투표가 열렸어요! 참여해보세요~🚀";
+        StringBuilder sb = new StringBuilder();
+        sb.append("[" + teamFeignClient.getTeamName(notificationVO.getRoutingId()) + "] 에서 새로운 투표가 열렸어요! 참여해보세요~🚀");
+        sb.append(" * ");
+        sb.append(mentionFeignClient.getTopicTitleByVoteId(notificationVO.getRoutingId()));
+
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(notificationVO.getMemberId())
                 .type(Type.GROUP_VOTE)
-                .gender(Gender.UNSUPPORTED)
+                .gender(Gender.UNKNOWN)
                 .routingId(notificationVO.getRoutingId())
-                .gender(Gender.UNSUPPORTED)
-                .title(message)
+                .title(sb.toString())
                 .build();
         notificationRepository.save(notification);
     }
