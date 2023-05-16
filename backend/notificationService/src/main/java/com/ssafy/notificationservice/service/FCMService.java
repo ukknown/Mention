@@ -7,9 +7,9 @@ import com.ssafy.notificationservice.vo.dto.FCMRequestDto;
 import java.io.*;
 
 public interface FCMService {
-    String sendNotificationByToken(FCMRequestDto requestDto);
-    String getAccessToken() throws IOException;
-    void sendMessageTo(String targetToken, String title, String body) throws IOException;
-    String makeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException;
+//    String sendNotificationByToken(FCMRequestDto requestDto);
+//    String getAccessToken() throws IOException;
+//    void sendMessageTo(String targetToken, String title, String body) throws IOException;
+//    String makeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException;
 
 }
