@@ -5,6 +5,7 @@ import com.ssafy.memberservice.service.MemberService;
 
 import com.ssafy.memberservice.vo.MemberVO;
 import com.ssafy.memberservice.vo.dto.request.RequestJoin;
+import com.ssafy.memberservice.vo.dto.response.MemberInfoDto;
 import com.ssafy.memberservice.vo.dto.response.MyPageVO;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -88,6 +89,12 @@ public class MemberController {
         }
     }
 
+    //mention-service에서 오는 요청
+    @GetMapping("/feign/member-info/{memberid}")
+    public ResponseEntity<MemberInfoDto> getMemberInfo(@PathVariable Long memberid){
+        MemberInfoDto memberInfoDto = memberService.getMemberInfo(memberid);
+        return ResponseEntity.status(HttpStatus.OK).body(memberInfoDto);
+    }
 
     //타 서비스 요청
     @GetMapping("/feign/{memberid}")
@@ -95,6 +102,20 @@ public class MemberController {
         MemberVO memberVO = memberService.getMemberVO(memberid);
 
         return ResponseEntity.status(HttpStatus.OK).body(memberVO);
+    }
+
+    @GetMapping("/check-bang/{step}")
+    public ResponseEntity<Boolean> checkBang(@PathVariable int step, HttpServletRequest request){
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long loginMemberId = loginMember.getLong("id");
+        boolean check;
+        try{
+            check = memberService.checkBang(step, loginMemberId);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    //true 힌트 열람 가능/ false 힌트 열람 불가
+        return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
     //gateway에서 오는 정보 확인

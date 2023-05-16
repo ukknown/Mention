@@ -21,4 +21,6 @@ public class VoteVo {
 
     private LocalDateTime dueDate;
 
+    private Boolean isSystem;
+
 }
