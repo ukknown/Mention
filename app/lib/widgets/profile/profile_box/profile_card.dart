@@ -18,7 +18,7 @@ class ProfileCard extends StatelessWidget {
   });
 
   final double screenHeight, screenWidth;
-  final String profileImage;
+  final String? profileImage;
   final String name;
   final int coin;
   final int groupCount;
@@ -57,8 +57,8 @@ class ProfileCard extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.only(top: screenHeight * 0.01),
                     child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/$profileImage',
+                      child: Image.network(
+                        profileImage ?? 'assets/images/image.png',
                         fit: BoxFit.cover,
                       ),
                     ),
