@@ -65,7 +65,6 @@ public class TopicServiceImpl implements TopicService{
             topicSearchRepository.save(topicDocument);
         }
     }
-
     @Override
     @Transactional
     public void deleteElastic() {
@@ -121,7 +120,7 @@ public class TopicServiceImpl implements TopicService{
         List<MentionEntity> mentions = mentionRepository.findAllByPickerIdOrderByVoteIdAsc(memberId);
 
         Map<Long, Long> voteIdCounts = mentions.stream()
-                .collect(Collectors.groupingBy(MentionEntity::getVoteId, Collectors.counting()));
+                .collect(Collectors.groupingBy(m -> m.getVote().getId(), Collectors.counting()));
 
         List<Long> topVoteIds = voteIdCounts.entrySet().stream()
                 .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
@@ -186,10 +185,11 @@ public class TopicServiceImpl implements TopicService{
                 .map(topic -> TopicResoponseDto.builder()
                         .id(topic.getId())
                         .title(topic.getTitle())
-                        .approveStatus(topic.getApproveStatus())
+                        .emoji(topic.getEmoji())
                         .build())
                 .collect(Collectors.toList());
     }
+
 
     @Override
     @Transactional
@@ -213,11 +213,25 @@ public class TopicServiceImpl implements TopicService{
         topic.rejectTopic();
     }
 
-//    @Override
-//    public TopicResoponseDto getRandomOne() {
-//        Topic topic = topicRepository.findTopByOrderByRandom();
-//
-//    }
+    @Override
+    public TopicResoponseDto getRandomTopic(Long teamId) {
+        List<VoteEntity> votes = voteRepository.findAllByTeamIdAndIsCompletedIsFalse(teamId);
+        List<Long> topicIds = votes.stream()
+                .map(vote -> vote.getTopic().getId())
+                .collect(Collectors.toList());
+        List<TopicEntity> topics = topicRepository.findByIdNotIn(topicIds);
+        if (!topics.isEmpty()) {
+            Random random = new Random();
+            TopicEntity randomTopic = topics.get(random.nextInt(topics.size()));
+            return TopicResoponseDto.builder()
+                    .id(randomTopic.getId())
+                    .title(randomTopic.getTitle())
+                    .emoji(randomTopic.getEmoji())
+                    .build();
+        }
+        throw new MentionServiceRuntimeException(MentionServiceExceptionEnum.ALL_TOPIC_DONE);
+    }
+
     private Map<CharSequence, Integer> getCharacterFrequencyVector(String text) {
         Map<CharSequence, Integer> vector = new HashMap<>();
         for (char c : text.toCharArray()) {

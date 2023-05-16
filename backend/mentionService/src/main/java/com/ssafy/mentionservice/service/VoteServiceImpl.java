@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,29 +47,86 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
+    @Transactional
     public List<VoteVo> getVoteList(Long teamId, Long memberId, String type) {
+        // 만료된 투표를 업데이트
         updateExpiredVotes();
+        // 시스템 토픽을 모두 가져옴
+        List<TopicEntity> systemTopics = topicRepository.findAllByIsSystemIsTrue();
+        // 해당 멤버가 투표한 투표 ID들을 가져옴
         List<Long> voteIdList = mentionRepository.findAllByVoterId(memberId)
                 .stream()
-                .map(MentionEntity::getVoteId)
+                .map(mention -> mention.getVote().getId())
                 .collect(Collectors.toList());
+        // 팀에 속한 완료되지 않은 모든 투표들을 가져옴
         List<VoteEntity> voteList = voteRepository.findAllByTeamIdAndIsCompletedIsFalseOrderByDueDateAsc(teamId);
+        List<VoteVo> voteVoList = new ArrayList<>();
 
+        // 시스템 토픽 투표를 추가
+        for (TopicEntity topic : systemTopics) {
+            // 해당 팀과 토픽에 대한 투표가 없는 경우 새로운 투표를 생성
+            if (!voteRepository.existsByTeamIdAndTopicId(teamId, topic.getId())) {
+                VoteEntity systemVote = VoteEntity.builder()
+                        .teamId(teamId)
+                        .topic(topic)
+                        .isCompleted(false)
+                        .participant(0)
+                        .dueDate(LocalDateTime.now().plusHours(24))
+                        .build();
+                VoteEntity savedSystemVote = voteRepository.save(systemVote);
+
+                // 만약 멤버가 이미 이 투표에 투표한 경우가 아니라면 투표 VO를 생성하고 리스트에 추가
+                if (!voteIdList.contains(savedSystemVote.getId())) {
+                    VoteVo voteVo = VoteVo.builder()
+                            .voteId(savedSystemVote.getId())
+                            .topicTitle(topic.getTitle())
+                            .emoji(topic.getEmoji())
+                            .isCompleted(false)
+                            .participant(0)
+                            .dueDate(LocalDateTime.now().plusHours(24))
+                            .isSystem(true)
+                            .build();
+                    voteVoList.add(voteVo);
+                }
+            }
+        }
+
+        // 팀의 투표들을 리스트에 추가
+        for (VoteEntity vote : voteList) {
+            // 멤버가 이미 투표에 참여한 경우가 아니라면 투표 VO를 생성하고 리스트에 추가
+            if (!voteIdList.contains(vote.getId())) {
+                VoteVo voteVo = VoteVo.builder()
+                        .voteId(vote.getId())
+                        .topicTitle(vote.getTopic().getTitle())
+                        .emoji(vote.getTopic().getEmoji())
+                        .isCompleted(vote.getIsCompleted())
+                        .participant(vote.getParticipant())
+                        .dueDate(vote.getDueDate())
+                        .isSystem(vote.getTopic().getIsSystem())
+                        .build();
+                voteVoList.add(voteVo);
+            }
+        }
+
+        voteVoList = voteVoList.stream()
+                .sorted(Comparator.comparing(VoteVo::getDueDate))
+                .sorted(Comparator.comparing(VoteVo::getIsSystem).reversed())
+                .collect(Collectors.toList());
+
+        // 타입에 따라 처리
         if (type.equals("TWO")) {
-            return voteList.stream()
-                    .filter(vote -> !voteIdList.contains(vote.getId()))
-                    .map(this::mapToDto)
+            // "TWO" 타입의 경우 상위 2개의 투표만 반환
+            return voteVoList.stream()
                     .limit(2)
                     .collect(Collectors.toList());
         } else if (type.equals("ALL")) {
-            return voteList.stream()
-                    .filter(vote -> !voteIdList.contains(vote.getId()))
-                    .map(this::mapToDto)
-                    .collect(Collectors.toList());
+            // "ALL" 타입의 경우 모든 투표를 반환
+            return voteVoList;
         } else {
+            // 그 외의 타입의 경우 예외를 발생시킴
             throw new MentionServiceRuntimeException(MentionServiceExceptionEnum.TYPE_NONE_EXCEPTION);
         }
-    }
+        }
 
     private void updateExpiredVotes() {
         List<VoteEntity> notCompletedVotes = voteRepository.findAllByIsCompletedIsFalse();
@@ -80,25 +138,19 @@ public class VoteServiceImpl implements VoteService{
         });
     }
 
-    private List<TopicEntity> dailyTopics = new ArrayList<>();
-    @Scheduled(cron = "0 51 18 * * ?")
-    private void setDailyTopic() {
-        List<TopicEntity> allTopics = topicRepository.findAll();
+    @Scheduled(cron = "0 23 09 * * ?")
+    @Transactional
+    public void setDailyTopic() {
+        List<TopicEntity> allTopics = topicRepository.findAllByIsSystemIsFalse();
         Collections.shuffle(allTopics);
-        dailyTopics.clear();
-        for(int i = 0; i < 5; i++) {
-            dailyTopics.add(allTopics.get(i));
+
+        List<TopicEntity> systemTopics = topicRepository.findAllByIsSystemIsTrue();
+        systemTopics.forEach(TopicEntity::changeIsSystemFalse);
+
+        for(int i = 0; i < 10 && i < allTopics.size(); i++) {
+            TopicEntity topic = allTopics.get(i);
+            topic.changeIsSystemTrue();
         }
     }
 
-    private VoteVo mapToDto(VoteEntity vote) {
-        return VoteVo.builder()
-                .voteId(vote.getId())
-                .topicTitle(vote.getTopic().getTitle())
-                .emoji(vote.getTopic().getEmoji())
-                .isCompleted(vote.getIsCompleted())
-                .participant(vote.getParticipant())
-                .dueDate(vote.getDueDate())
-                .build();
-    }
 }

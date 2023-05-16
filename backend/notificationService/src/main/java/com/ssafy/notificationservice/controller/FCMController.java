@@ -12,25 +12,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@RestController
-@RequestMapping("/notification-service")
-@RequiredArgsConstructor
+//@RestController
+//@RequestMapping("/notification-service")
+//@RequiredArgsConstructor
 public class FCMController {
-    private final FCMService fcmService;
-
-    @GetMapping("/health-check")
-    public ResponseEntity healthCheck(){
-        return ResponseEntity.ok().body("Notification Service Check Completed!");
-    }
-
-    @PostMapping("/fcm")
-    public ResponseEntity pushMessage(@RequestBody FCMRequestDto fcmRequestDto)
-    throws IOException {
-
-        fcmService.sendMessageTo(fcmRequestDto.getTargetToken(),
-                fcmRequestDto.getTitle(),
-                fcmRequestDto.getBody());
-
-        return ResponseEntity.ok().build();
-    }
+//    private final FCMService fcmService;
+//
+//    @GetMapping("/health-check")
+//    public ResponseEntity healthCheck(){
+//        return ResponseEntity.ok().body("Notification Service Check Completed!");
+//    }
+//
+//    @PostMapping("/fcm")
+//    public ResponseEntity pushMessage(@RequestBody FCMRequestDto fcmRequestDto)
+//    throws IOException {
+//
+//        fcmService.sendMessageTo(fcmRequestDto.getTargetToken(),
+//                fcmRequestDto.getTitle(),
+//                fcmRequestDto.getBody());
+//
+//        return ResponseEntity.ok().build();
+//    }
 }
