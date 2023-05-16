@@ -85,9 +85,11 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Override
     @Transactional
-    public void createTeamVoteNotification(NotificationVO notificationVO) {
+    public void createTeamVoteNotification(NotificationVO notificationVO, Long teamId) {
+        String teamName = teamFeignClient.getTeamName(teamId);
+
         StringBuilder sb = new StringBuilder();
-        sb.append("[" + teamFeignClient.getTeamName(notificationVO.getRoutingId()) + "] 에서 새로운 투표가 열렸어요! 참여해보세요~🚀");
+        sb.append("[" + teamName + "] 에서 새로운 투표가 열렸어요! 참여해보세요~🚀");
         sb.append(" * ");
         sb.append(mentionFeignClient.getTopicTitleByVoteId(notificationVO.getRoutingId()));
 
