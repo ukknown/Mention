@@ -2,6 +2,8 @@ package com.ssafy.mentionservice.jpa;
 
 import javax.persistence.*;
 
+import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
+import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,4 +40,12 @@ public class MentionEntity {
 
     @Column(nullable = false)
     private int hintStatus;
+
+    public void plusHintstatus(){
+        if (this.hintStatus == 3) {
+            throw new MentionServiceRuntimeException(MentionServiceExceptionEnum.MENTION_HINTSTATUS_MAX);
+        } else {
+            this.hintStatus += 1;
+        }
+    }
 }
