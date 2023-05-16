@@ -6,6 +6,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:app/widgets/bottom_nav.dart';
 
+import '../api/group_api.dart';
+import '../api/group_model.dart';
+
 class GroupScreen extends StatefulWidget {
   const GroupScreen({Key? key}) : super(key: key);
 
@@ -14,6 +17,13 @@ class GroupScreen extends StatefulWidget {
 }
 
 class _GroupScreenState extends State<GroupScreen> {
+  Future<GroupDetailModel>? futureGroupData;
+  @override
+  void initState() {
+    super.initState();
+    futureGroupData = fetchGroupData();
+  }
+
   // 질문생성 모달
   @override
   Widget build(BuildContext context) {
@@ -42,11 +52,24 @@ class _GroupScreenState extends State<GroupScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Row(
+                        Row(
                           children: [
-                            Text(
-                              '싸피 8기 광주',
-                              style: TextStyle(fontSize: 25),
+                            FutureBuilder<GroupDetailModel>(
+                              future: futureGroupData,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  GroupDetailModel groupDetail = snapshot.data!;
+                                  String groupName = groupDetail.name;
+
+                                  return Text(
+                                    groupName,
+                                    style: TextStyle(fontSize: 25),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text('Error occurred');
+                                }
+                                return CircularProgressIndicator();
+                              },
                             ),
                             // 이름 수정
                           ],
@@ -56,15 +79,32 @@ class _GroupScreenState extends State<GroupScreen> {
                         ),
                         Row(
                           children: [
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const GroupMember()));
-                                },
-                                child: const Icon(Icons.person)),
+                            FutureBuilder<GroupDetailModel>(
+                                future: futureGroupData,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    GroupDetailModel groupDetail =
+                                        snapshot.data!;
+                                    List<MemberModel> memberList =
+                                        groupDetail.memberList;
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    GroupMember(
+                                                        memberList:
+                                                            memberList)));
+                                      },
+                                      child: const Icon(Icons.person),
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return const Text('Error occurre`d');
+                                  }
+                                  return const CircularProgressIndicator();
+                                }),
                             // 인원 숫자
                             const Text('24'),
                             const SizedBox(
@@ -83,21 +123,49 @@ class _GroupScreenState extends State<GroupScreen> {
                 ),
               ),
               Flexible(
-                  flex: 4,
-                  child: CarouselSlider(
-                      items: const [GroupDetail(), Groupbox()],
-                      options: CarouselOptions(
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        height: 420,
-                        enlargeCenterPage: true,
-                      ))),
-              const SizedBox(
-                height: 10,
+                flex: 4,
+                child: FutureBuilder<GroupDetailModel>(
+                  future: futureGroupData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      GroupDetailModel groupDetail = snapshot.data!;
+                      String groupName = groupDetail.name;
+                      print(groupName);
+                      String groupImage = groupDetail.image;
+                      int capacity = groupDetail.capacity;
+                      print(groupImage);
+                      List<VoteModel> voteList = groupDetail.voteList;
+                      List<MemberModel> memberList = groupDetail.memberList;
+
+                      List<Widget> items =
+                          voteList.asMap().entries.map<Widget>((entry) {
+                        int index = entry.key;
+                        VoteModel vote = entry.value;
+                        return GroupDetail(
+                          topicTitle: vote.topicTitle,
+                          memberList: memberList,
+                          dueDate: vote.dueDate,
+                          capacity: capacity,
+                          index: index,
+                        );
+                      }).toList();
+                      items.add(const Groupbox());
+
+                      return CarouselSlider(
+                          items: items,
+                          options: CarouselOptions(
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            height: 420,
+                            enlargeCenterPage: true,
+                          ));
+                    } else if (snapshot.hasError) {
+                      return const Text('Error occurred');
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                ),
               ),
-              const Text(
-                '1 fo 12',
-                style: TextStyle(fontSize: 20),
-              ),
+
               const SizedBox(height: 20.0), // 네모 박스와 로우 사이 여백
 
               const SizedBox(height: 20.0), // 하단 여백

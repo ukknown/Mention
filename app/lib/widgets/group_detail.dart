@@ -2,10 +2,23 @@ import 'dart:async';
 import 'package:app/Screens/vote_before.dart';
 import 'package:flutter/material.dart';
 
+import '../api/group_model.dart';
+
 class GroupDetail extends StatefulWidget {
-  const GroupDetail({
-    super.key,
-  });
+  final String topicTitle;
+  final String dueDate;
+  final int capacity;
+  final List<MemberModel> memberList;
+  final int index;
+
+  GroupDetail(
+      {required this.topicTitle,
+      required this.memberList,
+      required this.dueDate,
+      required this.capacity,
+      required this.index,
+      Key? key})
+      : super(key: key);
 
   @override
   _GroupDetailState createState() => _GroupDetailState();
@@ -13,20 +26,20 @@ class GroupDetail extends StatefulWidget {
 
 class _GroupDetailState extends State<GroupDetail> {
   late Timer _timer;
-  late int _startTime;
+  late DateTime _dueDate;
   late int _elapsedTime;
 
   @override
   void initState() {
     super.initState();
-    // _startTime = DateTime.now().hour * 60 + DateTime.now().minute;
-    _startTime = 23 * 60 + 59;
+    _dueDate = DateTime.parse(widget.dueDate);
     _elapsedTime = 0;
     _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       setState(() {
         _elapsedTime++;
       });
     });
+    print(widget.dueDate);
   }
 
   @override
@@ -37,8 +50,9 @@ class _GroupDetailState extends State<GroupDetail> {
 
   @override
   Widget build(BuildContext context) {
-    int hours = (_startTime ~/ 60 - _elapsedTime ~/ 60) % 24;
-    int minutes = (_startTime % 60 - _elapsedTime % 60) % 60;
+    Duration remainingTime = _dueDate.difference(DateTime.now());
+    int hours = remainingTime.inHours;
+    int minutes = remainingTime.inMinutes.remainder(60);
     String timeString = '$hours:${minutes.toString().padLeft(2, '0')}';
     return Container(
       decoration: BoxDecoration(
@@ -55,8 +69,12 @@ class _GroupDetailState extends State<GroupDetail> {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => (const VoteMember())));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => (VoteMember(
+                      memberList: widget.memberList,
+                      topicTitle: widget.topicTitle))));
         },
         child: Column(
           children: [
@@ -72,20 +90,20 @@ class _GroupDetailState extends State<GroupDetail> {
                 ),
               ),
             ),
-            const Expanded(
+            Expanded(
                 flex: 1,
                 child: Text(
-                  '밥 먹어보고 싶은 사람',
+                  widget.topicTitle,
                   style: TextStyle(fontSize: 20),
                 )),
-            const Expanded(
+            Expanded(
               flex: 1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.person_rounded),
                   Text(
-                    '15/24',
+                    '1/ ${widget.capacity}',
                     style: TextStyle(fontSize: 20),
                   )
                 ],
@@ -108,7 +126,14 @@ class _GroupDetailState extends State<GroupDetail> {
                   )
                 ],
               ),
-            )
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              '${widget.index + 1} of maxindex}',
+              style: TextStyle(fontSize: 20),
+            ),
           ],
         ),
       ),
