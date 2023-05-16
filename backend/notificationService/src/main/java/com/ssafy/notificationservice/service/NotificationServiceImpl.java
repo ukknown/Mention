@@ -27,6 +27,7 @@ public class NotificationServiceImpl implements NotificationService{
                 .memberId(memberId)
                 .type(Type.TOPIC_OPEN)
                 .gender(Gender.UNKNOWN)
+                .routingId(-1L)
                 .title("토픽 응모가 시작되었습니다~☘️")
                 .build();
 
@@ -53,6 +54,7 @@ public class NotificationServiceImpl implements NotificationService{
 
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(notificationVO.getMemberId())
+                .routingId(notificationVO.getRoutingId())
                 .gender(Gender.UNKNOWN)
                 .type(Type.TOPIC_WINNER)
                 .title(sb.toString())
