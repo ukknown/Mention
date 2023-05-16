@@ -104,6 +104,20 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberVO);
     }
 
+    @GetMapping("check-bang/{step}")
+    public ResponseEntity<Boolean> checkBang(@PathVariable int step, HttpServletRequest request){
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long loginMemberId = loginMember.getLong("id");
+        boolean check;
+        try{
+            check = memberService.checkBang(step, loginMemberId);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    //true 힌트 열람 가능/ false 힌트 열람 불가
+        return ResponseEntity.status(HttpStatus.OK).body(check);
+    }
+
     //gateway에서 오는 정보 확인
     @GetMapping("/health-check")
     public String checkConnection(HttpServletRequest request){
