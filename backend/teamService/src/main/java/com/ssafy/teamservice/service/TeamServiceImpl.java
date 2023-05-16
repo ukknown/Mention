@@ -81,6 +81,11 @@ public class TeamServiceImpl implements TeamService{
         return teamRepository.findNameById(teamVO.getTeamId());
     }
 
+    @Override
+    public int getTeamMemberCount(TeamVO teamVO) {
+        return teamRepository.getTeamMemberById(teamVO.getTeamId());
+    }
+
     /**
      * 팀 상세정보 조회
      * @param teamVO
