@@ -104,7 +104,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberVO);
     }
 
-    @GetMapping("check-bang/{step}")
+    @GetMapping("/check-bang/{step}")
     public ResponseEntity<Boolean> checkBang(@PathVariable int step, HttpServletRequest request){
         JSONObject loginMember = new JSONObject(request.getHeader("member"));
         Long loginMemberId = loginMember.getLong("id");
