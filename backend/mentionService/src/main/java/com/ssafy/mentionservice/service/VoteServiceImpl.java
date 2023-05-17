@@ -2,6 +2,8 @@ package com.ssafy.mentionservice.service;
 
 import com.ssafy.mentionservice.exception.MentionServiceExceptionEnum;
 import com.ssafy.mentionservice.exception.MentionServiceRuntimeException;
+import com.ssafy.mentionservice.feignclient.NotificationServiceFeignClient;
+import com.ssafy.mentionservice.feignclient.TeamServiceFeignClient;
 import com.ssafy.mentionservice.jpa.*;
 import com.ssafy.mentionservice.vo.CreateVoteRequestDto;
 import com.ssafy.mentionservice.vo.VoteVo;
@@ -23,13 +25,12 @@ import java.util.stream.Collectors;
 public class VoteServiceImpl implements VoteService{
 
     private final VoteRepository voteRepository;
-
     private final MentionRepository mentionRepository;
-
     private final TopicRepository topicRepository;
+    private final TeamServiceFeignClient teamServiceFeignClient;
+    private final NotificationServiceFeignClient notificationServiceFeignClient;
+    private final DataSaveService dataSaveService;
 
-
-    //TODO 알람 전송
     @Override
     @Transactional
     public void createVote(CreateVoteRequestDto createVoteRequestDto) {
@@ -43,8 +44,14 @@ public class VoteServiceImpl implements VoteService{
                 .isCompleted(false)
                 .dueDate(dueDate)
                 .build();
-        voteRepository.save(voteEntity);
+        dataSaveService.saveAndFlushVote(voteEntity);
+        List<Long> memberIds = teamServiceFeignClient.getMemberIdList(createVoteRequestDto.getTeamId());
+        for (Long memberId : memberIds) {
+            notificationServiceFeignClient.createVoteOpenNotification(createVoteRequestDto.getTeamId(), memberId, voteEntity.getId());
+            System.out.println("되나 보자~");
+        }
     }
+
 
     @Override
     @Transactional
@@ -71,7 +78,7 @@ public class VoteServiceImpl implements VoteService{
                         .topic(topic)
                         .isCompleted(false)
                         .participant(0)
-                        .dueDate(LocalDateTime.now().plusHours(24))
+                        .dueDate(LocalDateTime.now().toLocalDate().plusDays(1).atStartOfDay())
                         .build();
                 VoteEntity savedSystemVote = voteRepository.save(systemVote);
 
@@ -83,7 +90,7 @@ public class VoteServiceImpl implements VoteService{
                             .emoji(topic.getEmoji())
                             .isCompleted(false)
                             .participant(0)
-                            .dueDate(LocalDateTime.now().plusHours(24))
+                            .dueDate(savedSystemVote.getDueDate())
                             .isSystem(true)
                             .build();
                     voteVoList.add(voteVo);
@@ -138,7 +145,7 @@ public class VoteServiceImpl implements VoteService{
         });
     }
 
-    @Scheduled(cron = "0 23 09 * * ?")
+    @Scheduled(cron = "0 24 02 * * ?")
     @Transactional
     public void setDailyTopic() {
         List<TopicEntity> allTopics = topicRepository.findAllByIsSystemIsFalse();

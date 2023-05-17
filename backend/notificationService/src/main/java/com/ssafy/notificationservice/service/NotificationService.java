@@ -9,5 +9,5 @@ public interface NotificationService {
     List<NotificationVO> getNotificationList(Long memberId);
     void createTopicWinnerNotification(NotificationVO notificationVO);
     void createMentionNotification(NotificationVO notificationVO);
-    void createTeamVoteNotification(NotificationVO notificationVO);
+    void createTeamVoteNotification(NotificationVO notificationVO, Long teamId);
 }

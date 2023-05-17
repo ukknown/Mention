@@ -1,36 +1,14 @@
-import 'package:app/Screens/group_screen.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
 
-// 가져오는 코드
-Future<List<dynamic>> loadJson() async {
-  final String jsonString = await rootBundle.loadString('lib/api/member.json');
-  return json.decode(jsonString);
-}
+import '../api/group_model.dart';
 
-class GroupMember extends StatefulWidget {
-  const GroupMember({super.key});
+class GroupMember extends StatelessWidget {
+  final List<MemberModel> memberList;
+  const GroupMember({Key? key, required this.memberList}) : super(key: key);
 
-  @override
-  State<GroupMember> createState() => _GroupMemberState();
-}
-
-class _GroupMemberState extends State<GroupMember> {
-  late List<dynamic> memberData = [];
-
-  @override
-  void initState() {
-    super.initState();
-    loadJson().then((value) {
-      setState(() {
-        memberData = value;
-      });
-    });
-  }
-
+  // GroupDetailModel? group;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +30,11 @@ class _GroupMemberState extends State<GroupMember> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const GroupScreen()));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             const GroupScreen()));
                             },
                             child: const Text(
                               '멤버',
@@ -121,7 +103,9 @@ class _GroupMemberState extends State<GroupMember> {
                           height: 20,
                         ),
                         // 멤버에 데이터 넣는 곳 (json형태로)
-                        ...memberData.map((person) => Member(person: person)),
+                        ...memberList
+                            .map((member) => MemberWidget(member: member))
+                            .toList(),
                       ],
                     ),
                   ),
@@ -139,9 +123,10 @@ class _GroupMemberState extends State<GroupMember> {
   }
 }
 
-class Member extends StatelessWidget {
-  final Map<String, dynamic> person;
-  const Member({required this.person, Key? key}) : super(key: key);
+class MemberWidget extends StatelessWidget {
+  final MemberModel member;
+
+  const MemberWidget({required this.member, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -150,16 +135,17 @@ class Member extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
           children: [
-            const Expanded(
+            Expanded(
               flex: 4,
               child: CircleAvatar(
                 radius: 40,
+                backgroundImage: NetworkImage(member.profileImage),
               ),
             ),
             Expanded(
                 flex: 4,
                 child: Text(
-                  person["name"],
+                  member.nickname,
                   style: const TextStyle(fontSize: 25),
                 )),
             // Expanded(flex: 1, child: Icon(Icons.person))

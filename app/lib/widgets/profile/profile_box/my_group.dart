@@ -1,4 +1,3 @@
-import 'package:app/screens/group_screen.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 
@@ -27,13 +26,13 @@ class MyGroup extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const GroupScreen(),
-              fullscreenDialog: true,
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const GroupScreen(),
+          //     fullscreenDialog: true,
+          //   ),
+          // );
         },
         child: Container(
           height: screenHeight * 0.15,
@@ -64,8 +63,8 @@ class MyGroup extends StatelessWidget {
                     width: screenHeight * 0.15,
                     height: screenHeight * 0.15,
                     child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/$groupImage',
+                      child: Image.network(
+                        groupImage,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -86,6 +85,7 @@ class MyGroup extends StatelessWidget {
                           color: const Color(0xff2E2E2E),
                           fontSize: screenWidth * 0.075,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(
                         height: screenHeight * 0.01,

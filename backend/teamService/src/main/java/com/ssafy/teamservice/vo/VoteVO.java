@@ -9,7 +9,7 @@ public class VoteVO {
     private Long voteId;
     private String topicTitle;
     private String emoji;
-    private LocalDateTime regDate;
+    private LocalDateTime dueDate;
     private int participant;
-    private boolean isSystem;
+    private Boolean isSystem;
 }
