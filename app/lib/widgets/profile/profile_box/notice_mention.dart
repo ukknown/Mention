@@ -1,4 +1,3 @@
-import 'package:app/screens/Hint.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -73,15 +72,15 @@ class NoticeMention extends StatelessWidget {
       onTap: () async {
         await markAsRead(noticeId);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Hint(
-                // mentionId: routingId,
-                ),
-            fullscreenDialog: true,
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const Hint(
+        //         // mentionId: routingId,
+        //         ),
+        //     fullscreenDialog: true,
+        //   ),
+        // );
       },
       child: FutureBuilder(
         future: isRead(noticeId),
@@ -123,6 +122,7 @@ class NoticeMention extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
+                            overflow: TextOverflow.ellipsis,
                             noticeTitle,
                             style: TextStyle(
                               fontSize: screenWidth * 0.04,
@@ -151,7 +151,10 @@ class NoticeMention extends StatelessWidget {
                                       SizedBox(
                                         width: screenWidth * 0.02,
                                       ),
-                                      Text(targetTitle),
+                                      Text(
+                                        overflow: TextOverflow.ellipsis,
+                                        targetTitle,
+                                      ),
                                     ],
                                   ),
                                 ),
