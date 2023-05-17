@@ -75,18 +75,29 @@ class _VoteMemberState extends State<VoteMember> {
                           ),
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: Column(
-                          children: widget.memberList
-                              .map((member) => Member(
-                                    nickname: member.nickname,
-                                    avatarUrl: member.profileImage,
-                                    id: member.memberId,
-                                    inputText: inputText,
-                                    voteId: widget.voteId,
-                                  ))
-                              .toList(),
-                        ),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: widget.memberList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final member = widget.memberList[index];
+                              return Member(
+                                nickname: member.nickname,
+                                avatarUrl: member.profileImage,
+                                id: member.memberId,
+                                inputText: inputText,
+                                voteId: widget.voteId,
+                              );
+                            }),
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        // children: widget.memberList
+                        //     .map((member) => Member(
+                        //           nickname: member.nickname,
+                        //           avatarUrl: member.profileImage,
+                        //           id: member.memberId,
+                        //           inputText: inputText,
+                        //           voteId: widget.voteId,
+                        //         ))
+                        //     .toList(),
                       ),
                     ],
                   ),
@@ -215,6 +226,7 @@ void _showHintModal(BuildContext context, String nickname, String avatarUrl,
               child: TextField(
                 onChanged: (text) {
                   inputText = text;
+                  print("출력 $inputText");
                 },
                 decoration: InputDecoration(
                     isDense: true,

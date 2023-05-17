@@ -20,7 +20,7 @@ void main() async {
   }
   KakaoSdk.init(nativeAppKey: 'fdb226da9bdf3e5030a432d9f509a01a');
   await AndroidAlarmManager.initialize();
-  runApp(Mention());
+  runApp(new Mention());
 }
 
 class Mention extends StatelessWidget {

@@ -39,28 +39,40 @@ class _VotePickState extends State<VotePick> {
       duration: const Duration(seconds: 15),
     );
     _controller.play();
+    sendMention();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+    // sendMention();
+    // print(widget.voteId);
+    // print(widget.id);
+    // print(widget.hint);
   }
 
-  Future<void> postRequest() async {
+  void sendMention() async {
     final url =
         Uri.parse('http://k8c105.p.ssafy.io:8000/mention-service/mentions');
 
-    // final jsonBody = jsonEncode(inputText);
-
-    final response = await http.post(url, headers: <String, String>{
-      'Authorization':
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb25rdWtAZ21haWwuY29tIiwiZW1haWwiOiJqb25rdWtAZ21haWwuY29tIiwibmlja25hbWUiOiLstZzsooXsmrEiLCJpYXQiOjE2ODQyMzgwMTUsImV4cCI6MTY4NjgzMDAxNX0.9sk-d3ghnJk7C_aI7Bx-9ProSaDFV7aZ3F_t9DY8cl3stS6Aetz79UfmS2pyjW0DAu5NaLwRSgKdHIAxLn1Tbw",
-    }, body: {
+    final body = {
       "voteId": widget.voteId,
       "pickerId": widget.id,
       "hint": widget.hint
-    });
+    };
+
+    final jsonBody = jsonEncode(body);
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Authorization':
+            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q",
+        'Content-Type': 'application/json', // JSON 형식으로 보내기 위한 헤더 추가
+      },
+      body: jsonBody,
+    );
 
     // 응답 처리
     if (response.statusCode == 200) {

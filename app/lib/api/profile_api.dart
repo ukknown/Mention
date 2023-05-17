@@ -6,7 +6,7 @@ class ProfileApi {
   // static const String baseUrl = 'http://localhost:8000';
   static const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
   static final token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MkBnbWFpbC5jb20iLCJlbWFpbCI6InRlc3QyQGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoi7KGw7Iq57ZiEIiwiaWF0IjoxNjg0MTMzMDM1LCJleHAiOjE2ODY3MjUwMzV9.ccobgT3kXLi5L0GtxrO4DPHRbpSjMWohVWePzwvUSwCB06IC-NGdGhtNdkUX5nGw8bCWzLVFzbucWCgod5ZBhw";
+      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q";
 
   static Future<Profile> getProfile() async {
     final url = Uri.parse('$baseUrl/member-service/me');
