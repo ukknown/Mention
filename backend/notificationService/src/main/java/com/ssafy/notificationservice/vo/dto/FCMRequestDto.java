@@ -7,9 +7,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class FCMRequestDto {
-    private String targetToken;
+    private Long targetMemberId;
     private String title;
     private String body;
+    @Builder
+    public FCMRequestDto(Long targetMemberId, String title, String body) {
+        this.targetMemberId = targetMemberId;
+        this.title = title;
+        this.body = body;
+    }
 }
