@@ -31,7 +31,7 @@ class _MainPageState extends State<MainPage> {
   ];
   // final ImagePicker _picker = ImagePicker();
   // final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  dynamic userImage;
+  File? userImage;
 
   List<dynamic> swiperList = [];
   TextEditingController inputController = TextEditingController();
@@ -264,13 +264,15 @@ class _MainPageState extends State<MainPage> {
                             propsId = swiperList[index].id;
                           },
                         );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GroupScreen(propsId),
-                    ),
-                  );
-                  // print(swiperList[index].id);
+                  if (swiperList[index].id != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GroupScreen(propsId),
+                      ),
+                    );
+                    // print(swiperList[index].id);
+                  }
                 },
                 itemCount: swiperList.length,
                 viewportFraction: 0.8,
