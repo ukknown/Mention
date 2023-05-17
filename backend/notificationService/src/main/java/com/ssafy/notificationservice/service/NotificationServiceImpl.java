@@ -26,7 +26,7 @@ public class NotificationServiceImpl implements NotificationService{
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(memberId)
                 .type(Type.TOPIC_OPEN)
-                .gender(Gender.UNKNOWN)
+                .gender(Gender.unknown)
                 .routingId(-1L)
                 .title("토픽 응모가 시작되었습니다~☘️")
                 .build();
@@ -55,7 +55,7 @@ public class NotificationServiceImpl implements NotificationService{
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(notificationVO.getMemberId())
                 .routingId(notificationVO.getRoutingId())
-                .gender(Gender.UNKNOWN)
+                .gender(Gender.unknown)
                 .type(Type.TOPIC_WINNER)
                 .title(sb.toString())
                 .build();
@@ -74,7 +74,7 @@ public class NotificationServiceImpl implements NotificationService{
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(notificationVO.getMemberId())
                 .type(Type.MENTION)
-                .gender(Gender.UNKNOWN)
+                .gender(notificationVO.getGender())
                 .routingId(notificationVO.getRoutingId())
                 .gender(notificationVO.getGender())
                 .title(sb.toString())
@@ -96,7 +96,7 @@ public class NotificationServiceImpl implements NotificationService{
         NotificationEntity notification = NotificationEntity.builder()
                 .memberId(notificationVO.getMemberId())
                 .type(Type.GROUP_VOTE)
-                .gender(Gender.UNKNOWN)
+                .gender(Gender.unknown)
                 .routingId(notificationVO.getRoutingId())
                 .title(sb.toString())
                 .build();
