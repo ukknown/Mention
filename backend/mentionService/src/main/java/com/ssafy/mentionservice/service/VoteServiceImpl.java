@@ -146,7 +146,7 @@ public class VoteServiceImpl implements VoteService{
         });
     }
 
-    @Scheduled(cron = "0 10 11 * * ?")
+    @Scheduled(cron = "0 24 02 * * ?")
     @Transactional
     public void setDailyTopic() {
         List<TopicEntity> allTopics = topicRepository.findAllByIsSystemIsFalse();
