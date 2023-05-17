@@ -71,7 +71,7 @@ class VoteModel {
       emoji: json['emoji'],
       dueDate: json['dueDate'],
       participant: json['participant'],
-      system: json['system'],
+      system: json['isSystem'],
     );
   }
 }

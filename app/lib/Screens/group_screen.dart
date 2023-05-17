@@ -3,11 +3,13 @@ import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/group_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:http/http.dart' as http;
+import 'package:app/api/group_model.dart';
+import 'dart:convert' show jsonDecode, utf8;
 
 import 'package:app/widgets/bottom_nav.dart';
 
-import '../api/group_api.dart';
-import '../api/group_model.dart';
+// import '../api/group_api.dart';
 
 class GroupScreen extends StatefulWidget {
   // const GroupScreen(int propsId, {Key? key})
@@ -26,6 +28,34 @@ class _GroupScreenState extends State<GroupScreen> {
   void initState() {
     super.initState();
     futureGroupData = fetchGroupData();
+    print(jsonData);
+  }
+
+  Map<String, dynamic> jsonData = {};
+  final String baseUrl = 'http://k8c105.p.ssafy.io:8000';
+  final String token =
+      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q';
+
+  Future<GroupDetailModel> fetchGroupData() async {
+    final response = await http.get(
+      Uri.parse(
+          'http://k8c105.p.ssafy.io:8000/team-service/teams/${widget.propsId}'), // Replace 'YOUR_ENDPOINT' with the correct endpoint.
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      String body = utf8.decode(response.bodyBytes);
+
+      setState(() {
+        jsonData = jsonDecode(body);
+      });
+      // print(jsonData["image"]);
+      return GroupDetailModel.fromJson(jsonDecode(body));
+    } else {
+      throw Exception('Failed to load group data');
+    }
   }
 
   // 질문생성 모달
@@ -37,7 +67,7 @@ class _GroupScreenState extends State<GroupScreen> {
       body: Container(
         decoration: bgimg(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 00.0),
           child: Column(
             children: [
               const SizedBox(height: 10.0), // 상단 여백
@@ -45,9 +75,10 @@ class _GroupScreenState extends State<GroupScreen> {
                 flex: 2,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
-                      foregroundImage: AssetImage('assets/images/ssafy.png'),
+                    CircleAvatar(
+                      child: Image.network("${jsonData["image"]}"),
                       radius: 50,
                     ),
                     const SizedBox(
@@ -94,6 +125,7 @@ class _GroupScreenState extends State<GroupScreen> {
 
                                     return GestureDetector(
                                       onTap: () {
+                                        // print("fdsafs");
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -110,7 +142,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                   return const CircularProgressIndicator();
                                 }),
                             // 인원 숫자
-                            const Text('24'),
+                            Text("${jsonData["capacity"]}"),
                             const SizedBox(
                               width: 40,
                             ),
@@ -151,6 +183,8 @@ class _GroupScreenState extends State<GroupScreen> {
                           dueDate: vote.dueDate,
                           capacity: capacity,
                           index: index,
+                          participant: vote.participant,
+                          voteId: vote.voteId,
                         );
                       }).toList();
                       items.add(const Groupbox());
