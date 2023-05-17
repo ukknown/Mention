@@ -29,6 +29,7 @@ public class MentionServiceImpl implements MentionService{
     private final MemberServiceFeignClient memberServiceFeignClient;
     private final TeamServiceFeignClient teamServiceFeignClient;
     private final NotificationServiceFeignClient notificationServiceFeignClient;
+    private final DataSaveService dataSaveService;
 
     @Override
     @Transactional
@@ -44,7 +45,7 @@ public class MentionServiceImpl implements MentionService{
                 .hint(createMentionRequestDto.getHint())
                 .regDate(LocalDateTime.now())
                 .build();
-        mentionRepository.save(mentionEntity);
+        dataSaveService.saveAndFlushMention(mentionEntity);
         vote.updateParticipant();
         int total = teamServiceFeignClient.getTeamMemberCount(vote.getTeamId());
         if (vote.getParticipant() + 1 == total) {
