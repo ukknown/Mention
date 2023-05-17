@@ -10,7 +10,6 @@ import com.ssafy.mentionservice.vo.VoteVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -30,7 +29,7 @@ public class VoteServiceImpl implements VoteService{
     private final TopicRepository topicRepository;
     private final TeamServiceFeignClient teamServiceFeignClient;
     private final NotificationServiceFeignClient notificationServiceFeignClient;
-    private final VoteSaveService voteSaveService;
+    private final DataSaveService dataSaveService;
 
     @Override
     @Transactional
@@ -45,7 +44,7 @@ public class VoteServiceImpl implements VoteService{
                 .isCompleted(false)
                 .dueDate(dueDate)
                 .build();
-        voteSaveService.saveAndFlushVote(voteEntity);
+        dataSaveService.saveAndFlushVote(voteEntity);
         List<Long> memberIds = teamServiceFeignClient.getMemberIdList(createVoteRequestDto.getTeamId());
         for (Long memberId : memberIds) {
             notificationServiceFeignClient.createVoteOpenNotification(createVoteRequestDto.getTeamId(), memberId, voteEntity.getId());
