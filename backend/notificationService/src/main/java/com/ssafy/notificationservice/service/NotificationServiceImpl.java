@@ -7,6 +7,7 @@ import com.ssafy.notificationservice.jpa.NotificationEntity;
 import com.ssafy.notificationservice.jpa.NotificationRepository;
 import com.ssafy.notificationservice.jpa.Type;
 import com.ssafy.notificationservice.vo.NotificationVO;
+import com.ssafy.notificationservice.vo.dto.FCMRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +17,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationServiceImpl implements NotificationService{
+public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final TeamFeignClient teamFeignClient;
     private final MentionFeignClient mentionFeignClient;
+    private final FCMService fcmService;
+
     @Override
     @Transactional
     public void createTopicOpenNotification(Long memberId) {
@@ -30,6 +33,13 @@ public class NotificationServiceImpl implements NotificationService{
                 .routingId(-1L)
                 .title("토픽 응모가 시작되었습니다~☘️")
                 .build();
+        FCMRequestDto fcmRequestDto = FCMRequestDto.builder()
+                .targetMemberId(memberId)
+                .title("Mention")
+                .body("토픽 응모가 시작되었습니다~☘")
+                .routingId(-1L)
+                .build();
+        fcmService.sendNotification(fcmRequestDto);
 
         notificationRepository.save(notification);
     }

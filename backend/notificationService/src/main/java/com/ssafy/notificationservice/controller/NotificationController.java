@@ -1,6 +1,7 @@
 package com.ssafy.notificationservice.controller;
 
 import com.ssafy.notificationservice.jpa.Gender;
+import com.ssafy.notificationservice.service.FCMService;
 import com.ssafy.notificationservice.service.NotificationService;
 import com.ssafy.notificationservice.utils.error.ErrorCode;
 import com.ssafy.notificationservice.utils.exception.CustomException;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
+    private final FCMService fcmService;
 
     /**
      * 클라이언트에서 질문 공모 알림
@@ -96,6 +98,11 @@ public class NotificationController {
         notificationService.createTeamVoteNotification(notificationVO, teamId);
         return ResponseEntity.status(HttpStatus.OK).body("[그룹 투표] 그룹 투표 전송 완료 ~ 🔥");
     }
+
+//    @GetMapping("/test")
+//    public void testFCM() {
+//        fcmService.sendNotification("ebPSGzCVR9mpVUFmN-hfKf:APA91bH06TdbYbeKf5e4RJWKDM8wK-4re-VSD0FNmdu0pn8LfaTEIf4yZX4yb-CtcId4Mc-skAB4YDD99VPJ8LE-l5nyOMPD13j_bRU-hZOuY9Rzv-8nNF6znu29P70i4ndz3mIgRUEb");
+//    }
 
 
     public int convertRequestToVO(HttpServletRequest request){
