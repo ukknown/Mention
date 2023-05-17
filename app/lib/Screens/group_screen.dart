@@ -9,6 +9,9 @@ import 'dart:convert' show jsonDecode, utf8;
 
 import 'package:app/widgets/bottom_nav.dart';
 
+import '../api/topic_api.dart';
+import '../api/topic_model.dart';
+
 // import '../api/group_api.dart';
 
 class GroupScreen extends StatefulWidget {
@@ -16,7 +19,7 @@ class GroupScreen extends StatefulWidget {
   //     : super(key: key);
 
   final int propsId;
-  const GroupScreen(this.propsId);
+  const GroupScreen(this.propsId); //propsId = topicId
 
   @override
   State<GroupScreen> createState() => _GroupScreenState();
@@ -254,6 +257,8 @@ class Groupbox extends StatelessWidget {
 
 // 토픽 만들기
 void _showNewTopicModal(BuildContext context) {
+  TopicRandom? randomTopic; // 상태 변수 추가
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -261,10 +266,9 @@ void _showNewTopicModal(BuildContext context) {
         builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
             title: const Text('새로운 토픽을 골라주세요'),
-            // 여기서 부터 수정
-            content: const SingleChildScrollView(
+            content: SingleChildScrollView(
               child: Column(
-                mainAxisSize: MainAxisSize.min, // 변경된 부분
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     decoration: InputDecoration(
@@ -275,11 +279,22 @@ void _showNewTopicModal(BuildContext context) {
                   SizedBox(height: 10),
                   SizedBox(
                     height: 200,
-                    child: Text('검색결과',
-                        style: TextStyle(
+                    child: Column(
+                      children: [
+                        Text(
+                          '검색결과',
+                          style: TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight
-                                .bold)), // 검색 결과가 있는 경우에만 '검색결과' 텍스트를 표시
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (randomTopic != null) ...[ // 랜덤 토픽이 있을 때만 표시
+                          Divider(),
+                          Text(randomTopic.title),
+                          // Add more details about the topic if necessary
+                        ],
+                      ],
+                    ),
                   ),
                   SizedBox(height: 10),
                 ],
@@ -287,11 +302,14 @@ void _showNewTopicModal(BuildContext context) {
             ),
             actions: [
               ElevatedButton(
-                onPressed: () {
-                  print('Random button clicked');
+                onPressed: () async {
+                  final topic = await TopicApi.getRandomTopic(widget.propsId); // TODO: Replace with the correct teamId
+                  setState(() {
+                    randomTopic = topic; // 상태 업데이트
+                  });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue, // 버튼 배경색 설정
+                  backgroundColor: Colors.lightBlue,
                 ),
                 child: const Text('랜덤'),
               ),
@@ -301,7 +319,7 @@ void _showNewTopicModal(BuildContext context) {
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightGreen, // 버튼 배경색 설정
+                  backgroundColor: Colors.lightGreen,
                 ),
                 child: const Text('다음'),
               ),
