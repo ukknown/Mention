@@ -6,6 +6,7 @@ import com.ssafy.notificationservice.service.NotificationService;
 import com.ssafy.notificationservice.utils.error.ErrorCode;
 import com.ssafy.notificationservice.utils.exception.CustomException;
 import com.ssafy.notificationservice.vo.NotificationVO;
+import com.ssafy.notificationservice.vo.dto.SaveTokenRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -97,6 +98,13 @@ public class NotificationController {
         notificationVO.setRoutingId(voteId);
         notificationService.createTeamVoteNotification(notificationVO, teamId);
         return ResponseEntity.status(HttpStatus.OK).body("[그룹 투표] 그룹 투표 전송 완료 ~ 🔥");
+    }
+
+    @PostMapping("/fcm-tokens")
+    public ResponseEntity<?> saveFCMToken(HttpServletRequest request,
+                                       @RequestBody SaveTokenRequestDto saveTokenRequestDto) {
+        Long loginMemberId = Long.valueOf(convertRequestToVO(request));
+        return ResponseEntity.ok().body(fcmService.saveToken(loginMemberId, saveTokenRequestDto));
     }
 
 //    @GetMapping("/test")

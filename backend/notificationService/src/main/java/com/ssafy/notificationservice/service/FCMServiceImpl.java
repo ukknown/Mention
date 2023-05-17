@@ -7,15 +7,19 @@ import com.google.firebase.messaging.Notification;
 import com.ssafy.notificationservice.jpa.FCMEntityRepository;
 import com.ssafy.notificationservice.jpa.FCMTokenEntity;
 import com.ssafy.notificationservice.vo.dto.FCMRequestDto;
+import com.ssafy.notificationservice.vo.dto.SaveTokenRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class FCMServiceImpl {
+@Transactional(readOnly = true)
+public class FCMServiceImpl implements FCMService {
     private final FirebaseMessaging firebaseMessaging;
     private final FCMEntityRepository fcmEntityRepository;
 
+    @Override
     public String sendNotification(FCMRequestDto request) {
         FCMTokenEntity tokenEntity = fcmEntityRepository.findByMemberId(request.getTargetMemberId())
                 .orElse(null);
@@ -46,6 +50,17 @@ public class FCMServiceImpl {
         } else {
             return "멤버 아이디로 엔티티 못 찾음 memberId = " + request.getTargetMemberId();
         }
+    }
+
+    @Override
+    @Transactional
+    public String saveToken(Long loginMemberId, SaveTokenRequestDto saveTokenRequestDto) {
+        FCMTokenEntity fcmTokenEntity = FCMTokenEntity.builder()
+                .memberId(loginMemberId)
+                .fcmToken(saveTokenRequestDto.getToken())
+                .build();
+        fcmEntityRepository.save(fcmTokenEntity);
+        return "저장 완료";
     }
 }
 
