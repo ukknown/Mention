@@ -11,5 +11,5 @@ public class VoteVO {
     private String emoji;
     private LocalDateTime dueDate;
     private int participant;
-    private boolean isSystem;
+    private Boolean isSystem;
 }
