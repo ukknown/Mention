@@ -1,4 +1,4 @@
-package com.ssafy.notificationservice;
+package com.ssafy.notificationservice.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -21,13 +21,16 @@ public class FCMConfig {
         FirebaseApp firebaseApp = null;
         List<FirebaseApp> firebaseAppList = FirebaseApp.getApps();
 
-        if (firebaseAppList != null && firebaseAppList.isEmpty()) {
+        if (firebaseAppList != null && !firebaseAppList.isEmpty()) { // 조건문 변경
             for (FirebaseApp app: firebaseAppList) {
                 if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
                     firebaseApp = app;
+                    break; // 일치하는 앱을 찾으면 루프 종료
                 }
             }
-        } else {
+        }
+
+        if (firebaseApp == null) { // firebaseApp이 여전히 null인 경우 새로 초기화
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(refreshToken))
                     .build();
@@ -36,3 +39,4 @@ public class FCMConfig {
         return FirebaseMessaging.getInstance(firebaseApp);
     }
 }
+
