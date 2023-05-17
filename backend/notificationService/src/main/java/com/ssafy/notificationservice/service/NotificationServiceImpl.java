@@ -70,6 +70,14 @@ public class NotificationServiceImpl implements NotificationService {
                 .title(sb.toString())
                 .build();
 
+        FCMRequestDto fcmRequestDto = FCMRequestDto.builder()
+                .targetMemberId(notification.getMemberId())
+                .title("Mention")
+                .body("축하합니다🎉 작성해주신 토픽이 응모에 당첨되었습니다! : " + mentionFeignClient.getTopicTitleByTopicId(notificationVO.getRoutingId()))
+                .routingId(notificationVO.getRoutingId())
+                .build();
+        fcmService.sendNotification(fcmRequestDto);
+
         notificationRepository.save(notification);
     }
 
@@ -89,6 +97,14 @@ public class NotificationServiceImpl implements NotificationService {
                 .gender(notificationVO.getGender())
                 .title(sb.toString())
                 .build();
+
+        FCMRequestDto fcmRequestDto = FCMRequestDto.builder()
+                .targetMemberId(notification.getMemberId())
+                .title("Mention")
+                .body("(😋)누군가가 당신을 멘션했어요!! 지금 당장 확인해볼까요?")
+                .routingId(notificationVO.getRoutingId())
+                .build();
+        fcmService.sendNotification(fcmRequestDto);
 
         notificationRepository.save(notification);
     }
@@ -110,6 +126,14 @@ public class NotificationServiceImpl implements NotificationService {
                 .routingId(notificationVO.getRoutingId())
                 .title(sb.toString())
                 .build();
+
+        FCMRequestDto fcmRequestDto = FCMRequestDto.builder()
+                .targetMemberId(notification.getMemberId())
+                .title("Mention")
+                .body("[" + teamName + "] 에서 새로운 투표가 열렸어요! 참여해보세요~🚀")
+                .routingId(notificationVO.getRoutingId())
+                .build();
+        fcmService.sendNotification(fcmRequestDto);
         notificationRepository.save(notification);
     }
 }
