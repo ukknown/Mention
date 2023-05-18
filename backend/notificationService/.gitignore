@@ -7,6 +7,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### firebase ###
+flufire-s-firebase-adminsdk-v593k-e1fb33a526.json
+
 ### STS ###
 .apt_generated
 .classpath
