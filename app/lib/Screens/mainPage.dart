@@ -2,7 +2,9 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
 import 'package:app/Screens/group_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:app/widgets/bottom_nav.dart';
 import 'package:app/widgets/dailymissonswiper.dart';
@@ -45,31 +47,53 @@ class _MainPageState extends State<MainPage> {
     getProfile();
   }
 
-// JSON 데이터를 포함한 POST 요청 예시
-  Future<void> postRequest() async {
-    final url = Uri.parse('http://k8c105.p.ssafy.io:8000/team-service/teams');
+  // 그룹 생성하기
+  void postRequest(String inputText) async {
+    var url = Uri.parse('http://k8c105.p.ssafy.io:8000/team-service/teams/');
+    final String token =
+        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q';
 
-    final jsonBody = jsonEncode(inputText);
+    Map<String, String> data = {
+      'name': inputText,
+    };
 
-    final response = await http.post(url, headers: <String, String>{
-      // 'Content-Type': 'application/json', // Content-Type 설정
-      'Authorization':
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q",
-    }, body: {
-      "name": jsonBody,
-      "file": userImage,
-    });
+    var response = await http.post(
+      url,
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(data),
+    );
 
-    // 응답 처리
     if (response.statusCode == 200) {
-      // 성공적으로 요청을 보냈을 경우
-      print('요청이 성공적으로 완료되었습니다.');
-      print(response.body);
+      print('요청 성공: ${response.body}');
+      getProfile();
     } else {
-      // 요청이 실패했을 경우
-      print('요청이 실패하였습니다. 에러 코드: ${response.statusCode}');
+      print('요청 실패: ${response.statusCode}');
     }
   }
+
+  // 숫자코드로 입장하는 코드
+  void sendPostRequest(int code) async {
+    var url = Uri.parse('http://k8c105.p.ssafy.io:8000/team-service/teams');
+    final String token =
+        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q';
+
+    var response = await http.post(
+      url,
+      headers: {"Authorization": "Bearer $token"},
+    );
+
+    if (response.statusCode == 200) {
+      print('요청 성공: ${response.body}');
+      getProfile();
+    } else {
+      print('요청 실패: ${response.statusCode}');
+    }
+  }
+
+// 그룹정렬하기
 
   void getProfile() async {
     const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
@@ -243,6 +267,55 @@ class _MainPageState extends State<MainPage> {
                                   const EdgeInsets.fromLTRB(0, 60, 0, 60),
                               actions: [
                                 TextButton(
+                                  child: const Text('참여하기'),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.green,
+                                    disabledForegroundColor: Colors.grey
+                                        .withOpacity(
+                                            0.38), // 버튼이 disable 상태일 때의 색상
+                                  ),
+                                  onPressed: () {
+                                    // 참여하기 버튼을 눌렀을 때의 동작을 정의합니다.
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        final TextEditingController
+                                            codeController =
+                                            TextEditingController();
+                                        return AlertDialog(
+                                          title: const Text('참여하기'),
+                                          content: TextField(
+                                            controller: codeController,
+                                            decoration: InputDecoration(
+                                              hintText: '코드 4자리를 입력하세요',
+                                            ),
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  4), // 최대 길이를 4로 제한
+                                            ],
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              child: const Text('입장하기'),
+                                              onPressed: () {
+                                                int code = int.parse(
+                                                    codeController.text);
+
+                                                print(
+                                                    code); // 콘솔에 입력된 코드 출력. 실제로는 필요한 동작을 추가해야 함.
+                                                sendPostRequest(code);
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                TextButton(
                                   child: const Text(
                                     '만들기',
                                   ),
@@ -250,9 +323,9 @@ class _MainPageState extends State<MainPage> {
                                     setState(() {
                                       inputText = inputController.text;
                                     });
-                                    print(inputText);
-                                    print(imageFile);
-                                    postRequest();
+                                    postRequest(inputText);
+                                    Navigator.pop(context);
+                                    // 여기서 원하는 방식으로 페이지를 새로 고침하거나 업데이트
                                   },
                                 ),
                               ],
@@ -292,7 +365,6 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
-
 
 // 스와이퍼 위젯
 // ignore: camel_case_types

@@ -112,6 +112,7 @@ class _GroupScreenState extends State<GroupScreen> {
                                   if (snapshot.hasData) {
                                     GroupDetailModel groupDetail =
                                         snapshot.data!;
+                                    int code = groupDetail.code;
                                     List<MemberModel> memberList =
                                         groupDetail.memberList;
 
@@ -122,8 +123,8 @@ class _GroupScreenState extends State<GroupScreen> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     GroupMember(
-                                                        memberList:
-                                                            memberList)));
+                                                        memberList: memberList,
+                                                        code: code)));
                                       },
                                       child: const Icon(Icons.person),
                                     );
