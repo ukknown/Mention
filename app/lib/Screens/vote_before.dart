@@ -10,12 +10,16 @@ class VoteMember extends StatefulWidget {
   final String topicTitle;
   final int voteId;
   final int emoji;
+  final double screenWidth;
+  final double screenHeight;
 
   const VoteMember({
     required this.memberList,
     required this.topicTitle,
     required this.emoji,
     required this.voteId,
+    required this.screenWidth,
+    required this.screenHeight,
     Key? key,
   }) : super(key: key);
 
@@ -42,16 +46,44 @@ class _VoteMemberState extends State<VoteMember> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.topicTitle,
-                          style: TextStyle(fontSize: 30),
+                          '${String.fromCharCode(widget.emoji)}',
+                          style: TextStyle(
+                            fontSize: widget.screenWidth * 0.13,
+                          ),
+                        ),
+                        SizedBox(
+                          width: widget.screenWidth * 0.05,
+                        ),
+                        Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: widget.screenHeight * 0.12,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: widget.screenHeight * 0.30,
+                                      child: Text(
+                                        widget.topicTitle,
+                                        style: TextStyle(fontSize: 23),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   )),
               SizedBox(
-                height: 40,
+                height: 10,
               ),
               Expanded(
                 flex: 4,
@@ -69,17 +101,10 @@ class _VoteMemberState extends State<VoteMember> {
                     ],
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Icon(
-                            Icons.search,
-                            size: 30,
-                          ),
-                        ),
+                      SizedBox(
+                        width: widget.screenWidth * 0.05,
                       ),
                       Expanded(
                         child: ListView.builder(
@@ -94,16 +119,6 @@ class _VoteMemberState extends State<VoteMember> {
                                 voteId: widget.voteId,
                               );
                             }),
-                        // mainAxisAlignment: MainAxisAlignment.start,
-                        // children: widget.memberList
-                        //     .map((member) => Member(
-                        //           nickname: member.nickname,
-                        //           avatarUrl: member.profileImage,
-                        //           id: member.memberId,
-                        //           inputText: inputText,
-                        //           voteId: widget.voteId,
-                        //         ))
-                        //     .toList(),
                       ),
                     ],
                   ),
@@ -146,20 +161,22 @@ class Member extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 5),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                flex: 4,
+                flex: 3,
                 child: CircleAvatar(
                   radius: 40,
                   backgroundImage: NetworkImage(avatarUrl),
                 ),
               ),
               Expanded(
-                  flex: 4,
-                  child: Text(
-                    nickname,
-                    style: TextStyle(fontSize: 25),
-                  )),
+                flex: 2,
+                child: Text(
+                  nickname,
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
             ],
           ),
         ),

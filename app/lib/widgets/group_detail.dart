@@ -89,7 +89,9 @@ class _GroupDetailState extends State<GroupDetail> {
                       memberList: widget.memberList,
                       topicTitle: widget.topicTitle,
                       emoji: widget.emoji,
-                      voteId: widget.voteId))));
+                      voteId: widget.voteId,
+                      screenWidth : widget.screenWidth,
+                      screenHeight: widget.screenHeight,))));
         },
         child: Padding(
           padding: EdgeInsets.all(widget.screenWidth * 0.05),
