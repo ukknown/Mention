@@ -4,6 +4,7 @@ import com.ssafy.teamservice.service.TeamMemberService;
 import com.ssafy.teamservice.service.TeamService;
 import com.ssafy.teamservice.utils.RandomImageGenerator;
 import com.ssafy.teamservice.vo.*;
+import com.ssafy.teamservice.vo.dto.CreateTeamRequestDto;
 import com.ssafy.teamservice.vo.dto.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.dto.TeamResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -58,12 +59,12 @@ public class TeamController {
     @Transactional
     public ResponseEntity createTeam(
             HttpServletRequest request,
-            @RequestPart(value = "name") String name
+            CreateTeamRequestDto createTeamRequestDto
     ){
          TeamVO teamVO = convertRequestToVO(request);
 
          String url = randomImageGenerator.generate();
-         TeamEntity teamEntity = teamService.createTeam(new TeamDetailVO(name, url, (long) teamVO.getMemberId()));
+         TeamEntity teamEntity = teamService.createTeam(new TeamDetailVO(createTeamRequestDto.getName(), url, (long) teamVO.getMemberId()));
 
          teamMemberService.joinTeamMember(new TeamMemberVO(teamEntity, (long) teamVO.getMemberId()));
 
