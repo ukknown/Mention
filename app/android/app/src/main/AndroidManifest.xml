@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
    <application
-        android:label="app"
+        android:label="멘션"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
