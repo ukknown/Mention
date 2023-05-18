@@ -139,6 +139,31 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.OK).body("그룹 입장 완료 ~ 🔥");
     }
 
+    @Operation(summary = "그룹 입장", description = "클라이언트에서 카카오톡으로 넘겨준 그룹에 입장합니다.")
+    @PostMapping("/teams/code/{code}")
+    @Transactional
+    public ResponseEntity joinTeamByCode(
+        HttpServletRequest request,
+        @PathVariable("code") int code
+    ){
+        TeamVO teamVO = convertRequestToVO(request);
+
+        // teamId가 존재하는지 확인 -> 404
+        TeamEntity teamEntity = teamService.findTeamByTeamCode(code);
+        TeamMemberVO teamMemberVO = new TeamMemberVO(teamEntity, (long) teamVO.getMemberId());
+
+        // 이미 입장한 그룹인지 확인
+        if(teamMemberService.existsByMemberIdAndTeamEntity(teamMemberVO)){
+            throw new CustomException(ErrorCode.CONFLICT_TEAM_MEMBER);
+        }
+
+        teamMemberService.joinTeamMember(teamMemberVO);
+        teamVO.setTeamId(teamEntity.getId());
+        teamService.updateCapacity(teamVO, true);
+
+        return ResponseEntity.status(HttpStatus.OK).body("그룹 코드로 입장 완료 ~ 🔥");
+    }
+
     /**
      * 방장 강퇴 또는 회원이 그룹 나가기 -> 그룹은 방장이 나가거나, 다른 모든 인원이 나가면 삭제된다.
      * @param request
