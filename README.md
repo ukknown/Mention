@@ -358,7 +358,7 @@
 <br/>
 
 ## API 설계
-<img src = "exec/API.png" width ="400px">
+<img src = "exec/API.png">
 
 <br/>
 <br/>
