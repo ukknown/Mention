@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 class swipercontainer extends StatefulWidget {
-<<<<<<< HEAD
   const swipercontainer({
     Key? key,
     required this.groupimg,
@@ -12,24 +11,12 @@ class swipercontainer extends StatefulWidget {
     required this.id,
     required this.vote,
   }) : super(key: key);
-=======
-  const swipercontainer(
-      {Key? key,
-      required this.groupimg,
-      required this.groupname,
-      required this.membernum,
-      required this.id})
-      : super(key: key);
->>>>>>> 0c1f5424f4e300d05f0a5b6d9e77130d3519c3f0
 
   final String groupname;
   final int membernum;
   final dynamic groupimg;
   final int id;
-<<<<<<< HEAD
   final List vote;
-=======
->>>>>>> 0c1f5424f4e300d05f0a5b6d9e77130d3519c3f0
 
   @override
   State<swipercontainer> createState() => _swipercontainerState();
