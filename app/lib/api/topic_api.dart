@@ -59,10 +59,11 @@ class TopicApi {
       },
     );
     if (response.statusCode == 200) {
-      final List<dynamic> responseBody = json.decode(response.body);
-      List<SearchTopic> topics =
-          responseBody.map((item) => SearchTopic.fromJson(item)).toList();
-      return topics;
+      final List<int> bytes = response.bodyBytes;
+      final String responseBody = utf8.decode(bytes);
+      final List<dynamic> searchTopic = jsonDecode(responseBody);
+      print(searchTopic);
+      return searchTopic.map((item) => SearchTopic.fromJson(item)).toList();
     } else {
       throw Exception('Failed to load search results');
     }
