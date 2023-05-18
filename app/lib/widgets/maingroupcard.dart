@@ -10,6 +10,7 @@ class swipercontainer extends StatefulWidget {
     required this.membernum,
     required this.id,
     required this.vote,
+    required this.screenWidth,
   }) : super(key: key);
 
   final String groupname;
@@ -17,7 +18,7 @@ class swipercontainer extends StatefulWidget {
   final dynamic groupimg;
   final int id;
   final List vote;
-
+  final double screenWidth;
   @override
   State<swipercontainer> createState() => _swipercontainerState();
 }
@@ -25,6 +26,11 @@ class swipercontainer extends StatefulWidget {
 class _swipercontainerState extends State<swipercontainer> {
   @override
   Widget build(BuildContext context) {
+    final int emoji0 = int.tryParse(widget.vote[0]['emoji'] ?? '', radix: 16) ??
+        int.parse('1F60B', radix: 16);
+    final int emoji1 = int.tryParse(widget.vote[1]['emoji'] ?? '', radix: 16) ??
+        int.parse('1F60B', radix: 16);
+
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
       decoration: BoxDecoration(
@@ -46,6 +52,9 @@ class _swipercontainerState extends State<swipercontainer> {
         ),
         child: Column(
           children: [
+            SizedBox(
+              height: 15,
+            ),
             Row(
               children: [
                 Flexible(
@@ -99,10 +108,11 @@ class _swipercontainerState extends State<swipercontainer> {
                           topLeft: Radius.circular(30),
                           bottomLeft: Radius.circular(30)),
                     ),
-                    child: Image.asset(
-                      "assets/images/icon1.png",
-                      height: MediaQuery.of(context).size.height * 0.001,
-                      width: MediaQuery.of(context).size.width * 0.001,
+                    child: Center(
+                      child: Text(
+                        '${String.fromCharCode(emoji0)}',
+                        style: TextStyle(fontSize: widget.screenWidth * 0.09),
+                      ),
                     ),
                   ),
                 ),
@@ -148,10 +158,11 @@ class _swipercontainerState extends State<swipercontainer> {
                           topLeft: Radius.circular(30),
                           bottomLeft: Radius.circular(30)),
                     ),
-                    child: Image.asset(
-                      "assets/images/coin.png",
-                      height: MediaQuery.of(context).size.height * 0.001,
-                      width: MediaQuery.of(context).size.width * 0.001,
+                    child: Center(
+                      child: Text(
+                        '${String.fromCharCode(emoji1)}',
+                        style: TextStyle(fontSize: widget.screenWidth * 0.09),
+                      ),
                     ),
                   ),
                 ),

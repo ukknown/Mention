@@ -118,10 +118,10 @@ class _GroupScreenState extends State<GroupScreen> {
                 child: Row(
                   children: [
                     Container(
-                      width: screenWidth * 0.6,
+                      width: screenWidth * 0.55,
                       child: Text(
                         groupDetail.name,
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 24),
                         // overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -166,7 +166,7 @@ class _GroupScreenState extends State<GroupScreen> {
               )
             ],
           ),
-        ),                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        ),
         SizedBox(
           width: screenWidth * 0.05,
         ),
