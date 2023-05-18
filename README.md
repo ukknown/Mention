@@ -399,6 +399,10 @@
 > ``` FEAT ``` : 기능 추가, 프로젝트 생성, 초기 설정 
 <br> ``` FIX ``` : 기능 변경, 기능 수정, 오류 수정
 
+<br/>
+<br/>
+<br/>
+
 ## Notion
 + 팀 전체가 알아야 할 공지사항이나 프로젝트를 진행하면서 나오는 각종 산출물들의 형상관리
 [Mention Notion](https://www.notion.so/SSAFY-fece7069a49341c498d3f97a84f7d7fd)
