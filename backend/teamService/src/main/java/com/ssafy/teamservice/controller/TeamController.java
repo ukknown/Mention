@@ -59,7 +59,7 @@ public class TeamController {
     @Transactional
     public ResponseEntity createTeam(
             HttpServletRequest request,
-            CreateTeamRequestDto createTeamRequestDto
+            @RequestBody CreateTeamRequestDto createTeamRequestDto
     ){
          TeamVO teamVO = convertRequestToVO(request);
 
