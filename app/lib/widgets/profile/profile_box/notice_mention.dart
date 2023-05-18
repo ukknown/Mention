@@ -138,25 +138,21 @@ class NoticeMention extends StatelessWidget {
                             child: Container(
                               width: screenWidth * 0.8,
                               decoration: BoxDecoration(
-                                color: const Color(0xffffffff).withOpacity(0.5),
+                                color: Color(0xFFDDDDDD).withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     vertical: screenHeight * 0.01),
                                 child: Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text("icon"),
-                                      SizedBox(
-                                        width: screenWidth * 0.02,
-                                      ),
-                                      Text(
-                                        overflow: TextOverflow.ellipsis,
-                                        targetTitle,
-                                      ),
-                                    ],
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: screenWidth * 0.04,
+                                    ),
+                                    child: Text(
+                                      overflow: TextOverflow.ellipsis,
+                                      targetTitle,
+                                    ),
                                   ),
                                 ),
                               ),

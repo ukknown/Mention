@@ -122,7 +122,7 @@ class _GroupScreenState extends State<GroupScreen> {
                       child: Text(
                         groupDetail.name,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 28,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -133,38 +133,38 @@ class _GroupScreenState extends State<GroupScreen> {
               SizedBox(
                 height: screenHeight * 0.01,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GroupMember(
-                            memberList: groupDetail.memberList,
-                            code: groupDetail.code,
-                          ),
-                        ),
-                      );
-                    },
-                    child: const Icon(Icons.person),
-                  ),
-                  Text("${groupDetail.capacity}"),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                  const Icon(Icons.notifications_off_rounded),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // navigator
-                    },
-                    child: const Icon(Icons.output_outlined),
-                  )
-                ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GroupMember(
+                        memberList: groupDetail.memberList,
+                        code: groupDetail.code,
+                      ),
+                    ),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.person),
+                    Text("${groupDetail.capacity}"),
+                    const SizedBox(
+                      width: 40,
+                    ),
+                    const Icon(Icons.notifications_off_rounded),
+                    const SizedBox(
+                      width: 40,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // navigator
+                      },
+                      child: const Icon(Icons.output_outlined),
+                    )
+                  ],
+                ),
               )
             ],
           ),

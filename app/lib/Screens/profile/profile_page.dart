@@ -32,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: const Color(0xffAAC6EF),
       bottomNavigationBar: const BottomNav(),
       body: Container(
+        height: screenHeight,
         decoration: bgimg(),
         child: FutureBuilder(
           future: futureProfileData,
@@ -67,97 +68,93 @@ class _ProfilePageState extends State<ProfilePage> {
             } else {
               final profile = snapshot.data!;
 
-              return SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: screenHeight * 0.1,
-                      ),
-                      ProfileCard(
-                        profileImage: profile.profileImage,
-                        name: profile.name,
-                        coin: profile.coin,
-                        groupCount: profile.groupCount,
-                        mentionCount: profile.mentionCount,
-                        screenHeight: screenHeight,
-                        screenWidth: screenWidth,
-                      ),
-                      SizedBox(
-                        height: screenHeight * 0.05,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.05),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  'assets/images/running.png',
-                                  height: screenWidth * 0.1,
-                                ),
-                                SizedBox(
-                                  width: screenWidth * 0.02,
-                                ),
-                                Text(
-                                  "다음 Bang까지 00걸음!",
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.055),
-                                ),
-                              ],
-                            ),
-                            PedometerText(
-                              screenHeight: screenHeight,
-                              screenWidth: screenWidth,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: screenHeight * 0.05,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: screenWidth * 0.05),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  'assets/images/podium.png',
-                                  height: screenWidth * 0.1,
-                                ),
-                                SizedBox(
-                                  width: screenWidth * 0.02,
-                                ),
-                                Text(
-                                  "나의 멘션 랭킹",
-                                  style:
-                                      TextStyle(fontSize: screenWidth * 0.055),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight * 0.02,
-                            ),
-                            for (var entry
-                                in profile.mostMentionedTopic.asMap().entries)
-                              RankSlot(
-                                screenWidth: screenWidth,
-                                screenHeight: screenHeight,
-                                topic: entry.value.title,
-                                mentionedCount: entry.value.mentionedCount,
-                                rank: entry.key + 1,
+              return Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: screenHeight * 0.06,
+                    ),
+                    ProfileCard(
+                      profileImage: profile.profileImage,
+                      name: profile.name,
+                      coin: profile.coin,
+                      groupCount: profile.groupCount,
+                      mentionCount: profile.mentionCount,
+                      screenHeight: screenHeight,
+                      screenWidth: screenWidth,
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.05,
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/running.png',
+                                height: screenWidth * 0.1,
                               ),
-                          ],
-                        ),
+                              SizedBox(
+                                width: screenWidth * 0.02,
+                              ),
+                              Text(
+                                "다음 Bang까지 00걸음!",
+                                style: TextStyle(fontSize: screenWidth * 0.055),
+                              ),
+                            ],
+                          ),
+                          PedometerText(
+                            screenHeight: screenHeight,
+                            screenWidth: screenWidth,
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: screenHeight * 0.025,
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.05,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: screenWidth * 0.05),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/podium.png',
+                                height: screenWidth * 0.1,
+                              ),
+                              SizedBox(
+                                width: screenWidth * 0.02,
+                              ),
+                              Text(
+                                "나의 멘션 랭킹",
+                                style: TextStyle(fontSize: screenWidth * 0.055),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: screenHeight * 0.02,
+                          ),
+                          for (var entry
+                              in profile.mostMentionedTopic.asMap().entries)
+                            RankSlot(
+                              screenWidth: screenWidth,
+                              screenHeight: screenHeight,
+                              topic: entry.value.title,
+                              mentionedCount: entry.value.mentionedCount,
+                              rank: entry.key + 1,
+                            ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.025,
+                    ),
+                  ],
                 ),
               );
             }

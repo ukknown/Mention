@@ -40,50 +40,40 @@ class _VoteMemberState extends State<VoteMember> {
         child: Padding(
           padding: EdgeInsets.all(20.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                   flex: 1,
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           '${String.fromCharCode(widget.emoji)}',
                           style: TextStyle(
-                            fontSize: widget.screenWidth * 0.13,
+                            fontSize: widget.screenWidth * 0.15,
                           ),
                         ),
                         SizedBox(
                           width: widget.screenWidth * 0.05,
                         ),
                         Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: widget.screenHeight * 0.12,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: widget.screenHeight * 0.30,
-                                      child: Text(
-                                        widget.topicTitle,
-                                        style: TextStyle(fontSize: 23),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          width: widget.screenWidth * 0.65,
+                          child: Text(
+                            widget.topicTitle,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.justify,
                           ),
                         ),
                       ],
                     ),
                   )),
               SizedBox(
-                height: 10,
+                height: widget.screenHeight * 0.05,
               ),
               Expanded(
                 flex: 4,

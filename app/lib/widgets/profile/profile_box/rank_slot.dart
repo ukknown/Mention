@@ -55,21 +55,18 @@ class RankSlot extends StatelessWidget {
               Expanded(
                 flex: 5,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Transform.translate(
-                          offset: Offset(0, screenHeight * 0.005),
-                          child: Text(
-                            topic ?? '토픽을 불러오는데 실패했어요!',
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.04,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            overflow: TextOverflow.fade,
-                          ),
+                    Transform.translate(
+                      offset: Offset(0, screenHeight * 0.005),
+                      child: Text(
+                        topic ?? '토픽을 불러오는데 실패했어요!',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.04,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ],
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     SizedBox(
                       height: screenHeight * 0.0075,

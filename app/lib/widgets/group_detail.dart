@@ -66,33 +66,33 @@ class _GroupDetailState extends State<GroupDetail> {
     int hours = remainingTime.inHours;
     int minutes = remainingTime.inMinutes.remainder(60);
     String timeString = '$hours:${minutes.toString().padLeft(2, '0')}';
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 3,
-            blurRadius: 7,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: GestureDetector(
-        onTap: () {
-          // print(widget.memberList);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => (VoteMember(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => (VoteMember(
                       memberList: widget.memberList,
                       topicTitle: widget.topicTitle,
                       emoji: widget.emoji,
                       voteId: widget.voteId,
-                      screenWidth : widget.screenWidth,
-                      screenHeight: widget.screenHeight,))));
-        },
+                      screenWidth: widget.screenWidth,
+                      screenHeight: widget.screenHeight,
+                    ))));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 3,
+              blurRadius: 7,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
         child: Padding(
           padding: EdgeInsets.all(widget.screenWidth * 0.05),
           child: Column(
