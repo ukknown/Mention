@@ -19,7 +19,7 @@ public interface TopicService {
 
     String checkSimilarity(String inputTopic);
 
-    void saveTopic();
+//    void saveTopic();
 
     List<TopTopicVo> getTopTopic(Long memberId);
 

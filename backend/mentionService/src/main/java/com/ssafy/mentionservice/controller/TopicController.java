@@ -60,11 +60,11 @@ public class TopicController {
         return ResponseEntity.ok().body(topicService.checkSimilarity(topicTitleRequestDto.getTitle()));
     }
 
-    @Operation(summary = "토픽 저장", description = "추후 데이터 쌓이면 메서드로 변환 예정")
-    @PostMapping("/save/topic")
-    public void saveTopic() {
-        topicService.saveTopic();
-    }
+//    @Operation(summary = "토픽 저장", description = "추후 데이터 쌓이면 메서드로 변환 예정")
+//    @PostMapping("/save/topic")
+//    public void saveTopic() {
+//        topicService.saveTopic();
+//    }
 
     @Operation(summary = "관리자가 응모리스트를 조회", description = "PENDING 상태인것만 반환")
     @GetMapping("/topics")
