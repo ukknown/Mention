@@ -4,17 +4,19 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  RemoteNotification? notification = message.notification;
-  AndroidNotification? android = message.notification?.android;
+  // 데이타 메시지로부터 알림 정보 가져오기
+  var data = message.data;
+  var title = data['title'];
+  var body = data['body'];
 
-  if (notification != null && android != null) {
+  if (title != null && body != null) {
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
 
     flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
+        message.hashCode,
+        title,
+        body,
         NotificationDetails(
           android: AndroidNotificationDetails(
             'mention_notification',
@@ -60,14 +62,17 @@ Future<String?> fcmSetting() async {
       ?.createNotificationChannel(channel);
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
+    // 데이타 메시지로부터 알림 정보 가져오기
+    var data = message.data;
+    var title = data['title'];
+    var body = data['body'];
 
-    if (notification != null && android != null) {
+    // 포그라운드 상태에서 알림을 생성
+    if (title != null && body != null) {
       flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification?.title,
-          notification?.body,
+          message.hashCode,
+          title,
+          body,
           NotificationDetails(
             android: AndroidNotificationDetails(
               channel.id,
