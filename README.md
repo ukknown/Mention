@@ -401,7 +401,11 @@
 
 ## Notion
 + 팀 전체가 알아야 할 공지사항이나 프로젝트를 진행하면서 나오는 각종 산출물들의 형상관리
-# + [Mention Notion](https://www.notion.so/SSAFY-fece7069a49341c498d3f97a84f7d7fd)
+[Mention Notion](https://www.notion.so/SSAFY-fece7069a49341c498d3f97a84f7d7fd)
+
+<br/>
+<br/>
+<br/>
 
 ## JIRA
 + 협업 및 일정, 업무 관리를 JIRA를 통해 관리하였습니다.
@@ -410,6 +414,7 @@
 >``` Epic ``` : BackEnd, FrontEnd, 기획, 설계
 <br> ``` story ``` : 기획, 설계, 산출물 제작 등 개발외의 업무에 관한 업무 관리
 <br> ``` task ``` : 코드 작성과 관련된 개발업무에 관한 업무 관리
+<br/>
 <br/>
 <br/>
 <img src="exec/jira burndown.PNG">
