@@ -17,4 +17,5 @@ public interface TeamService {
     void updateIsDeleteTrue(TeamVO teamVO);
     String getTeamName(TeamVO teamVO);
     int getTeamMemberCount(TeamVO teamVO);
+    TeamEntity findTeamByTeamCode(int code);
 }
