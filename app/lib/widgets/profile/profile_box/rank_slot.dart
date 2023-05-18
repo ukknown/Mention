@@ -66,7 +66,7 @@ class RankSlot extends StatelessWidget {
                               fontSize: screenWidth * 0.04,
                               fontWeight: FontWeight.w600,
                             ),
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.fade,
                           ),
                         ),
                       ],

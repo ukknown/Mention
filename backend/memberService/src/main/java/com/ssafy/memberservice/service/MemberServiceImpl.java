@@ -23,6 +23,7 @@ import com.ssafy.memberservice.vo.dto.common.KakaoUserInfoResponseDto;
 import com.ssafy.memberservice.vo.dto.request.RequestJoin;
 import com.ssafy.memberservice.vo.dto.response.TokenResponseDto;
 import com.ssafy.memberservice.vo.dto.response.TopTopicDto;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -253,9 +255,23 @@ public class MemberServiceImpl implements MemberService{
         List<TopTopicDto> topTopic;
         if(Member.isPresent()){
             MemberEntity member = Member.get();
-            group = teamServiceFeignClient.getGroupCount(memberid);
-            topTopic = mentionServiceFeignClient.getTopTopic(memberid);
-            mentionCount =  mentionServiceFeignClient.getMentionCount(memberid);
+            try{
+                group = teamServiceFeignClient.getGroupCount(memberid);
+            } catch(FeignException e){
+                group = -1;
+            }
+            try{
+                topTopic = mentionServiceFeignClient.getTopTopic(memberid);
+            } catch(FeignException e){
+                topTopic = Collections.emptyList();
+            }
+            try{
+                mentionCount =  mentionServiceFeignClient.getMentionCount(memberid);
+            } catch(FeignException e){
+                System.out.println("mentionCount exception");
+                mentionCount = -1;
+            }
+
             return MyPageVO.builder()
                     .profileImage(member.getProfileImage())
                     .nickname(member.getNickname())

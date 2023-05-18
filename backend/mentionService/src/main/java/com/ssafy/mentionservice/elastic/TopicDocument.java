@@ -22,4 +22,7 @@ public class TopicDocument {
 
     @Field(type = FieldType.Text)
     private String title;
+
+    @Field(type = FieldType.Text)
+    private String emoji;
 }
