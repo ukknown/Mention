@@ -400,7 +400,19 @@
 
 ## 핵심 기술 소개
 
-### MSA 설계 ( + FeingClient)
+## DDD 기반 MSA 설계
+### 이벤트 스토밍
+<img src = "exec/바운디드 컨텍스트.png" width="300px">
+<img src = "exec/사용자관리.png" width="300px">
+<img src = "exec/그룹관리.png" width="300px">
+<img src = "exec/토픽.png" width="300px">
+<img src = "exec/알림1.png" width="300px">
+<img src = "exec/투표생성.png" width="300px">
+
+<br/>
+<br/>
+<br/>
+<br/>
 
 ### Spring Security ( + JWT)
 
