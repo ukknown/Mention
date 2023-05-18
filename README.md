@@ -439,9 +439,14 @@
 <br/>
 
 ### Spring Security ( + JWT)
+<br/>
+사용자가 로그인을 하게 되면, 서버는 JWT 토큰을 생성하고 클라이언트에게 반환합니다. 
+클라이언트는 이 JWT 토큰을 저장하고, 서버에 요청할 때마다 헤더에 포함하여 서버에 전송합니다. 서버는 JWT 토큰을 검증하여 사용자를 인증하고, 필요한 권한을 확인하여 해당 작업을 수행합니다. 
+이 JWT 토큰은 클라이언트가 자원 서버에 접근할 때 Access Token으로 사용합니다. 자원 서버는 Access Token을 검증하여 클라이언트의 권한을 확인하고, 요청을 처리할 수 있습니다.
+<br/>
 <img src = "exec/jwt login.png">
 <br/>
-<img src = "exec/Access 재발급.png">
+<img src = "exec/Access.png">
 
 <br/>
 <br/>
