@@ -7,6 +7,7 @@ import com.ssafy.notificationservice.jpa.NotificationEntity;
 import com.ssafy.notificationservice.jpa.NotificationRepository;
 import com.ssafy.notificationservice.jpa.Type;
 import com.ssafy.notificationservice.vo.NotificationVO;
+import com.ssafy.notificationservice.vo.dto.FCMRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +17,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationServiceImpl implements NotificationService{
+public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final TeamFeignClient teamFeignClient;
     private final MentionFeignClient mentionFeignClient;
+    private final FCMService fcmService;
+
     @Override
     @Transactional
     public void createTopicOpenNotification(Long memberId) {
@@ -30,6 +33,13 @@ public class NotificationServiceImpl implements NotificationService{
                 .routingId(-1L)
                 .title("토픽 응모가 시작되었습니다~☘️")
                 .build();
+        FCMRequestDto fcmRequestDto = FCMRequestDto.builder()
+                .targetMemberId(memberId)
+                .title("Mention")
+                .body("토픽 응모가 시작되었습니다~☘")
+                .routingId(-1L)
+                .build();
+        fcmService.sendNotification(fcmRequestDto);
 
         notificationRepository.save(notification);
     }
@@ -60,6 +70,14 @@ public class NotificationServiceImpl implements NotificationService{
                 .title(sb.toString())
                 .build();
 
+        FCMRequestDto fcmRequestDto = FCMRequestDto.builder()
+                .targetMemberId(notification.getMemberId())
+                .title("Mention")
+                .body("축하합니다🎉 작성해주신 토픽이 응모에 당첨되었습니다! : " + mentionFeignClient.getTopicTitleByTopicId(notificationVO.getRoutingId()))
+                .routingId(notificationVO.getRoutingId())
+                .build();
+        fcmService.sendNotification(fcmRequestDto);
+
         notificationRepository.save(notification);
     }
 
@@ -79,6 +97,14 @@ public class NotificationServiceImpl implements NotificationService{
                 .gender(notificationVO.getGender())
                 .title(sb.toString())
                 .build();
+
+        FCMRequestDto fcmRequestDto = FCMRequestDto.builder()
+                .targetMemberId(notification.getMemberId())
+                .title("Mention")
+                .body("(😋)누군가가 당신을 멘션했어요!! 지금 당장 확인해볼까요?")
+                .routingId(notificationVO.getRoutingId())
+                .build();
+        fcmService.sendNotification(fcmRequestDto);
 
         notificationRepository.save(notification);
     }
@@ -100,6 +126,14 @@ public class NotificationServiceImpl implements NotificationService{
                 .routingId(notificationVO.getRoutingId())
                 .title(sb.toString())
                 .build();
+
+        FCMRequestDto fcmRequestDto = FCMRequestDto.builder()
+                .targetMemberId(notification.getMemberId())
+                .title("Mention")
+                .body("[" + teamName + "] 에서 새로운 투표가 열렸어요! 참여해보세요~🚀")
+                .routingId(notificationVO.getRoutingId())
+                .build();
+        fcmService.sendNotification(fcmRequestDto);
         notificationRepository.save(notification);
     }
 }

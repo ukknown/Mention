@@ -23,8 +23,8 @@ public class TeamEntity {
     @Column(nullable = false)
     private Long teamOwnerId;
 
-    //    @Column(length = 100, nullable = false)
-//    private String code;
+    @Column(length = 100, nullable = false)
+    private int code;
 
     public void updateCapacity(int capacity){
         this.capacity = capacity;
@@ -35,11 +35,12 @@ public class TeamEntity {
     }
 
     @Builder
-    public TeamEntity(String name, String image, int capacity, int isDeleted, Long teamOwnerId) {
+    public TeamEntity(String name, String image, int capacity, int isDeleted, Long teamOwnerId, int code) {
         this.name = name;
         this.image = image;
         this.capacity = capacity;
         this.isDeleted = isDeleted;
         this.teamOwnerId = teamOwnerId;
+        this.code = code;
     }
 }
