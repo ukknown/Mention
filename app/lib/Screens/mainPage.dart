@@ -34,11 +34,12 @@ class _MainPageState extends State<MainPage> {
 
   File? userImage;
 
-  List<dynamic> swiperList = [];
+  final List<dynamic> swiperList = [];
   TextEditingController inputController = TextEditingController();
   String inputText = '';
   File? imageFile;
   late int propsId = -1;
+  Swiper? swiper;
 
   final String baseUrl = 'http://k8c105.p.ssafy.io:8000';
   final String token =
@@ -50,7 +51,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    getProfile();
+    getProfile(); // getProfile 함수를 호출합니다
   }
 
   // 그룹 생성하기
@@ -106,23 +107,51 @@ class _MainPageState extends State<MainPage> {
         final List<int> bytes = response.bodyBytes;
         final String responseBody = utf8.decode(bytes);
         final List<dynamic> profileJson = jsonDecode(responseBody);
-        List<dynamic> updatedSwiperList = [];
-        for (dynamic group in profileJson) {
-          updatedSwiperList.add(swipercontainer(
-            groupimg: group["image"],
-            groupname: group["name"],
-            membernum: group["capacity"],
-            id: group["id"],
-            vote: group["voteList"],
-            screenWidth: MediaQuery.of(context).size.width,
-          ));
-        }
-        ;
+
         setState(() {
-          updatedSwiperList.add(Image.asset(
+          swiperList.clear();
+
+          for (dynamic group in profileJson) {
+            swiperList.add(swipercontainer(
+              groupimg: group["image"],
+              groupname: group["name"],
+              membernum: group["capacity"],
+              id: group["id"],
+              vote: group["voteList"],
+              screenWidth: MediaQuery.of(context).size.width,
+            ));
+          }
+
+          swiperList.add(Image.asset(
             "assets/images/addgroup.png",
           ));
-          swiperList = updatedSwiperList;
+
+          swiper = Swiper(
+            itemBuilder: (BuildContext context, int index) {
+              return swiperList[index];
+            },
+            onTap: (index) {
+              index == (swiperList.length - 1)
+                  ? _newGroupModal(context)
+                  : setState(() {
+                      propsId = swiperList[index].id;
+                    });
+              if (swiperList[index].id != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GroupScreen(propsId: propsId),
+                  ),
+                );
+              }
+            },
+            itemCount: swiperList.length,
+            viewportFraction: 0.8,
+            scale: 0.81,
+            pagination: const SwiperPagination(
+              margin: EdgeInsets.all(0),
+            ),
+          );
         });
       } else {
         print('Server responded with status code: ${response.statusCode}');
@@ -160,34 +189,12 @@ class _MainPageState extends State<MainPage> {
             // 그룹
             Flexible(
               flex: 3,
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return swiperList[index];
-                },
-                onTap: (index) {
-                  index == (swiperList.length - 1)
-                      ? _newGroupModal(context)
-                      : setState(
-                          () {
-                            propsId = swiperList[index].id;
-                          },
-                        );
-                  if (swiperList[index].id != null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GroupScreen(propsId: propsId),
-                      ),
-                    );
-                  }
-                },
-                itemCount: swiperList.length,
-                viewportFraction: 0.8,
-                scale: 0.81,
-                pagination: const SwiperPagination(
-                  margin: EdgeInsets.all(0),
-                ),
-              ),
+              child: swiper ??
+                  Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
             ),
             SizedBox(
               height: screenHeight * 0.13,
