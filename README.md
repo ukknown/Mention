@@ -1,5 +1,5 @@
 # MENTION
-<img src = "exec/mentionLogo.PNG" width ="300px">
+<img src = "exec/mentionLogo.png" width ="300px">
 
 <br/>
 <br/>
@@ -426,7 +426,7 @@
 <br> ``` task ``` : 코드 작성과 관련된 개발업무에 관한 업무 관리
 <br/>
 <br/>
-<img src="exec/jira burndown.PNG">
+<img src="exec/jira burndown.png">
 
 <br/>
 
@@ -440,7 +440,7 @@
 <br/>
 
 ## 팀원 소개
-|    <img src='exec/조승현.PNG' width='150px'>    |  <img src='exec/임세은.PNG' width='150px'>  |    <img src='exec/최종욱.PNG' width='150px'>    |     <img src='exec/노준호.PNG' width='150px'>     |     <img src='exec/여도현.PNG' width='150px'>     |    <img src='exec/김창영.PNG' width='150px'>    |
+|    <img src='exec/조승현.png' width='150px'>    |  <img src='exec/임세은.png' width='150px'>  |    <img src='exec/최종욱.png' width='150px'>    |     <img src='exec/노준호.png' width='150px'>     |     <img src='exec/여도현.png' width='150px'>     |    <img src='exec/김창영.png' width='150px'>    |
 | :--------------------------------------------: | :-----------------------------------------: | :--------------------------------------------: | :-------------------------------------------------: | :----------------------------------------------: | :----------------------------------------------: |
 | **[BE 조승현👑]** | **[BE 임세은]** | **[BE 최종욱]** | **[FE 노준호]** | **[FE 여도현]** | **[FE 김창영]** |
 <br/>
