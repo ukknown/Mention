@@ -76,6 +76,7 @@ class _swipercontainerState extends State<swipercontainer> {
                         style: TextStyle(
                           fontSize: 24,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(
                         height: 3,
@@ -129,14 +130,19 @@ class _swipercontainerState extends State<swipercontainer> {
                         topRight: Radius.circular(30),
                       ),
                     ),
-                    child: Text(
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        right: widget.screenWidth * 0.05,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      "${widget.vote[0]['topicTitle']}",
+                      child: Text(
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                        "${widget.vote[0]['topicTitle']}",
+                      ),
                     ),
                   ),
                 ),
@@ -179,14 +185,19 @@ class _swipercontainerState extends State<swipercontainer> {
                         topRight: Radius.circular(30),
                       ),
                     ),
-                    child: Text(
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        right: widget.screenWidth * 0.05,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      "${widget.vote[1]['topicTitle']}",
+                      child: Text(
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                        "${widget.vote[1]['topicTitle']}",
+                      ),
                     ),
                   ),
                 ),

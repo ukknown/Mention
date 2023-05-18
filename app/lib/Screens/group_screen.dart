@@ -121,8 +121,10 @@ class _GroupScreenState extends State<GroupScreen> {
                       width: screenWidth * 0.55,
                       child: Text(
                         groupDetail.name,
-                        style: TextStyle(fontSize: 24),
-                        // overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],

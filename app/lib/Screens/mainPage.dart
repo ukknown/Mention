@@ -122,9 +122,30 @@ class _MainPageState extends State<MainPage> {
             ));
           }
 
-          swiperList.add(Image.asset(
-            "assets/images/addgroup.png",
-          ));
+          swiperList.add(
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7),
+                    spreadRadius: 0,
+                    blurRadius: 5.0,
+                    offset: const Offset(4, 7),
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.add_circle_outline_sharp,
+                  size: 80,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ),
+          );
 
           swiper = Swiper(
             itemBuilder: (BuildContext context, int index) {
