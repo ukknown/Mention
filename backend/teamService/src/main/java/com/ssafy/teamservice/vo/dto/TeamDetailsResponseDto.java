@@ -17,8 +17,8 @@ public class TeamDetailsResponseDto {
     private String name;
     private String image;
     private int capacity;
+    private int code;
     private List<MemberVO> memberList;
-
      private List<VoteVO> voteList;
 
     public TeamDetailsResponseDto(TeamEntity teamEntity, List<MemberVO> memberList, List<VoteVO> voteList) {
@@ -26,6 +26,7 @@ public class TeamDetailsResponseDto {
         this.name = teamEntity.getName();
         this.image = teamEntity.getImage();
         this.capacity = teamEntity.getCapacity();
+        this.code = teamEntity.getCode();
         this.memberList = memberList;
         this.voteList = voteList;
     }
