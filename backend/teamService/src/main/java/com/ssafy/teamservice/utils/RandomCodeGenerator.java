@@ -12,12 +12,12 @@ public class RandomCodeGenerator {
      * 한 글자에 음절이 3개인 4글자 랜덤코드 생성
      * @return
      */
-    public static String generate() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 3; i++) {
-            char c = (char) (random.nextInt(('히' - '가' + 10) / 10) + '가');
-            sb.append(c);
-        }
-        return sb.toString();
+    public int generate() {
+        Random random = new Random();
+
+        // 4자리 숫자 랜덤 코드 생성
+        int code = random.nextInt(9000) + 1000;
+
+        return code;
     }
 }

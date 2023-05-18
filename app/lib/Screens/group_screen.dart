@@ -1,57 +1,81 @@
 import 'package:app/Screens/group_member.dart';
+import '../api/topic_api.dart';
+import '../api/topic_model.dart';
+import 'package:app/api/group_api.dart';
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/group_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
+import 'package:app/api/group_model.dart';
 import 'package:app/widgets/bottom_nav.dart';
 
-import '../api/group_api.dart';
-import '../api/group_model.dart';
-
 class GroupScreen extends StatefulWidget {
-  // const GroupScreen(int propsId, {Key? key})
-  //     : super(key: key);
+  const GroupScreen({
+    Key? key,
+    required this.propsId,
+  }) : super(key: key);
 
   final int propsId;
-  const GroupScreen(this.propsId);
 
   @override
   State<GroupScreen> createState() => _GroupScreenState();
 }
 
 class _GroupScreenState extends State<GroupScreen> {
-  Future<GroupDetailModel>? futureGroupData;
+  final GroupApi groupApi = GroupApi();
+  late Future<GroupDetailModel> futureGroupData;
+
   @override
   void initState() {
     super.initState();
-    futureGroupData = fetchGroupData();
+    futureGroupData = groupApi.fetchGroupData(widget.propsId);
   }
 
-  // 질문생성 모달
+  void refreshGroupData() {
+    setState(() {
+      futureGroupData = groupApi.fetchGroupData(widget.propsId);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
         decoration: bgimg(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+          padding: const EdgeInsets.symmetric(horizontal: 00.0),
           child: Column(
             children: [
-              const SizedBox(height: 10.0), // 상단 여백
+              SizedBox(height: screenHeight * 0.01),
               Flexible(
                 flex: 2,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
-                      foregroundImage: AssetImage('assets/images/ssafy.png'),
-                      radius: 50,
+                    CircleAvatar(
+                      child: FutureBuilder<GroupDetailModel>(
+                        future: futureGroupData,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            GroupDetailModel groupDetail = snapshot.data!;
+                            String imageUrl = groupDetail.image;
+
+                            return Image.network(imageUrl);
+                          } else if (snapshot.hasError) {
+                            return Text('Error occurred');
+                          }
+                          return CircularProgressIndicator();
+                        },
+                      ),
+                      radius: screenHeight * 0.07,
                     ),
-                    const SizedBox(
-                      width: 20,
+                    SizedBox(
+                      width: screenWidth * 0.025,
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -75,11 +99,10 @@ class _GroupScreenState extends State<GroupScreen> {
                                 return CircularProgressIndicator();
                               },
                             ),
-                            // 이름 수정
                           ],
                         ),
-                        const SizedBox(
-                          height: 10,
+                        SizedBox(
+                          height: screenHeight * 0.01,
                         ),
                         Row(
                           children: [
@@ -110,7 +133,21 @@ class _GroupScreenState extends State<GroupScreen> {
                                   return const CircularProgressIndicator();
                                 }),
                             // 인원 숫자
-                            const Text('24'),
+                            FutureBuilder<GroupDetailModel>(
+                              future: futureGroupData,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  GroupDetailModel groupDetail = snapshot.data!;
+                                  int capacity = groupDetail.capacity;
+
+                                  return Text("$capacity");
+                                } else if (snapshot.hasError) {
+                                  return Text('Error occurred');
+                                }
+                                return CircularProgressIndicator();
+                              },
+                            ),
+
                             const SizedBox(
                               width: 40,
                             ),
@@ -151,17 +188,25 @@ class _GroupScreenState extends State<GroupScreen> {
                           dueDate: vote.dueDate,
                           capacity: capacity,
                           index: index,
+                          participant: vote.participant,
+                          voteId: vote.voteId,
                         );
                       }).toList();
-                      items.add(const Groupbox());
+                      items.add(Groupbox(
+                        propsId: widget.propsId,
+                        screenWidth: screenWidth,
+                        screenHeight: screenHeight,
+                        refreshGroupData: refreshGroupData,
+                      ));
 
                       return CarouselSlider(
-                          items: items,
-                          options: CarouselOptions(
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            height: 420,
-                            enlargeCenterPage: true,
-                          ));
+                        items: items,
+                        options: CarouselOptions(
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          height: screenHeight * 0.5,
+                          enlargeCenterPage: true,
+                        ),
+                      );
                     } else if (snapshot.hasError) {
                       return const Text('Error occurred');
                     }
@@ -170,9 +215,9 @@ class _GroupScreenState extends State<GroupScreen> {
                 ),
               ),
 
-              const SizedBox(height: 20.0), // 네모 박스와 로우 사이 여백
+              const SizedBox(height: 20), // 네모 박스와 로우 사이 여백
 
-              const SizedBox(height: 20.0), // 하단 여백
+              const SizedBox(height: 20), // 하단 여백
             ],
           ),
         ),
@@ -184,16 +229,24 @@ class _GroupScreenState extends State<GroupScreen> {
 
 // 박스 형태
 class Groupbox extends StatelessWidget {
-  const Groupbox({
-    super.key,
-  });
+  const Groupbox(
+      {super.key,
+      required this.propsId,
+      required this.screenWidth,
+      required this.screenHeight,
+      required this.refreshGroupData});
+
+  final int propsId;
+  final double screenWidth;
+  final double screenHeight;
+  final Function refreshGroupData;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -205,10 +258,16 @@ class Groupbox extends StatelessWidget {
       ),
       child: Center(
         child: GestureDetector(
-          onTap: () => _showNewTopicModal(context),
-          child: const Icon(
+          onTap: () => _showNewTopicModal(
+            context,
+            propsId,
+            screenWidth,
+            screenHeight,
+            refreshGroupData,
+          ),
+          child: Icon(
             Icons.add_circle_outline_rounded,
-            size: 80,
+            size: screenWidth * 0.2,
           ),
         ),
       ),
@@ -219,7 +278,16 @@ class Groupbox extends StatelessWidget {
 // 그룹 디테일 페이지
 
 // 토픽 만들기
-void _showNewTopicModal(BuildContext context) {
+void _showNewTopicModal(
+  BuildContext context,
+  int propsId,
+  double screenWidth,
+  double screenHeight,
+  Function refreshGroupData,
+) {
+  List<SearchTopic> topicList = []; // 상태 변수 추가
+  late int pickedTopic; // 선택된 토픽의 id를 저장할 변수
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -227,25 +295,60 @@ void _showNewTopicModal(BuildContext context) {
         builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
             title: const Text('새로운 토픽을 골라주세요'),
-            // 여기서 부터 수정
-            content: const SingleChildScrollView(
+            content: SingleChildScrollView(
               child: Column(
-                mainAxisSize: MainAxisSize.min, // 변경된 부분
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     decoration: InputDecoration(
                       hintText: '\'춤\'이라고 검색해보세요',
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        size: screenWidth * 0.05,
+                      ),
                     ),
+                    onSubmitted: (value) async {
+                      // 사용자가 입력한 텍스트를 검색 API에 전달하고 결과를 topicList에 저장
+                      final results = await TopicApi.topicSearch(value);
+                      setState(() {
+                        topicList = results;
+                      });
+                    },
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.01),
                   SizedBox(
-                    height: 200,
-                    child: Text('검색결과',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight
-                                .bold)), // 검색 결과가 있는 경우에만 '검색결과' 텍스트를 표시
+                    height: screenHeight * 0.25,
+                    child: Column(
+                      children: [
+                        Text(
+                          '검색결과',
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.045,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Divider(),
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: topicList.length,
+                            itemBuilder: (context, index) {
+                              final topic = topicList[index];
+                              return ListTile(
+                                title: Text(
+                                  '${String.fromCharCode(topic.emoji)} ${topic.title}',
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    pickedTopic = topic.id;
+                                  });
+                                },
+                              );
+                            },
+                            separatorBuilder: (context, index) => Divider(),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 10),
                 ],
@@ -253,23 +356,35 @@ void _showNewTopicModal(BuildContext context) {
             ),
             actions: [
               ElevatedButton(
-                onPressed: () {
-                  print('Random button clicked');
+                onPressed: () async {
+                  final topicRandom = await TopicApi.getRandomTopic(propsId);
+                  final topic = topicRandom.toSearchTopic(); // 변환
+                  setState(() {
+                    topicList.add(topic); // 상태 업데이트
+                  });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue, // 버튼 배경색 설정
+                  backgroundColor: Colors.lightBlue,
                 ),
                 child: const Text('랜덤'),
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   print('Next button clicked');
+                  print(pickedTopic);
+
+                  // Call createTopic API
+                  await TopicApi.createTopic(propsId, pickedTopic);
+
+                  // Update futureGroupData
+                  refreshGroupData();
+
                   Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightGreen, // 버튼 배경색 설정
+                  backgroundColor: Colors.lightGreen,
                 ),
-                child: const Text('다음'),
+                child: const Text('생성'),
               ),
             ],
           );

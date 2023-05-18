@@ -29,25 +29,15 @@ class _MainPageState extends State<MainPage> {
     'assets/images/topic.png',
     'assets/images/cashwalk.png'
   ];
+  // final ImagePicker _picker = ImagePicker();
+  // final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  File? userImage;
 
   List<dynamic> swiperList = [];
   TextEditingController inputController = TextEditingController();
   String inputText = '';
   File? imageFile;
-  late int propsId;
-
-  void getImage({required ImageSource source}) async {
-    final file = await ImagePicker().pickImage(
-        source: source, maxWidth: 640, maxHeight: 280, imageQuality: 100 //0-100
-        );
-
-    if (file?.path != null) {
-      setState(() {
-        imageFile = File(file!.path);
-        // _selectedFiles.clear();
-      });
-    }
-  }
+  late int propsId = -1;
 
   @override
   void initState() {
@@ -62,12 +52,12 @@ class _MainPageState extends State<MainPage> {
     final jsonBody = jsonEncode(inputText);
 
     final response = await http.post(url, headers: <String, String>{
-      'Content-Type': 'application/json', // Content-Type 설정
+      // 'Content-Type': 'application/json', // Content-Type 설정
       'Authorization':
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyXrOuPhO2YhCIsImlhdCI6MTY4NDEzNDAxNiwiZXhwIjoxNjg2NzI2MDE2fQ.WE9_nCQUnPZ9hY12Isi6KjL8LzEgkkvn4ilKN_KBgetITHEftY4lIOHsV4NPPhhPrK52U9ldXdH4_N73QZaBfg",
+          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q",
     }, body: {
       "name": jsonBody,
-      "file": imageFile,
+      "file": userImage,
     });
 
     // 응답 처리
@@ -86,12 +76,12 @@ class _MainPageState extends State<MainPage> {
     // final prefs = await SharedPreferences.getInstance();
     // late String accessToken = prefs.getString("token")!;
 
-    final url = Uri.parse('$baseUrl/team-service/teams');
+    final url = Uri.parse('${baseUrl}/team-service/teams');
     try {
       final response = await http.get(url, headers: <String, String>{
         // 'Authorization': "Bearer $accessToken",
         'Authorization':
-            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuyXrOuPhO2YhCIsImlhdCI6MTY4NDEzNDAxNiwiZXhwIjoxNjg2NzI2MDE2fQ.WE9_nCQUnPZ9hY12Isi6KjL8LzEgkkvn4ilKN_KBgetITHEftY4lIOHsV4NPPhhPrK52U9ldXdH4_N73QZaBfg",
+            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q",
       });
 // eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuamgzMzIxQG5hdmVyLmNvbSIsImVtYWlsIjoibmpoMzMyMUBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuuFuOykgO2YuCIsImlhdCI6MTY4NDA2Njk1NCwiZXhwIjoxNjg2NjU4OTU0fQ.HCwqWAat8tsT3GYsWLXb3YKznWP-Pdk7c-0GMvRn3wgMwNQeZbp6j2KpVBqyulVRiA7aa3fx6bqAyRPHxYhAJw
       if (response.statusCode == 200) {
@@ -158,41 +148,20 @@ class _MainPageState extends State<MainPage> {
                           child: IconButton(
                             icon: Icon(Icons.logout, size: 36),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Hint(),
-                                ),
-                              );
+                              getProfile();
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => const Hint(),
+                              //   ),
+                              // );
                             },
                           ),
                         ),
                       ),
                       flex: 1,
                     ),
-                  ]
-                      // child: IconButton(
-
-                      //   icon: Icon(Icons.logout),
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //         builder: (context) => const Hint(),
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
-
-                      // onTap: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => const Hint(),
-                      //     ),
-                      //   );
-                      // },
-                      ),
+                  ]),
                 ],
               ),
             ),
@@ -230,8 +199,15 @@ class _MainPageState extends State<MainPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   GestureDetector(
-                                    onTap: () {
-                                      getImage(source: ImageSource.gallery);
+                                    onTap: () async {
+                                      var picker = ImagePicker();
+                                      var image = await picker.pickImage(
+                                          source: ImageSource.gallery);
+                                      if (image != null) {
+                                        setState(() {
+                                          userImage = File(image.path);
+                                        });
+                                      }
                                       print("123");
                                     },
                                     child:
@@ -276,23 +252,26 @@ class _MainPageState extends State<MainPage> {
                                     });
                                     print(inputText);
                                     print(imageFile);
+                                    postRequest();
                                   },
                                 ),
                               ],
                             );
                           },
                         )
-                      : setState(() {
-                          propsId = swiperList[index].id;
-                        });
-                  // print(propsId);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GroupScreen(propsId),
-                    ),
-                  );
-                  // print(swiperList[index].id);
+                      : setState(
+                          () {
+                            propsId = swiperList[index].id;
+                          },
+                        );
+                  if (swiperList[index].id != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GroupScreen(propsId: propsId),
+                      ),
+                    );
+                  }
                 },
                 itemCount: swiperList.length,
                 viewportFraction: 0.8,
