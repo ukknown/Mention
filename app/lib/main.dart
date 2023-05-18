@@ -39,9 +39,12 @@ void main() async {
     android: initializationSettingsAndroid,
   );
 
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse details) async {
+    navigatorKey.currentState!
+        .push(MaterialPageRoute(builder: (context) => NoticePage()));
+  } // onSelectNotification 콜백 설정
+      );
 
   NotificationAppLaunchDetails? details =
       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
