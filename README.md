@@ -420,12 +420,12 @@
 
 ## DDD 기반 MSA 설계
 ### 이벤트 스토밍
-<img src = "exec/바운디드 컨텍스트.png" width="300px">
-<img src = "exec/사용자관리.png" width="300px">
-<img src = "exec/그룹관리.png" width="300px">
-<img src = "exec/토픽.png" width="300px">
-<img src = "exec/알림1.png" width="300px">
-<img src = "exec/투표생성.png" width="300px">
+<img src = "exec/bounded-context.png" width="300px">
+<img src = "exec/member-service-ddd.jpg" width="300px">
+<img src = "exec/team-service-ddd.jpg" width="300px">
+<img src = "exec/topic-service-ddd.jpg" width="300px">
+<img src = "exec/notification-service-ddd.jpg" width="300px">
+<img src = "exec/mention-service-ddd.jpg" width="300px">
 
 <br/>
 <br/>
