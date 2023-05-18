@@ -46,7 +46,7 @@ public class TopicServiceImpl implements TopicService{
     @Override
     @Transactional
     public void saveElastic() {
-        AtomicLong idCounter = new AtomicLong(1); // 새로운 ID 카운터 생성
+        AtomicLong idCounter = new AtomicLong(1);
         List<TopicEntity> topics = topicRepository.findAll();
         for (TopicEntity topic : topics) {
             TopicDocument topicDocument = TopicDocument.builder()
