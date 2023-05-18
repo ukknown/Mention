@@ -1,25 +1,28 @@
+import 'package:app/api/group_model.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'group_model.dart';
 import 'dart:convert' show jsonDecode, utf8;
 
-final String baseUrl = 'http://k8c105.p.ssafy.io:8000';
-final String token =
-    'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYWJvQGdtYWlsLmNvbSIsImVtYWlsIjoiYmFib0BnbWFpbC5jb20iLCJuaWNrbmFtZSI6IuuwlOuztCIsImlhdCI6MTY4NDEzMjg2NiwiZXhwIjoxNjg2NzI0ODY2fQ.WW7MH3_ksWdUuOh0hlkb4CuNtat_khLIiXPBsF3jcTPwuNsQ0NTtTfLsFEW1kDp7bcOCCykdmpkDod-lM4nbYA';
+class GroupApi {
+  final String baseUrl = 'http://k8c105.p.ssafy.io:8000';
+  final String token =
+      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q';
 
-Future<GroupDetailModel> fetchGroupData() async {
-  final response = await http.get(
-    Uri.parse(
-        '$baseUrl/team-service/teams/1'), // Replace 'YOUR_ENDPOINT' with the correct endpoint.
-    headers: {
-      'Authorization': 'Bearer $token',
-    },
-  );
+  Future<GroupDetailModel> fetchGroupData(int teamId) async {
+    final response = await http.get(
+      Uri.parse(
+          'http://k8c105.p.ssafy.io:8000/team-service/teams/$teamId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
 
-  if (response.statusCode == 200) {
-    String body = utf8.decode(response.bodyBytes);
-    return GroupDetailModel.fromJson(jsonDecode(body));
-  } else {
-    throw Exception('Failed to load group data');
+    if (response.statusCode == 200) {
+      final List<int> bytes = response.bodyBytes;
+      final String responseBody = utf8.decode(bytes);
+      final Map<String, dynamic> groupData = jsonDecode(responseBody);
+      return GroupDetailModel.fromJson(groupData);
+    } else {
+      throw Exception('Failed to load group data');
+    }
   }
 }

@@ -1,16 +1,27 @@
+// ignore_for_file: unused_import
+
 import 'package:app/widgets/bg_img.dart';
 import 'package:app/widgets/bottom_nav.dart';
 // import 'package:app/widgets/push_alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 
 class VotePick extends StatefulWidget {
   final String nickname;
   final String avatarUrl;
+  final int id;
+  final String hint;
+  final int voteId;
   const VotePick({
     required this.nickname,
     required this.avatarUrl,
+    required this.id,
+    required this.hint,
+    required this.voteId,
     Key? key,
   }) : super(key: key);
 
@@ -28,12 +39,50 @@ class _VotePickState extends State<VotePick> {
       duration: const Duration(seconds: 15),
     );
     _controller.play();
+    sendMention();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+    // sendMention();
+    // print(widget.voteId);
+    // print(widget.id);
+    // print(widget.hint);
+  }
+
+  void sendMention() async {
+    final url =
+        Uri.parse('http://k8c105.p.ssafy.io:8000/mention-service/mentions');
+
+    final body = {
+      "voteId": widget.voteId,
+      "pickerId": widget.id,
+      "hint": widget.hint
+    };
+
+    final jsonBody = jsonEncode(body);
+
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Authorization':
+            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q",
+        'Content-Type': 'application/json', // JSON 형식으로 보내기 위한 헤더 추가
+      },
+      body: jsonBody,
+    );
+
+    // 응답 처리
+    if (response.statusCode == 200) {
+      // 성공적으로 요청을 보냈을 경우
+      print('요청이 성공적으로 완료되었습니다.');
+      print(response.body);
+    } else {
+      // 요청이 실패했을 경우
+      print('요청이 실패하였습니다. 에러 코드: ${response.statusCode}');
+    }
   }
 
   @override
