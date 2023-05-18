@@ -16,4 +16,7 @@ public interface TeamRepository extends JpaRepository<TeamEntity, Long> {
     String getTeamNameById(@Param("teamId") Long teamId);
     @Query("SELECT capacity FROM TeamEntity WHERE id = :teamId")
     int getTeamMemberById(@Param("teamId") Long teamId);
+    @Query("SELECT count(*) FROM TeamEntity WHERE code = :code")
+    int getCountByCode(int code);
+    TeamEntity findByCode(int code);
 }
