@@ -50,7 +50,9 @@ class _swipercontainerState extends State<swipercontainer> {
               children: [
                 Flexible(
                   flex: 1,
-                  child: Image.network(widget.groupimg),
+                  child: ClipOval(
+                    child: Image.network(widget.groupimg),
+                  ),
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.03,

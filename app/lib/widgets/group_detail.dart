@@ -88,6 +88,7 @@ class _GroupDetailState extends State<GroupDetail> {
                   builder: (context) => (VoteMember(
                       memberList: widget.memberList,
                       topicTitle: widget.topicTitle,
+                      emoji: widget.emoji,
                       voteId: widget.voteId))));
         },
         child: Padding(
@@ -106,11 +107,14 @@ class _GroupDetailState extends State<GroupDetail> {
                 ),
               ),
               Expanded(
-                  flex: 1,
-                  child: Text(
-                    overflow: TextOverflow.ellipsis,
-                    widget.topicTitle,
-                    style: TextStyle(fontSize: 20),
+                  flex: 2,
+                  child: Center(
+                    child: Text(
+                      widget.topicTitle,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.center,
+                    ),
                   )),
               Expanded(
                 flex: 1,

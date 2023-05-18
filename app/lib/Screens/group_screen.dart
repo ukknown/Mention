@@ -94,56 +94,79 @@ class _GroupScreenState extends State<GroupScreen> {
       double screenWidth, double screenHeight) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        SizedBox(
+          width: screenWidth * 0.05,
+        ),
         ClipOval(
           child: Image.network(
             groupDetail.image,
-            height: screenHeight * 0.15,
+            height: screenHeight * 0.11,
           ),
         ),
         SizedBox(
           width: screenWidth * 0.05,
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Text(
-                  groupDetail.name,
-                  style: TextStyle(fontSize: 25),
+        Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: screenHeight * 0.1,
+                child: Row(
+                  children: [
+                    Container(
+                      width: screenWidth * 0.6,
+                      child: Text(
+                        groupDetail.name,
+                        style: TextStyle(fontSize: 25),
+                        // overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(
-              height: screenHeight * 0.01,
-            ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
+              ),
+              SizedBox(
+                height: screenHeight * 0.01,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => GroupMember(
-                                memberList: groupDetail.memberList)));
-                  },
-                  child: const Icon(Icons.person),
-                ),
-                Text("${groupDetail.capacity}"),
-                const SizedBox(
-                  width: 40,
-                ),
-                const Icon(Icons.notifications_off_rounded),
-                const SizedBox(
-                  width: 40,
-                ),
-                const Icon(Icons.output_outlined)
-              ],
-            )
-          ],
-        ),
+                          builder: (context) => GroupMember(
+                            memberList: groupDetail.memberList,
+                            code: groupDetail.code,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Icon(Icons.person),
+                  ),
+                  Text("${groupDetail.capacity}"),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  const Icon(Icons.notifications_off_rounded),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // navigator
+                    },
+                    child: const Icon(Icons.output_outlined),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
         SizedBox(
           width: screenWidth * 0.05,
         ),
