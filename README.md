@@ -420,7 +420,8 @@
 
 ## DDD 기반 MSA 설계
 ### 이벤트 스토밍
-<img src = "exec/bounded-context.png" width="300px">
+<img src = "exec/bounded-context.png">
+<br/>
 <img src = "exec/member-service-ddd.jpg" width="300px">
 <img src = "exec/team-service-ddd.jpg" width="300px">
 <img src = "exec/topic-service-ddd.jpg" width="300px">
