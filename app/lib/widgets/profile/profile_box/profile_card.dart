@@ -59,6 +59,7 @@ class ProfileCard extends StatelessWidget {
                     child: ClipOval(
                       child: Image.network(
                         profileImage ?? 'assets/images/image.png',
+                        height: screenHeight * 0.15,
                         fit: BoxFit.cover,
                       ),
                     ),

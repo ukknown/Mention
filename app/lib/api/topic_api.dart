@@ -6,7 +6,7 @@ class TopicApi {
   // static const String baseUrl = 'http://localhost:8000';
   static const String baseUrl = 'http://k8c105.p.ssafy.io:8000';
   static final token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuamgzMzIxQG5hdmVyLmNvbSIsImVtYWlsIjoibmpoMzMyMUBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuuFuOykgO2YuCIsImlhdCI6MTY4NDI4NjczMiwiZXhwIjoxNjg2ODc4NzMyfQ.-zxa3ZBZbswKL5DtjTQdVPVFEoMxj6KhTa4FotDy2nF4GmmKp1jLHKbx8nE6KeAL2SY2KlXwQZPK3Kpxh64Y6w";
+      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuamgzMzIxQG5hdmVyLmNvbSIsImVtYWlsIjoibmpoMzMyMUBuYXZlci5jb20iLCJuaWNrbmFtZSI6IuuFuOykgO2YuCIsImlhdCI6MTY4NDM5Mjk2NCwiZXhwIjoxNjg2OTg0OTY0fQ._cBR1s6iVJXKOU_HoDOQ8ucIY4n8WcapsyvflASAXCB5R_ZGCF5XRtNwo702UoEFeTrV1POXjwCBMLGOP035Jw';
 
   static Future<TopicRandom> getRandomTopic(int teamId) async {
     final url =

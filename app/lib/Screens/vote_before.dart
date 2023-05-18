@@ -9,10 +9,12 @@ class VoteMember extends StatefulWidget {
   final List<MemberModel> memberList;
   final String topicTitle;
   final int voteId;
+  final int emoji;
 
   const VoteMember({
     required this.memberList,
     required this.topicTitle,
+    required this.emoji,
     required this.voteId,
     Key? key,
   }) : super(key: key);
@@ -39,9 +41,13 @@ class _VoteMemberState extends State<VoteMember> {
                   flex: 1,
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Text(
-                      widget.topicTitle,
-                      style: TextStyle(fontSize: 30),
+                    child: Row(
+                      children: [
+                        Text(
+                          widget.topicTitle,
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ],
                     ),
                   )),
               SizedBox(

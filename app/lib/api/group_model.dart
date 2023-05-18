@@ -3,6 +3,7 @@ class GroupDetailModel {
   final String name;
   final String image;
   final int capacity;
+  final int code;
   final List<MemberModel> memberList;
   final List<VoteModel> voteList;
 
@@ -11,6 +12,7 @@ class GroupDetailModel {
       required this.name,
       required this.image,
       required this.capacity,
+      required this.code,
       required this.memberList,
       required this.voteList});
 
@@ -20,6 +22,7 @@ class GroupDetailModel {
       name: json['name'],
       image: json['image'],
       capacity: json['capacity'],
+      code: json['code'],
       memberList: (json['memberList'] as List)
           .map((i) => MemberModel.fromJson(i))
           .toList(),
@@ -51,7 +54,7 @@ class MemberModel {
 class VoteModel {
   final int voteId;
   final String topicTitle;
-  final String emoji;
+  final int emoji;
   final String dueDate;
   final int participant;
   final bool system;
@@ -68,7 +71,8 @@ class VoteModel {
     return VoteModel(
       voteId: json['voteId'],
       topicTitle: json['topicTitle'],
-      emoji: json['emoji'],
+      emoji: int.tryParse(json['emoji'] ?? '', radix: 16) ??
+          int.parse('1F60B', radix: 16),
       dueDate: json['dueDate'],
       participant: json['participant'],
       system: json['isSystem'],
