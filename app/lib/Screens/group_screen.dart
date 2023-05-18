@@ -309,7 +309,7 @@ void _showNewTopicModal(
                     ),
                     onSubmitted: (value) async {
                       // 사용자가 입력한 텍스트를 검색 API에 전달하고 결과를 topicList에 저장
-                      final results = await TopicApi.searchTopic(value);
+                      final results = await TopicApi.topicSearch(value);
                       setState(() {
                         topicList = results;
                       });
@@ -357,7 +357,8 @@ void _showNewTopicModal(
             actions: [
               ElevatedButton(
                 onPressed: () async {
-                  final topic = await TopicApi.getRandomTopic(propsId);
+                  final topicRandom = await TopicApi.getRandomTopic(propsId);
+                  final topic = topicRandom.toSearchTopic(); // 변환
                   setState(() {
                     topicList.add(topic); // 상태 업데이트
                   });
@@ -383,7 +384,7 @@ void _showNewTopicModal(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightGreen,
                 ),
-                child: const Text('다음'),
+                child: const Text('생성'),
               ),
             ],
           );

@@ -50,7 +50,7 @@ class TopicApi {
     }
   }
 
-  static Future<SearchTopic> topicSearch(String title) async {
+  static Future<List<SearchTopic>> topicSearch(String title) async {
     final url = Uri.parse('$baseUrl/topic-service/search?title=$title');
     final response = await http.get(
       url,
@@ -59,14 +59,12 @@ class TopicApi {
       },
     );
     if (response.statusCode == 200) {
-      final List<int> bytes = response.bodyBytes;
-      final String responseBody = utf8.decode(bytes);
-      final Map<String, dynamic> topicData = jsonDecode(responseBody);
-      print(topicData);
-      return SearchTopic.fromJson(topicData);
+      final List<dynamic> responseBody = json.decode(response.body);
+      List<SearchTopic> topics =
+          responseBody.map((item) => SearchTopic.fromJson(item)).toList();
+      return topics;
     } else {
-      print('Server responded with status code: ${response.statusCode}');
-      throw Error();
+      throw Exception('Failed to load search results');
     }
   }
 }
