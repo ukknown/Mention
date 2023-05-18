@@ -2,6 +2,7 @@ package com.ssafy.teamservice.controller;
 
 import com.ssafy.teamservice.service.TeamMemberService;
 import com.ssafy.teamservice.service.TeamService;
+import com.ssafy.teamservice.utils.RandomImageGenerator;
 import com.ssafy.teamservice.vo.*;
 import com.ssafy.teamservice.vo.dto.TeamDetailsResponseDto;
 import com.ssafy.teamservice.vo.dto.TeamResponseDto;
@@ -33,6 +34,7 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
     private final S3Uploader s3Uploader;
+    private final RandomImageGenerator randomImageGenerator;
     private final TeamMemberService teamMemberService;
 
     /**
@@ -49,22 +51,18 @@ public class TeamController {
     /**
      * 그룹(팀) 생성 : code는 후순위 + team_owner_id 추가
      * @param name
-     * @param file
      * @return
      */
     @Operation(summary = "그룹(팀) 생성", description = "인증 코드는 후순위")
-    @PostMapping(path = "/teams", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping( "/teams")
     @Transactional
     public ResponseEntity createTeam(
             HttpServletRequest request,
-            @RequestPart(value = "name") String name,
-            @RequestPart(value = "file", required = false) MultipartFile file
+            @RequestPart(value = "name") String name
     ){
          TeamVO teamVO = convertRequestToVO(request);
 
-         String url = "https://mention-bucket.s3.ap-northeast-2.amazonaws.com/static/team-image/clover.jpeg";
-         if(file != null)  url = s3Uploader.uploadFileToS3(file, "static/team-image");
-
+         String url = randomImageGenerator.generate();
          TeamEntity teamEntity = teamService.createTeam(new TeamDetailVO(name, url, (long) teamVO.getMemberId()));
 
          teamMemberService.joinTeamMember(new TeamMemberVO(teamEntity, (long) teamVO.getMemberId()));
