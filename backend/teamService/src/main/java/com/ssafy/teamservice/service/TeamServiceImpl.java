@@ -5,6 +5,7 @@ import com.ssafy.teamservice.client.MentionServiceClient;
 import com.ssafy.teamservice.jpa.TeamEntity;
 import com.ssafy.teamservice.jpa.TeamMemberRepository;
 import com.ssafy.teamservice.jpa.TeamRepository;
+import com.ssafy.teamservice.utils.RandomCodeGenerator;
 import com.ssafy.teamservice.utils.error.ErrorCode;
 import com.ssafy.teamservice.utils.exception.CustomException;
 import com.ssafy.teamservice.vo.MemberVO;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService{
+    private final RandomCodeGenerator randomCodeGenerator;
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final MemberServiceClient memberServiceClient;
@@ -34,12 +36,19 @@ public class TeamServiceImpl implements TeamService{
      */
     @Override
     public TeamEntity createTeam(TeamDetailVO teamDetailVO) {
+        int randomCode;
+
+        while(true){
+            randomCode = randomCodeGenerator.generate();
+            if(teamRepository.findByCode(randomCode) == null) break;
+        }
 
         TeamEntity teamEntity = TeamEntity.builder()
                 .name(teamDetailVO.getName())
                 .image(teamDetailVO.getImage())
                 .capacity(teamDetailVO.getCapacity())
                 .isDeleted(teamDetailVO.getIsDeleted())
+                .code(randomCode)
                 .teamOwnerId(teamDetailVO.getTeamOwnerId())
                 .build();
 
@@ -84,6 +93,15 @@ public class TeamServiceImpl implements TeamService{
     @Override
     public int getTeamMemberCount(TeamVO teamVO) {
         return teamRepository.getTeamMemberById(teamVO.getTeamId());
+    }
+
+    @Override
+    public TeamEntity findTeamByTeamCode(int code) {
+        TeamEntity teamEntity = teamRepository.findByCode(code);
+        if(teamEntity == null) {
+            throw new CustomException(ErrorCode.TEAM_NOT_FOUND);
+        }
+        return teamEntity;
     }
 
     /**

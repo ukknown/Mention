@@ -35,7 +35,7 @@ public class NotificationController {
     }
 
     /**
-     * 회원의 알림 리스트 조회
+     * 회원의 알림 리스트 조회 - 빌드 테스트
      * @param request
      * @return
      */
