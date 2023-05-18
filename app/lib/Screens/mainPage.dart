@@ -268,10 +268,9 @@ class _MainPageState extends State<MainPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GroupScreen(propsId),
+                        builder: (context) => GroupScreen(propsId: propsId),
                       ),
                     );
-                    // print(swiperList[index].id);
                   }
                 },
                 itemCount: swiperList.length,

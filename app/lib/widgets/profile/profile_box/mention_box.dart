@@ -1,12 +1,12 @@
 import 'package:app/screens/Hint.dart';
 import 'package:flutter/material.dart';
 
-class MentionBox extends StatelessWidget {
+class MentionBox extends StatefulWidget {
   const MentionBox({
     Key? key,
     required this.screenWidth,
     required this.screenHeight,
-    required this.mentionId,
+    required this.mentionId, //멘션아이디
     required this.topicTitle,
     required this.hintStep,
     required this.gender,
@@ -15,27 +15,38 @@ class MentionBox extends StatelessWidget {
 
   final double screenWidth;
   final double screenHeight;
-  final int? mentionId;
+  final int mentionId;
   final String topicTitle;
   final int hintStep;
   final String gender;
   final int emoji;
 
   @override
+  State<MentionBox> createState() => _MentionBoxState();
+}
+
+class _MentionBoxState extends State<MentionBox> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: screenHeight * 0.01),
+      padding: EdgeInsets.only(bottom: widget.screenHeight * 0.01),
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
+        onTap: () async {
+          await Navigator.of(context)
+              .push(
             MaterialPageRoute(
-              builder: (context) => const Hint(),
+              builder: (BuildContext context) => Hint(
+                mentionId: widget.mentionId,
+              ),
             ),
-          );
+          )
+              .then((value) {
+            setState(() {});
+          });
+          // print(widget.mentionId);
         },
         child: Container(
-          width: screenWidth * 0.8,
+          width: widget.screenWidth * 0.8,
           decoration: BoxDecoration(
             color: genderColor(),
             borderRadius: BorderRadius.circular(15),
@@ -48,29 +59,29 @@ class MentionBox extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   SizedBox(
-                    width: screenWidth * 0.65,
-                    height: screenHeight * 0.025,
+                    width: widget.screenWidth * 0.65,
+                    height: widget.screenHeight * 0.025,
                   ),
                   hintCounter(),
                 ],
               ),
               SizedBox(
-                height: screenHeight * 0.01,
+                height: widget.screenHeight * 0.01,
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  left: screenWidth * 0.06,
+                  left: widget.screenWidth * 0.06,
                 ),
                 child: Text(
-                  '${String.fromCharCode(emoji)} $topicTitle',
+                  '${String.fromCharCode(widget.emoji)} ${widget.topicTitle}',
                   style: TextStyle(
-                    fontSize: screenWidth * 0.05,
+                    fontSize: widget.screenWidth * 0.05,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               SizedBox(
-                height: screenHeight * 0.025,
+                height: widget.screenHeight * 0.025,
               )
             ],
           ),
@@ -80,9 +91,9 @@ class MentionBox extends StatelessWidget {
   }
 
   Color genderColor() {
-    if (gender == "male") {
+    if (widget.gender == "male") {
       return const Color(0xFFA3B3F9);
-    } else if (gender == "female") {
+    } else if (widget.gender == "female") {
       return const Color(0xFFFEB6C4);
     } else {
       return const Color(0xFFFFFFFF);
@@ -93,35 +104,38 @@ class MentionBox extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: screenWidth * 0.025,
-          height: screenWidth * 0.025,
+          width: widget.screenWidth * 0.025,
+          height: widget.screenWidth * 0.025,
           decoration: BoxDecoration(
-            color:
-                hintStep > 0 ? Color.fromARGB(255, 204, 255, 0) : Colors.grey,
+            color: widget.hintStep > 0
+                ? Color.fromARGB(255, 204, 255, 0)
+                : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
         SizedBox(
-          width: screenWidth * 0.02,
+          width: widget.screenWidth * 0.02,
         ),
         Container(
-          width: screenWidth * 0.025,
-          height: screenWidth * 0.025,
+          width: widget.screenWidth * 0.025,
+          height: widget.screenWidth * 0.025,
           decoration: BoxDecoration(
-            color:
-                hintStep > 1 ? Color.fromARGB(255, 204, 255, 0) : Colors.grey,
+            color: widget.hintStep > 1
+                ? Color.fromARGB(255, 204, 255, 0)
+                : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),
         SizedBox(
-          width: screenWidth * 0.02,
+          width: widget.screenWidth * 0.02,
         ),
         Container(
-          width: screenWidth * 0.025,
-          height: screenWidth * 0.025,
+          width: widget.screenWidth * 0.025,
+          height: widget.screenWidth * 0.025,
           decoration: BoxDecoration(
-            color:
-                hintStep > 2 ? Color.fromARGB(255, 204, 255, 0) : Colors.grey,
+            color: widget.hintStep > 2
+                ? Color.fromARGB(255, 204, 255, 0)
+                : Colors.grey,
             shape: BoxShape.circle,
           ),
         ),

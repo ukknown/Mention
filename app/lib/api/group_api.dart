@@ -1,26 +1,28 @@
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-// import 'group_model.dart';
-// import 'dart:convert' show jsonDecode, utf8;
+import 'package:app/api/group_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' show jsonDecode, utf8;
 
-// final String baseUrl = 'http://k8c105.p.ssafy.io:8000';
-// final String token =
-//     'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb25rdWtAZ21haWwuY29tIiwiZW1haWwiOiJqb25rdWtAZ21haWwuY29tIiwibmlja25hbWUiOiLstZzsooXsmrEiLCJpYXQiOjE2ODQyMzgwMTUsImV4cCI6MTY4NjgzMDAxNX0.9sk-d3ghnJk7C_aI7Bx-9ProSaDFV7aZ3F_t9DY8cl3stS6Aetz79UfmS2pyjW0DAu5NaLwRSgKdHIAxLn1Tbw';
-// late int propsId;
+class GroupApi {
+  final String baseUrl = 'http://k8c105.p.ssafy.io:8000';
+  final String token =
+      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5ZGgxNTA5QGhhbm1haWwubmV0IiwiZW1haWwiOiJ5ZGgxNTA5QGhhbm1haWwubmV0Iiwibmlja25hbWUiOiLsl6zrj4TtmIQiLCJpYXQiOjE2ODQyODgzMjEsImV4cCI6MTY4Njg4MDMyMX0.hmjBNHeVhE9XkscASnC1shJxotK8wNWoumt4uUNXdgHRwPxTtWL6MzGZVGN9bXyaFIK5StjsZdqI8Iq_WtJJ5Q';
 
-// Future<GroupDetailModel> fetchGroupData() async {
-//   final response = await http.get(
-//     Uri.parse(
-//         '$baseUrl/team-service/teams/${propsId}'), // Replace 'YOUR_ENDPOINT' with the correct endpoint.
-//     headers: {
-//       'Authorization': 'Bearer $token',
-//     },
-//   );
+  Future<GroupDetailModel> fetchGroupData(int teamId) async {
+    final response = await http.get(
+      Uri.parse(
+          'http://k8c105.p.ssafy.io:8000/team-service/teams/$teamId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
 
-//   if (response.statusCode == 200) {
-//     String body = utf8.decode(response.bodyBytes);
-//     return GroupDetailModel.fromJson(jsonDecode(body));
-//   } else {
-//     throw Exception('Failed to load group data');
-//   }
-// }
+    if (response.statusCode == 200) {
+      final List<int> bytes = response.bodyBytes;
+      final String responseBody = utf8.decode(bytes);
+      final Map<String, dynamic> groupData = jsonDecode(responseBody);
+      return GroupDetailModel.fromJson(groupData);
+    } else {
+      throw Exception('Failed to load group data');
+    }
+  }
+}
