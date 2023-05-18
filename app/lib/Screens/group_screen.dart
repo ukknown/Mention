@@ -42,192 +42,152 @@ class _GroupScreenState extends State<GroupScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: bgimg(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 00.0),
-          child: Column(
-            children: [
-              SizedBox(height: screenHeight * 0.01),
-              Flexible(
-                flex: 2,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+    return FutureBuilder<GroupDetailModel>(
+      future: futureGroupData,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          GroupDetailModel groupDetail = snapshot.data!;
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Container(
+              decoration: bgimg(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 00.0),
+                child: Column(
                   children: [
-                    CircleAvatar(
-                      child: FutureBuilder<GroupDetailModel>(
-                        future: futureGroupData,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            GroupDetailModel groupDetail = snapshot.data!;
-                            String imageUrl = groupDetail.image;
-
-                            return Image.network(imageUrl);
-                          } else if (snapshot.hasError) {
-                            return Text('Error occurred');
-                          }
-                          return CircularProgressIndicator();
-                        },
-                      ),
-                      radius: screenHeight * 0.07,
+                    SizedBox(height: screenHeight * 0.01),
+                    Flexible(
+                      flex: 2,
+                      child: _buildGroupHeader(
+                          context, groupDetail, screenWidth, screenHeight),
                     ),
-                    SizedBox(
-                      width: screenWidth * 0.025,
+                    Flexible(
+                      flex: 4,
+                      child: _buildGroupDetailCarousel(
+                          context, groupDetail, screenWidth, screenHeight),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            FutureBuilder<GroupDetailModel>(
-                              future: futureGroupData,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  GroupDetailModel groupDetail = snapshot.data!;
-                                  String groupName = groupDetail.name;
-
-                                  return Text(
-                                    groupName,
-                                    style: TextStyle(fontSize: 25),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Text('Error occurred');
-                                }
-                                return CircularProgressIndicator();
-                              },
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: screenHeight * 0.01,
-                        ),
-                        Row(
-                          children: [
-                            FutureBuilder<GroupDetailModel>(
-                                future: futureGroupData,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    GroupDetailModel groupDetail =
-                                        snapshot.data!;
-                                    List<MemberModel> memberList =
-                                        groupDetail.memberList;
-
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    GroupMember(
-                                                        memberList:
-                                                            memberList)));
-                                      },
-                                      child: const Icon(Icons.person),
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return const Text('Error occurre`d');
-                                  }
-                                  return const CircularProgressIndicator();
-                                }),
-                            // 인원 숫자
-                            FutureBuilder<GroupDetailModel>(
-                              future: futureGroupData,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  GroupDetailModel groupDetail = snapshot.data!;
-                                  int capacity = groupDetail.capacity;
-
-                                  return Text("$capacity");
-                                } else if (snapshot.hasError) {
-                                  return Text('Error occurred');
-                                }
-                                return CircularProgressIndicator();
-                              },
-                            ),
-
-                            const SizedBox(
-                              width: 40,
-                            ),
-                            const Icon(Icons.notifications_off_rounded),
-                            const SizedBox(
-                              width: 40,
-                            ),
-                            const Icon(Icons.output_outlined)
-                          ],
-                        )
-                      ],
-                    )
+                    const SizedBox(height: 20), // 네모 박스와 로우 사이 여백
+                    const SizedBox(height: 20), // 하단 여백
                   ],
                 ),
               ),
-              Flexible(
-                flex: 4,
-                child: FutureBuilder<GroupDetailModel>(
-                  future: futureGroupData,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      GroupDetailModel groupDetail = snapshot.data!;
-                      String groupName = groupDetail.name;
-                      print(groupName);
-                      String groupImage = groupDetail.image;
-                      int capacity = groupDetail.capacity;
-                      print(groupImage);
-                      List<VoteModel> voteList = groupDetail.voteList;
-                      List<MemberModel> memberList = groupDetail.memberList;
+            ),
+            bottomNavigationBar: const BottomNav(),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: const Text('Error occurred'),
+            ),
+          );
+        }
+        return Scaffold(
+          body: Center(
+            child: const CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
+  }
 
-                      List<Widget> items =
-                          voteList.asMap().entries.map<Widget>((entry) {
-                        int index = entry.key;
-                        VoteModel vote = entry.value;
-                        return GroupDetail(
-                          topicTitle: vote.topicTitle,
-                          memberList: memberList,
-                          dueDate: vote.dueDate,
-                          capacity: capacity,
-                          index: index,
-                          participant: vote.participant,
-                          voteId: vote.voteId,
-                        );
-                      }).toList();
-                      items.add(Groupbox(
-                        propsId: widget.propsId,
-                        screenWidth: screenWidth,
-                        screenHeight: screenHeight,
-                        refreshGroupData: refreshGroupData,
-                      ));
-
-                      return CarouselSlider(
-                        items: items,
-                        options: CarouselOptions(
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          height: screenHeight * 0.5,
-                          enlargeCenterPage: true,
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return const Text('Error occurred');
-                    }
-                    return const CircularProgressIndicator();
-                  },
-                ),
-              ),
-
-              const SizedBox(height: 20), // 네모 박스와 로우 사이 여백
-
-              const SizedBox(height: 20), // 하단 여백
-            ],
+  Widget _buildGroupHeader(BuildContext context, GroupDetailModel groupDetail,
+      double screenWidth, double screenHeight) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ClipOval(
+          child: Image.network(
+            groupDetail.image,
+            height: screenHeight * 0.15,
           ),
         ),
+        SizedBox(
+          width: screenWidth * 0.05,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Text(
+                  groupDetail.name,
+                  style: TextStyle(fontSize: 25),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: screenHeight * 0.01,
+            ),
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GroupMember(
+                                memberList: groupDetail.memberList)));
+                  },
+                  child: const Icon(Icons.person),
+                ),
+                Text("${groupDetail.capacity}"),
+                const SizedBox(
+                  width: 40,
+                ),
+                const Icon(Icons.notifications_off_rounded),
+                const SizedBox(
+                  width: 40,
+                ),
+                const Icon(Icons.output_outlined)
+              ],
+            )
+          ],
+        ),
+        SizedBox(
+          width: screenWidth * 0.05,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGroupDetailCarousel(BuildContext context,
+      GroupDetailModel groupDetail, double screenWidth, double screenHeight) {
+    List<Widget> items =
+        groupDetail.voteList.asMap().entries.map<Widget>((entry) {
+      int index = entry.key;
+      VoteModel vote = entry.value;
+      return GroupDetail(
+        screenHeight: screenHeight,
+        screenWidth: screenWidth,
+        topicTitle: vote.topicTitle,
+        emoji: vote.emoji,
+        memberList: groupDetail.memberList,
+        dueDate: vote.dueDate,
+        capacity: groupDetail.capacity,
+        index: index,
+        participant: vote.participant,
+        voteId: vote.voteId,
+      );
+    }).toList();
+    items.add(Groupbox(
+      propsId: widget.propsId,
+      screenWidth: screenWidth,
+      screenHeight: screenHeight,
+      refreshGroupData: refreshGroupData,
+    ));
+
+    return CarouselSlider(
+      items: items,
+      options: CarouselOptions(
+        autoPlayCurve: Curves.fastOutSlowIn,
+        height: screenHeight * 0.5,
+        enlargeCenterPage: true,
       ),
-      bottomNavigationBar: const BottomNav(),
     );
   }
 }
 
-// 박스 형태
 class Groupbox extends StatelessWidget {
   const Groupbox(
       {super.key,

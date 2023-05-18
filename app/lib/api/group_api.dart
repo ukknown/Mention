@@ -9,8 +9,7 @@ class GroupApi {
 
   Future<GroupDetailModel> fetchGroupData(int teamId) async {
     final response = await http.get(
-      Uri.parse(
-          'http://k8c105.p.ssafy.io:8000/team-service/teams/$teamId'),
+      Uri.parse('$baseUrl/team-service/teams/$teamId'),
       headers: {
         'Authorization': 'Bearer $token',
       },

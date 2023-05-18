@@ -51,7 +51,7 @@ class MemberModel {
 class VoteModel {
   final int voteId;
   final String topicTitle;
-  final String emoji;
+  final int emoji;
   final String dueDate;
   final int participant;
   final bool system;
@@ -68,7 +68,8 @@ class VoteModel {
     return VoteModel(
       voteId: json['voteId'],
       topicTitle: json['topicTitle'],
-      emoji: json['emoji'],
+      emoji: int.tryParse(json['emoji'] ?? '', radix: 16) ??
+          int.parse('1F60B', radix: 16),
       dueDate: json['dueDate'],
       participant: json['participant'],
       system: json['isSystem'],
