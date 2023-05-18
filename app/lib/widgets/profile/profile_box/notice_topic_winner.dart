@@ -126,7 +126,7 @@ class TopicWinner extends StatelessWidget {
                             child: Container(
                               width: screenWidth * 0.8,
                               decoration: BoxDecoration(
-                                color: const Color(0xffffffff).withOpacity(0.5),
+                                color: const Color(0xffDDDDDD).withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Padding(

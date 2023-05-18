@@ -10,7 +10,7 @@ class Notice {
   Notice.fromJson(Map<String, dynamic> json)
       : noticeId = json['id'],
         noticeType = json['type'] as String?,
-        routingId = json['routingId'] ?? -1,
+        routingId = json['routingId'],
         regDate = DateTime.parse(json['regDate'].toString()),
         gender = json['gender'] ?? 'unknown',
         noticeTitle = _getNoticeTitle(json['title']),

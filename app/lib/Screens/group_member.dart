@@ -6,7 +6,12 @@ import '../api/group_model.dart';
 
 class GroupMember extends StatelessWidget {
   final List<MemberModel> memberList;
-  const GroupMember({Key? key, required this.memberList}) : super(key: key);
+  final int code;
+  const GroupMember({
+    Key? key,
+    required this.memberList,
+    required this.code,
+  }) : super(key: key);
 
   // GroupDetailModel? group;
   @override
@@ -43,7 +48,7 @@ class GroupMember extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              _showJoinCodeModal(context);
+                              _showJoinCodeModal(context, code);
                             },
                             child: const Icon(
                               Icons.add_circle_outline_sharp,
@@ -104,7 +109,8 @@ class GroupMember extends StatelessWidget {
                         ),
                         // 멤버에 데이터 넣는 곳 (json형태로)
                         ...memberList
-                            .map((member) => MemberWidget(member: member))
+                            .map((member) =>
+                                MemberWidget(member: member, code: code))
                             .toList(),
                       ],
                     ),
@@ -125,8 +131,10 @@ class GroupMember extends StatelessWidget {
 
 class MemberWidget extends StatelessWidget {
   final MemberModel member;
+  final int code;
 
-  const MemberWidget({required this.member, Key? key}) : super(key: key);
+  const MemberWidget({required this.member, required this.code, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +164,7 @@ class MemberWidget extends StatelessWidget {
   }
 }
 
-void _showJoinCodeModal(BuildContext context) {
+void _showJoinCodeModal(BuildContext context, int code) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -165,8 +173,8 @@ void _showJoinCodeModal(BuildContext context) {
           '참여코드',
           textAlign: TextAlign.center,
         ),
-        content: const Text(
-          '61809',
+        content: Text(
+          '$code',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
         ),
