@@ -334,6 +334,84 @@
 ```
 
 ### Frontend
+```
+📦app
+ ┣ 📂.vscode
+ ┃ ┗ 📜settings.json
+ ┣ 📂android
+ ┃ ┣ 📂app
+ ┃ ┃ ┣ 📂src
+ ┃ ┃ ┃ ┣ 📂debug
+ ┃ ┃ ┃ ┣ 📂main
+ ┃ ┃ ┃ ┃ ┗ 📜AndroidManifest.xml
+ ┃ ┃ ┃ ┗ 📂profile
+ ┃ ┃ ┣ 📜build.gradle
+ ┃ ┣ 📂gradle
+ ┃ ┣ 📜build.gradle
+ ┣ 📂assets
+ ┃ ┣ 📂animations
+ ┃ ┗ 📂images
+ ┣ 📂ios
+ ┣ 📂lib
+ ┃ ┣ 📂api
+ ┃ ┃ ┣ 📜group_api.dart
+ ┃ ┃ ┣ 📜group_model.dart
+ ┃ ┃ ┣ 📜member.json
+ ┃ ┃ ┣ 📜notice_api.dart
+ ┃ ┃ ┣ 📜notice_model.dart
+ ┃ ┃ ┣ 📜pedometer_manager.dart
+ ┃ ┃ ┣ 📜profile_api.dart
+ ┃ ┃ ┣ 📜profile_model.dart
+ ┃ ┃ ┣ 📜topic_api.dart
+ ┃ ┃ ┗ 📜topic_model.dart
+ ┃ ┣ 📂Screens
+ ┃ ┃ ┣ 📂profile
+ ┃ ┃ ┃ ┣ 📜group_list.dart
+ ┃ ┃ ┃ ┣ 📜profile_page.dart
+ ┃ ┃ ┃ ┗ 📜received_mentions.dart
+ ┃ ┃ ┣ 📜group_member.dart
+ ┃ ┃ ┣ 📜group_screen.dart
+ ┃ ┃ ┣ 📜Hint.dart
+ ┃ ┃ ┣ 📜home_screen.dart
+ ┃ ┃ ┣ 📜lastHint.dart
+ ┃ ┃ ┣ 📜mainPage.dart
+ ┃ ┃ ┣ 📜notice_page.dart
+ ┃ ┃ ┣ 📜vote_after.dart
+ ┃ ┃ ┗ 📜vote_before.dart
+ ┃ ┣ 📂widgets
+ ┃ ┃ ┣ 📂profile
+ ┃ ┃ ┃ ┣ 📂profile_box
+ ┃ ┃ ┃ ┃ ┣ 📜mention_box.dart
+ ┃ ┃ ┃ ┃ ┣ 📜my_group.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_box.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_group_vote.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_mention.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_topic_open.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_topic_winner.dart
+ ┃ ┃ ┃ ┃ ┣ 📜pedometer.dart
+ ┃ ┃ ┃ ┃ ┣ 📜profile_card.dart
+ ┃ ┃ ┃ ┃ ┗ 📜rank_slot.dart
+ ┃ ┃ ┃ ┗ 📂profile_buttons
+ ┃ ┃ ┃ ┃ ┣ 📜coin_button.dart
+ ┃ ┃ ┃ ┃ ┣ 📜group_button.dart
+ ┃ ┃ ┃ ┃ ┣ 📜mention_button.dart
+ ┃ ┃ ┃ ┃ ┗ 📜setting_button.dart
+ ┃ ┃ ┣ 📜bg_img.dart
+ ┃ ┃ ┣ 📜bottom_nav.dart
+ ┃ ┃ ┣ 📜dailymissonswiper.dart
+ ┃ ┃ ┣ 📜group_detail.dart
+ ┃ ┃ ┣ 📜login_platform.dart
+ ┃ ┃ ┣ 📜maingroupcard.dart
+ ┃ ┃ ┗ 📜push_alarm.dart
+ ┃ ┗ 📜main.dart
+ ┣ 📂linux
+ ┣ 📂macos
+ ┣ 📂test
+ ┣ 📂web
+ ┣ 📂windows
+ ┣ 📜pubspec.yaml
+ ┗ 📜README.md
+```
 
 
 ## 아키텍처 설계도
