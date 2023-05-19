@@ -596,7 +596,7 @@
 
 
 ## 팀원 소개
-<img src = "exec/6-member.png">
+<img src = "exec/role.png">
 
 <br/>
 <br/>
