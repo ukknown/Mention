@@ -2,7 +2,7 @@
 
 <br/>
 
-<img src = "exec/mentionLogo.png" width ="300px">
+<img src = "exec/photo/mentionLogo.png" width ="300px">
 
 
 <br/>
@@ -534,7 +534,7 @@
 <img src = "exec/photo/jwt login.png">
 <br/>
 
-<img src = "exec/photo/Access.png">
+<img src = "exec/architecture/Access.png">
 
 <br/>
 <br/>
@@ -598,13 +598,13 @@
 
 </br>
 
-<img src = "exec/kibana.png">
+<img src = "exec/architecture/kibana.png">
 
 <br/>
 
 
 ## 팀원 소개
-<img src = "exec/role.png">
+<img src = "exec/photo/role.png">
 
 
 <br/>
