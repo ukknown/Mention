@@ -415,7 +415,7 @@
 
 
 ## 아키텍처 설계도
-![아키텍처설계도](exec/system architecture.png)
+![아키텍처설계도](exec/architecture/system architecture.png)
 
 <br/>
 <br/>
@@ -423,7 +423,7 @@
 <br/>
 
 ## ERD
-![멘션 ERD](exec/%EB%A9%98%EC%85%98%20ERD.png)
+![멘션 ERD](exec/architecture/%EB%A9%98%EC%85%98%20ERD.png)
 
 <br/>
 <br/>
@@ -431,7 +431,7 @@
 <br/>
 
 ## API 설계
-<img src = "exec/API.png">
+<img src = "exec/architecture/API.png">
 
 <br/>
 <br/>
@@ -440,25 +440,25 @@
 ## 프로젝트 결과물
 
 그룹 생성<br/>
-<img src = "exec/create-group.gif">
+<img src = "exec/photo/create-group.gif">
 
 멘션하기<br/>
-<img src = "exec/mention.gif">
+<img src = "exec/photo/mention.gif">
 
 토픽 생성 - 토픽 직접 선택, 토픽 랜덤 생성<br/>
-<img src = "exec/create-vote(random).gif">
-<img src = "exec/create-vote.gif">
+<img src = "exec/photo/create-vote(random).gif">
+<img src = "exec/photo/create-vote.gif">
 
 힌트 확인<br/>
-<img src = "exec/hint.gif">
+<img src = "exec/photo/hint.gif">
 
 마이페이지<br/>
 - 내가 참여한 그룹
 - 멘션 당한 토픽들
-<img src = "exec/my-page.gif">
+<img src = "exec/photo/my-page.gif">
 
 앱 알람<br/>
-<img src = "exec/notification.gif">
+<img src = "exec/photo/notification.gif">
 
 
 
@@ -500,7 +500,7 @@
 <br/>
 <br/>
 <br/>
-<img src="exec/jira burndown.PNG">
+<img src="exec/photo/jira burndown.PNG">
 
 <br/>
 
@@ -508,13 +508,13 @@
 
 ## DDD 기반 MSA 설계
 ### 이벤트 스토밍
-<img src = "exec/bounded-context.png">
+<img src = "exec/architecture/bounded-context.png">
 <br/>
-<img src = "exec/member-service-ddd.jpg" width="300px">
-<img src = "exec/team-service-ddd.jpg" width="300px">
-<img src = "exec/topic-service-ddd.jpg" width="300px">
-<img src = "exec/notification-service-ddd.jpg" width="300px">
-<img src = "exec/mention-service-ddd.jpg" width="300px">
+<img src = "exec/architecture/member-service-ddd.jpg" width="300px">
+<img src = "exec/architecture/team-service-ddd.jpg" width="300px">
+<img src = "exec/architecture/topic-service-ddd.jpg" width="300px">
+<img src = "exec/architecture/notification-service-ddd.jpg" width="300px">
+<img src = "exec/architecture/mention-service-ddd.jpg" width="300px">
 
 <br/>
 <br/>
@@ -527,15 +527,15 @@
 클라이언트는 이 JWT 토큰을 저장하고, 서버에 요청할 때마다 헤더에 포함하여 서버에 전송합니다. 서버는 JWT 토큰을 검증하여 사용자를 인증하고, 필요한 권한을 확인하여 해당 작업을 수행합니다. 
 이 JWT 토큰은 클라이언트가 자원 서버에 접근할 때 Access Token으로 사용합니다. 자원 서버는 Access Token을 검증하여 클라이언트의 권한을 확인하고, 요청을 처리할 수 있습니다.
 <br/>
-<img src = "exec/jwt login.png">
+<img src = "exec/photo/jwt login.png">
 <br/>
-<img src = "exec/Access.png">
+<img src = "exec/photo/Access.png">
 
 <br/>
 <br/>
 
 ## 팀원 소개
-<img src = "exec/6-member.png">
+<img src = "exec/photo/6-member.png">
 
 <br/>
 <br/>
