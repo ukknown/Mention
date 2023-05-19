@@ -1,3 +1,4 @@
+import 'package:app/Screens/group_screen.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,15 +66,15 @@ class GroupVote extends StatelessWidget {
       onTap: () async {
         await markAsRead(noticeId);
 
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const GroupScreen(
-        //         // groupId: routingId,
-        //         ),
-        //     fullscreenDialog: true,
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GroupScreen(
+              propsId: routingId,
+            ),
+            fullscreenDialog: true,
+          ),
+        );
       },
       child: FutureBuilder<bool>(
         future: isRead(noticeId),
@@ -129,22 +130,21 @@ class GroupVote extends StatelessWidget {
                             child: Container(
                               width: screenWidth * 0.8,
                               decoration: BoxDecoration(
-                                color: const Color(0xffffffff).withOpacity(0.5),
+                                color: const Color(0xffDDDDDD).withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     vertical: screenHeight * 0.01),
                                 child: Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text("icon"),
-                                      SizedBox(
-                                        width: screenWidth * 0.02,
-                                      ),
-                                      Text(targetTitle),
-                                    ],
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: screenWidth * 0.04,
+                                    ),
+                                    child: Text(
+                                      targetTitle,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ),
                               ),

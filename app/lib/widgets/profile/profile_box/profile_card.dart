@@ -27,7 +27,7 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: screenHeight * 0.32,
+      height: screenHeight * 0.3,
       width: screenWidth * 0.9,
       decoration: BoxDecoration(
         color: const Color(0xffA3B3F9),
@@ -42,9 +42,11 @@ class ProfileCard extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: screenHeight * 0.025,
-          horizontal: screenWidth * 0.05,
+        padding: EdgeInsets.only(
+          top: screenHeight * 0.015,
+          bottom: screenHeight * 0.025,
+          left: screenWidth * 0.05,
+          right: screenWidth * 0.05,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,10 +57,11 @@ class ProfileCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Padding(
-                    padding: EdgeInsets.only(top: screenHeight * 0.01),
+                    padding: EdgeInsets.only(top: screenHeight * 0.02),
                     child: ClipOval(
                       child: Image.network(
                         profileImage ?? 'assets/images/image.png',
+                        height: screenHeight * 0.145,
                         fit: BoxFit.cover,
                       ),
                     ),

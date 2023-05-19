@@ -27,14 +27,10 @@ public class FCMServiceImpl implements FCMService {
         if (tokenEntity != null) {
             String token = tokenEntity.getFcmToken();
             if (token != null) {
-                Notification notification = Notification.builder()
-                        .setTitle(request.getTitle())
-                        .setBody(request.getBody())
-                        .build();
-
-                Message message = Message.builder()
+                 Message message = Message.builder()
                         .setToken(token)
-                        .setNotification(notification)
+                        .putData("title", request.getTitle())
+                        .putData("body", request.getBody())
                         .putData("routing", request.getRoutingId().toString())
                         .build();
                 try {

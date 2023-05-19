@@ -15,13 +15,9 @@ class dailymissonswiper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Swiper(
       itemBuilder: (BuildContext context, int index) {
-        return Image.asset(imgList[index]
-
-            // fit: BoxFit.fill,
-            );
+        return Image.asset(imgList[index]);
       },
       onTap: (index) {
-        // debugPrint(imgList[index]);
         imgList[index] == "assets/images/cashwalk.png"
             ? Navigator.push(
                 context,
@@ -31,12 +27,10 @@ class dailymissonswiper extends StatelessWidget {
               )
             : Null;
       },
-      // autoplay: true,
       itemCount: imgList.length,
       pagination: const SwiperPagination(
-        margin: EdgeInsets.all(20),
+        margin: EdgeInsets.all(10),
       ),
-      // control: const SwiperControl(),
     );
   }
 }
