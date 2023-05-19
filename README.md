@@ -1,5 +1,5 @@
 # MENTION
-<img src = "exec/mentionLogo.png" width ="300px">
+<img src = "exec/photo/mentionLogo.png" width ="300px">
 
 <br/>
 <br/>
