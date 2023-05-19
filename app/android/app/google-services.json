@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "527659727497",
+    "project_id": "flufire-s",
+    "storage_bucket": "flufire-s.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527659727497:android:3da7a388d235b1fe83a458",
+        "android_client_info": {
+          "package_name": "com.example.firetest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527659727497-alt89ued6ecqto12sg191f9611nve9ug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBecbSTYv3EIYnYUV4rSDch2s3cjnvUpWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527659727497-alt89ued6ecqto12sg191f9611nve9ug.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "527659727497-c5mu7q8k66a444fohdnco7t16jvn3tin.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fluTest002"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527659727497:android:d928d1bf083c535c83a458",
+        "android_client_info": {
+          "package_name": "com.example.flu_test_002"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527659727497-s25q2kq8vcfdsh77347qp7gf1ddv7qk3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flu_test_002",
+            "certificate_hash": "ae115310edffabe60d8dce7b46517300e6ddeaf6"
+          }
+        },
+        {
+          "client_id": "527659727497-alt89ued6ecqto12sg191f9611nve9ug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBecbSTYv3EIYnYUV4rSDch2s3cjnvUpWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527659727497-alt89ued6ecqto12sg191f9611nve9ug.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "527659727497-c5mu7q8k66a444fohdnco7t16jvn3tin.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fluTest002"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

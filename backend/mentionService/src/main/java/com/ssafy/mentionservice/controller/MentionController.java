@@ -1,0 +1,97 @@
+package com.ssafy.mentionservice.controller;
+
+import com.ssafy.mentionservice.service.MentionService;
+import com.ssafy.mentionservice.service.VoteService;
+import com.ssafy.mentionservice.vo.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/mention-service")
+@Tag(name = "멘션/투표 관리")
+public class MentionController {
+
+    private final MentionService mentionService;
+    private final VoteService voteService;
+
+
+    @Operation(summary = "MSA 연결 체크")
+    @GetMapping("/health-check")
+    public String checkConnection(HttpServletRequest request) {
+        return "MentionService Check Completed!";
+    }
+
+    @Operation(summary = "투표 생성", description = "사용자가 투표를 생성합니다.")
+    @PostMapping("/votes")
+    public ResponseEntity<?> createVote(@RequestBody CreateVoteRequestDto createVoteRequestDto) {
+        voteService.createVote(createVoteRequestDto);
+        return ResponseEntity.ok().body("투표 생성 완료");
+    }
+
+    @GetMapping("/mention-count/{memberid}")
+    public ResponseEntity<Integer> getMentionCount(@PathVariable Long memberid) {
+        return ResponseEntity.ok().body(mentionService.getMentionCount(memberid));
+    }
+
+    @Operation(summary = "그룹에서 진행중인 투표 조회", description = "TODO 토큰 받아서 본인이 진행한 것 빼고 보여줘야함.")
+    @GetMapping("/teams/{teamId}/votes/{memberId}/{type}")
+    public List<VoteVo> getVoteList(@PathVariable Long teamId,
+                                    @PathVariable Long memberId,
+                                    @PathVariable String type) {
+        return voteService.getVoteList(teamId, memberId, type);
+    }
+
+    @PutMapping("/mentions/{mentionId}")
+    public ResponseEntity<?> plusHintstatus(@PathVariable Long mentionId) {
+        return ResponseEntity.ok().body(mentionService.plusHintstatus(mentionId));
+    }
+
+    @GetMapping("/mentions/topic-title/{mentionid}")
+    public ResponseEntity<String> getTopicTitleByMentionId(@PathVariable Long mentionid) {
+        return ResponseEntity.ok().body(mentionService.getTopicByMention(mentionid));
+    }
+
+    @GetMapping("/votes/topic-title/{voteid}")
+    public ResponseEntity<String> getTopicTitleByVoteId(@PathVariable Long voteid) {
+        return ResponseEntity.ok().body(mentionService.getTopicByVote(voteid));
+    }
+
+    @GetMapping("/mentions")
+    public ResponseEntity<List<MentionResponseDto>> getMention(HttpServletRequest request) {
+        Long memberId = loadMember(request).getMemberId();
+        return ResponseEntity.ok().body(mentionService.getMention(memberId));
+    }
+    @GetMapping("/mentions/{mentionId}")
+    public ResponseEntity<MentionDetailResponseDto> getMentionDetail(HttpServletRequest request,
+                                                                     @PathVariable Long mentionId){
+        Long memberId = loadMember(request).getMemberId();
+        return ResponseEntity.ok().body(mentionService.getMentionDetail(mentionId, memberId));
+    }
+
+    @Operation(summary = "멘션 생성", description = "상대방을 멘션!하다~")
+    @PostMapping("/mentions")
+    public ResponseEntity<?> createMention(HttpServletRequest request,
+                                           @RequestBody CreateMentionRequestDto createMentionRequestDto) {
+        Long memberId = loadMember(request).getMemberId();
+        mentionService.createMention(createMentionRequestDto, memberId);
+        return ResponseEntity.ok().body("멘션 생성 완료");
+    }
+
+    private MemberVo loadMember(HttpServletRequest request) {
+        JSONObject loginMember = new JSONObject(request.getHeader("member"));
+        Long id = loginMember.getLong("id");
+        String role = loginMember.getString("role");
+        return MemberVo.builder()
+                .memberId(id)
+                .role(role)
+                .build();
+    }
+}
