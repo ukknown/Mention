@@ -1,10 +1,10 @@
-# MENTION
+# 멘션
 <img src = "exec/mentionLogo.png" width ="300px">
 
 <br/>
 <br/>
 
-## Mention
+## 멘션
 
 > #### **익명 칭찬 메세지 어플<br/>**
 >
@@ -12,7 +12,7 @@
 
 <br/>
 
-+ Mention은 본인 소속 그룹에서 주어진 토픽에 맞는 사람을 선택해 익명의 멘션을 보내는 서비스 입니다.
++ 멘션은 본인 소속 그룹에서 주어진 토픽에 맞는 사람을 선택해 익명의 멘션을 보내는 서비스 입니다.
 
 <br/>
 <br/>
@@ -530,6 +530,70 @@
 
 <br/>
 <br/>
+
+## Elastic Search(토픽 검색)
+<br/>
+
+```
+//topic-mapping.json
+{
+  "properties": {
+    "id": {
+      "type": "keyword"
+    },
+    "title": {
+      "type": "text",
+      "fields": {
+        "kor": {
+          "type": "text",
+          "analyzer": "korean"
+        }
+      }
+    }
+  }
+}
+```
+
+</br>
+
+```
+//topic-setting.json
+{
+  "index" : {
+    "max_ngram_diff": 5
+  },
+  "analysis": {
+    "analyzer": {
+      "korean": {
+        "type": "nori"
+      },
+      "my_ngram_analyzer": {
+        "tokenizer": "my_ngram_tokenizer"
+      }
+    },
+    "tokenizer": {
+      "my_ngram_tokenizer": {
+        "type": "ngram",
+        "min_gram": "2",
+        "max_gram": "5"
+      }
+    }
+  }
+}
+```
+
+
+</br>
+
+
+### 생성된 인덱스(by KIBANA)
+
+</br>
+
+<img src = "exec/kibana.png">
+
+<br/>
+
 
 ## 팀원 소개
 <img src = "exec/6-member.png">
