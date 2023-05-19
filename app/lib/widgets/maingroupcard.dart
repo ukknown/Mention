@@ -26,10 +26,37 @@ class swipercontainer extends StatefulWidget {
 class _swipercontainerState extends State<swipercontainer> {
   @override
   Widget build(BuildContext context) {
-    final int emoji0 = int.tryParse(widget.vote[0]['emoji'] ?? '', radix: 16) ??
-        int.parse('1F60B', radix: 16);
-    final int emoji1 = int.tryParse(widget.vote[1]['emoji'] ?? '', radix: 16) ??
-        int.parse('1F60B', radix: 16);
+    int emoji0;
+    int emoji1;
+    String topicTitle0;
+    String topicTitle1;
+
+    // Default emoji and title.
+    int defaultEmoji = int.parse('1F614', radix: 16); // 😔 emoji
+    String defaultTitle = "아직 토픽이 없어요!";
+
+    switch (widget.vote.length) {
+      case 0:
+        emoji0 = defaultEmoji;
+        emoji1 = defaultEmoji;
+        topicTitle0 = defaultTitle;
+        topicTitle1 = defaultTitle;
+        break;
+      case 1:
+        emoji0 = int.tryParse(widget.vote[0]['emoji'] ?? '', radix: 16) ??
+            defaultEmoji;
+        emoji1 = defaultEmoji;
+        topicTitle0 = widget.vote[0]['topicTitle'] ?? defaultTitle;
+        topicTitle1 = defaultTitle;
+        break;
+      default:
+        emoji0 = int.tryParse(widget.vote[0]['emoji'] ?? '', radix: 16) ??
+            defaultEmoji;
+        emoji1 = int.tryParse(widget.vote[1]['emoji'] ?? '', radix: 16) ??
+            defaultEmoji;
+        topicTitle0 = widget.vote[0]['topicTitle'] ?? defaultTitle;
+        topicTitle1 = widget.vote[1]['topicTitle'] ?? defaultTitle;
+    }
 
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 30),

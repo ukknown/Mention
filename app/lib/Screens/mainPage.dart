@@ -107,7 +107,7 @@ class _MainPageState extends State<MainPage> {
         final List<int> bytes = response.bodyBytes;
         final String responseBody = utf8.decode(bytes);
         final List<dynamic> profileJson = jsonDecode(responseBody);
-
+        print(profileJson);
         setState(() {
           swiperList.clear();
 
