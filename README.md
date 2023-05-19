@@ -440,22 +440,22 @@
 ## 프로젝트 결과물
 
 그룹 생성
-<img src = "exec/create-group.gif" width = "150px">
+<img src = "exec/create-group.gif">
 
 멘션하기
-<img src = "exec/mention.gif" width = "150px">
+<img src = "exec/mention.gif">
 
 토픽 생성 - 토픽 직접 선택, 토픽 랜덤 생성
-<img src = "exec/create-vote(random).gif" width = "150px">
-<img src = "exec/create-vote.gif" width = "150px">
+<img src = "exec/create-vote(random).gif">
+<img src = "exec/create-vote.gif">
 
 힌트 확인
-<img src = "exec/hint.gif" width = "150px">
+<img src = "exec/hint.gif">
 
 마이페이지
 - 내가 참여한 그룹
 - 멘션 당한 토픽들
-<img src = "exec/my-page.gif" width = "150px">
+<img src = "exec/my-page.gif">
 
 
 
