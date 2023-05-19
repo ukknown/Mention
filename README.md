@@ -415,7 +415,7 @@
 
 
 ## 아키텍처 설계도
-![아키텍처설계도](exec/%EB%A9%98%EC%85%98%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98.png)
+![아키텍처설계도](exec/system architecture.png)
 
 <br/>
 <br/>
