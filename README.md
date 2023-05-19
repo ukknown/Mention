@@ -61,23 +61,18 @@
 
 ## 주요 기능 및 서비스 화면
 
-> ### 멘션
-
+### 멘션
 참여한 그룹에서 올라온 토픽에 어울리는 사람을 선택하는 기능
 
-> ### 토픽 생성
-
+### 토픽 생성
 내가 멘션하고 싶은 토픽을 생성하는 기능
 
-> ### 힌트 확인
-
+### 힌트 확인
 나를 멘션한 사람을 알아보기 위한 총 3단계의 힌트
 
-
 <br/>
 <br/>
-
-
+<br/>
 
 ## 기대효과
 
@@ -339,10 +334,88 @@
 ```
 
 ### Frontend
+```
+📦app
+ ┣ 📂.vscode
+ ┃ ┗ 📜settings.json
+ ┣ 📂android
+ ┃ ┣ 📂app
+ ┃ ┃ ┣ 📂src
+ ┃ ┃ ┃ ┣ 📂debug
+ ┃ ┃ ┃ ┣ 📂main
+ ┃ ┃ ┃ ┃ ┗ 📜AndroidManifest.xml
+ ┃ ┃ ┃ ┗ 📂profile
+ ┃ ┃ ┣ 📜build.gradle
+ ┃ ┣ 📂gradle
+ ┃ ┣ 📜build.gradle
+ ┣ 📂assets
+ ┃ ┣ 📂animations
+ ┃ ┗ 📂images
+ ┣ 📂ios
+ ┣ 📂lib
+ ┃ ┣ 📂api
+ ┃ ┃ ┣ 📜group_api.dart
+ ┃ ┃ ┣ 📜group_model.dart
+ ┃ ┃ ┣ 📜member.json
+ ┃ ┃ ┣ 📜notice_api.dart
+ ┃ ┃ ┣ 📜notice_model.dart
+ ┃ ┃ ┣ 📜pedometer_manager.dart
+ ┃ ┃ ┣ 📜profile_api.dart
+ ┃ ┃ ┣ 📜profile_model.dart
+ ┃ ┃ ┣ 📜topic_api.dart
+ ┃ ┃ ┗ 📜topic_model.dart
+ ┃ ┣ 📂Screens
+ ┃ ┃ ┣ 📂profile
+ ┃ ┃ ┃ ┣ 📜group_list.dart
+ ┃ ┃ ┃ ┣ 📜profile_page.dart
+ ┃ ┃ ┃ ┗ 📜received_mentions.dart
+ ┃ ┃ ┣ 📜group_member.dart
+ ┃ ┃ ┣ 📜group_screen.dart
+ ┃ ┃ ┣ 📜Hint.dart
+ ┃ ┃ ┣ 📜home_screen.dart
+ ┃ ┃ ┣ 📜lastHint.dart
+ ┃ ┃ ┣ 📜mainPage.dart
+ ┃ ┃ ┣ 📜notice_page.dart
+ ┃ ┃ ┣ 📜vote_after.dart
+ ┃ ┃ ┗ 📜vote_before.dart
+ ┃ ┣ 📂widgets
+ ┃ ┃ ┣ 📂profile
+ ┃ ┃ ┃ ┣ 📂profile_box
+ ┃ ┃ ┃ ┃ ┣ 📜mention_box.dart
+ ┃ ┃ ┃ ┃ ┣ 📜my_group.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_box.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_group_vote.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_mention.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_topic_open.dart
+ ┃ ┃ ┃ ┃ ┣ 📜notice_topic_winner.dart
+ ┃ ┃ ┃ ┃ ┣ 📜pedometer.dart
+ ┃ ┃ ┃ ┃ ┣ 📜profile_card.dart
+ ┃ ┃ ┃ ┃ ┗ 📜rank_slot.dart
+ ┃ ┃ ┃ ┗ 📂profile_buttons
+ ┃ ┃ ┃ ┃ ┣ 📜coin_button.dart
+ ┃ ┃ ┃ ┃ ┣ 📜group_button.dart
+ ┃ ┃ ┃ ┃ ┣ 📜mention_button.dart
+ ┃ ┃ ┃ ┃ ┗ 📜setting_button.dart
+ ┃ ┃ ┣ 📜bg_img.dart
+ ┃ ┃ ┣ 📜bottom_nav.dart
+ ┃ ┃ ┣ 📜dailymissonswiper.dart
+ ┃ ┃ ┣ 📜group_detail.dart
+ ┃ ┃ ┣ 📜login_platform.dart
+ ┃ ┃ ┣ 📜maingroupcard.dart
+ ┃ ┃ ┗ 📜push_alarm.dart
+ ┃ ┗ 📜main.dart
+ ┣ 📂linux
+ ┣ 📂macos
+ ┣ 📂test
+ ┣ 📂web
+ ┣ 📂windows
+ ┣ 📜pubspec.yaml
+ ┗ 📜README.md
+```
 
 
 ## 아키텍처 설계도
-![아키텍처설계도](exec/%EB%A9%98%EC%85%98%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98.png)
+![아키텍처설계도](exec/system architecture.png)
 
 <br/>
 <br/>
@@ -367,20 +440,22 @@
 ## 프로젝트 결과물
 
 그룹 생성
-
-참여 코드
-
-그룹 참여
+<img src = "exec/create-group.gif" width = "150px">
 
 멘션하기
+<img src = "exec/mention.gif" width = "150px">
 
-토픽 생성
+토픽 생성 - 토픽 직접 선택, 토픽 랜덤 생성
+<img src = "exec/create-vote(random).gif" width = "150px">
+<img src = "exec/create-vote.gif" width = "150px">
 
 힌트 확인
+<img src = "exec/hint.gif" width = "150px">
 
 마이페이지
 - 내가 참여한 그룹
 - 멘션 당한 토픽들
+<img src = "exec/my-page.gif" width = "150px">
 
 
 
@@ -399,9 +474,18 @@
 > ``` FEAT ``` : 기능 추가, 프로젝트 생성, 초기 설정 
 <br> ``` FIX ``` : 기능 변경, 기능 수정, 오류 수정
 
+<br/>
+<br/>
+<br/>
+
 ## Notion
 + 팀 전체가 알아야 할 공지사항이나 프로젝트를 진행하면서 나오는 각종 산출물들의 형상관리
-# + [Mention Notion](https://www.notion.so/SSAFY-fece7069a49341c498d3f97a84f7d7fd)
+<br/>
+![Mention Notion](https://www.notion.so/SSAFY-fece7069a49341c498d3f97a84f7d7fd)
+
+<br/>
+<br/>
+<br/>
 
 ## JIRA
 + 협업 및 일정, 업무 관리를 JIRA를 통해 관리하였습니다.
@@ -412,6 +496,7 @@
 <br> ``` task ``` : 코드 작성과 관련된 개발업무에 관한 업무 관리
 <br/>
 <br/>
+<br/>
 <img src="exec/jira burndown.PNG">
 
 <br/>
@@ -420,12 +505,13 @@
 
 ## DDD 기반 MSA 설계
 ### 이벤트 스토밍
-<img src = "exec/바운디드 컨텍스트.png" width="300px">
-<img src = "exec/사용자관리.png" width="300px">
-<img src = "exec/그룹관리.png" width="300px">
-<img src = "exec/토픽.png" width="300px">
-<img src = "exec/알림1.png" width="300px">
-<img src = "exec/투표생성.png" width="300px">
+<img src = "exec/bounded-context.png">
+<br/>
+<img src = "exec/member-service-ddd.jpg" width="300px">
+<img src = "exec/team-service-ddd.jpg" width="300px">
+<img src = "exec/topic-service-ddd.jpg" width="300px">
+<img src = "exec/notification-service-ddd.jpg" width="300px">
+<img src = "exec/mention-service-ddd.jpg" width="300px">
 
 <br/>
 <br/>
@@ -433,14 +519,21 @@
 <br/>
 
 ### Spring Security ( + JWT)
+<br/>
+사용자가 로그인을 하게 되면, 서버는 JWT 토큰을 생성하고 클라이언트에게 반환합니다. 
+클라이언트는 이 JWT 토큰을 저장하고, 서버에 요청할 때마다 헤더에 포함하여 서버에 전송합니다. 서버는 JWT 토큰을 검증하여 사용자를 인증하고, 필요한 권한을 확인하여 해당 작업을 수행합니다. 
+이 JWT 토큰은 클라이언트가 자원 서버에 접근할 때 Access Token으로 사용합니다. 자원 서버는 Access Token을 검증하여 클라이언트의 권한을 확인하고, 요청을 처리할 수 있습니다.
+<br/>
+<img src = "exec/jwt login.png">
+<br/>
+<img src = "exec/Access.png">
 
 <br/>
 <br/>
 
 ## 팀원 소개
+<img src = "exec/6-member.png">
 
-| :--------------------------------------------: | :-----------------------------------------: | :--------------------------------------------: | :-------------------------------------------------: | :----------------------------------------------: | :----------------------------------------------: |
-| **[BE 조승현👑]** | **[BE 임세은]** | **[BE 최종욱]** | **[FE 노준호]** | **[FE 여도현]** | **[FE 김창영]** |
 <br/>
 <br/>
 
