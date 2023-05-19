@@ -440,20 +440,22 @@
 ## 프로젝트 결과물
 
 그룹 생성
-
-참여 코드
-
-그룹 참여
+<img src = "exec/그룹생성.gif" width = "150px">
 
 멘션하기
+<img src = "exec/멘션.gif" width = "150px">
 
-토픽 생성
+토픽 생성 - 토픽 직접 선택, 토픽 랜덤 생성
+<img src = "exec/투표생성(random).gif" width = "150px">
+<img src = "exec/투표생성.gif" width = "150px">
 
 힌트 확인
+<img src = "exec/힌트.gif" width = "150px">
 
 마이페이지
 - 내가 참여한 그룹
 - 멘션 당한 토픽들
+<img src = "exec/마이페이지.gif" width = "150px">
 
 
 
