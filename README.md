@@ -1,4 +1,7 @@
 # 멘션
+
+<br/>
+
 <img src = "exec/mentionLogo.png" width ="300px">
 
 
@@ -32,7 +35,7 @@
 + Gradle - v11.0.18
 + JWT - v0.11.5
 + MariaDB - 10.11.2
-+ Radis - v7.0.10
++ Redis - v7.0.10
 + Erlang - v25.3.1
 + RabbitMQ - 3.11.15
 + Firebase Cloud Message
@@ -530,6 +533,7 @@
 <br/>
 <img src = "exec/photo/jwt login.png">
 <br/>
+
 <img src = "exec/photo/Access.png">
 
 <br/>
